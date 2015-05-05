@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wiacek.martyna.esnpwapp" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <!--
+ The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but are recommended.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/logo_6"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".Login"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".UserPage"
+            android:label="@string/title_activity_user_page" >
+        </activity>
+        <activity
+            android:name=".EmergencyInfo"
+            android:label="@string/title_activity_emergency_info" >
+        </activity>
+        <activity
+            android:name=".BuddyPage"
+            android:label="@string/title_activity_buddy_page" >
+        </activity>
+        <activity
+            android:name=".QandAPage"
+            android:label="@string/title_activity_qand_apage" >
+        </activity>
+        <activity
+            android:name=".ESNFacultyPages"
+            android:label="@string/title_activity_esnfaculty_pages" >
+        </activity>
+        <!--
+        activity
+            android:name=".UserMain"
+            android:label="@string/title_activity_user_main" >
+        </activity
+        -->
+        <activity
+            android:name=".ESNDocuments"
+            android:label="@string/title_activity_esndocuments" >
+        </activity>
+        <activity
+            android:name=".PrivateUserPage"
+            android:label="@string/title_activity_private_user_page" >
+        </activity>
+        <activity
+            android:name=".ToDoListPage"
+            android:label="@string/title_activity_to_do_list" >
+        </activity>
+        <activity
+            android:name=".DrawerActivity"
+            android:label="@string/title_activity_drawer" >
+        </activity>
+        <activity
+            android:name=".NavigationDrawer"
+            android:label="@string/title_activity_entirely_new_drawer" >
+        </activity>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps" >
+        </activity>
+        <activity
+            android:name=".SettingsFragment"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".NavigationDrawer" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.wiacek.martyna.esnpwapp.NavigationDrawer" />
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".NavigationDrawer" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.wiacek.martyna.esnpwapp.NavigationDrawer" />
+        </activity>
+    </application>
+
+</manifest>

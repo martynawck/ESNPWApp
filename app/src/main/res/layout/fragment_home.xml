@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="166dp"
+        android:id="@+id/imageView3"
+        android:src="@drawable/esn_pw_small"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="FOLLOW US ON:"
+        android:id="@+id/textView3"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginBottom="79dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/round_btn_fb"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#fff"
+        android:layout_margin="10dp"
+        android:id="@+id/facebookButton"
+
+         />
+
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/round_btn_tw"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#fff"
+        android:layout_margin="10dp"
+        android:id="@+id/twitterButton"
+
+         />
+    <ImageButton
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="@drawable/round_btn_yt"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_margin="10dp"
+        android:id="@+id/youtubeButton"
+
+         />
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

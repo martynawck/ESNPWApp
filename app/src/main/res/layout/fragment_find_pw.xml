@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/text"
+        android:layout_margin="30dp"
+        android:text="FIND WARSAW UNIVERSITY \n\tOF TECHNOLOGY ON:"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_centerHorizontal="true" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/linearLayout1"
+        android:layout_below="@+id/text"
+        android:layout_centerHorizontal="true">
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/pw_find_fb"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#fff"
+            android:layout_margin="10dp"
+            android:id="@+id/facebookButton"
+
+            />
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/pw_find_tt"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#fff"
+            android:layout_margin="10dp"
+            android:id="@+id/twitterButton"
+
+            />
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_below="@+id/linearLayout1"
+        android:id="@+id/linearLayout2">
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/pw_find_ins"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#fff"
+            android:layout_margin="10dp"
+            android:id="@+id/instagramButton"
+
+            />
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/pw_find_lin"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#fff"
+            android:layout_margin="10dp"
+            android:id="@+id/linkedinButton"
+
+            />
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+
+        android:id="@+id/linearLayout3"
+        android:layout_below="@+id/linearLayout2"
+       >
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/pw_find_wor"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#fff"
+            android:layout_margin="10dp"
+            android:id="@+id/wordpressButton"
+
+            />
+
+        <ImageButton
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/pw_find_pin"
+            android:gravity="center_vertical|center_horizontal"
+            android:textColor="#fff"
+            android:layout_margin="10dp"
+            android:id="@+id/pinterestButton"
+
+            />
+        </LinearLayout>
+
+
+
+</RelativeLayout>

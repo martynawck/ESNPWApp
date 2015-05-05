@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" android:drawable="@drawable/yt_wh"/><!-- Pressed/Tapped Button View -->
+    <item android:state_focused="true" android:drawable="@drawable/yt_wh"/>
+    <item android:drawable="@drawable/yt_round"/><!-- Normal Button View -->
+</selector>
+

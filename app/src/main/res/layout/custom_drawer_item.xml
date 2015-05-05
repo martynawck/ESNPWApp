@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@drawable/list_selector">
+
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="25dp"
+        android:layout_weight="1"
+
+        >
+
+        <TextView
+            android:id="@+id/drawerTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:minHeight="?android:attr/listPreferredItemHeightSmall"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:clickable="false"
+            android:textIsSelectable="false"
+            />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"        >
+
+            <ImageView
+                android:id="@+id/drawer_icon"
+                android:layout_width="25dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:contentDescription="@string/desc_list_item_icon"
+                android:gravity="center_vertical"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/drawer_itemName"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/drawer_icon"
+                android:minHeight="?android:attr/listPreferredItemHeightSmall"
+                android:textAppearance="?android:attr/textAppearanceListItemSmall"
+                android:textColor="@color/list_item_title"
+                android:gravity="center_vertical"
+                android:paddingRight="40dp"/>
+
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

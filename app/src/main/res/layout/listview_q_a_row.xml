@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#C5D8EB">
+
+    <ImageView
+        android:id="@+id/profilePic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="20dp"
+
+        android:src="@drawable/letter_a_new" />
+    <TextView
+        android:id="@+id/expandedListItem"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13dp"
+        android:textColor="#000000"
+        android:layout_margin="20dp"
+        android:layout_toRightOf="@+id/profilePic"
+        android:text="It is very simple - you just have to go to this shop and to this and that.It is very simple - you just have to go to this shop and to this and that.
+        It is very simple - you just have to go to this shop and to this and that.
+        It is very simple - you just have to go to this shop and to this and that."/>
+</RelativeLayout>

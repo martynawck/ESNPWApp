@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#000000"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="horizontal"
+        android:background="#bf222018"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+        <TextView android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Your faculty"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:textColor="#FFff00"
+            android:id="@+id/lblLocationInfo"/>
+        <TextView android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="ESN Offices"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:textColor="#FF0000"
+            android:id="@+id/lblLocationInfo2"/>
+        <TextView android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Faculties"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#4C8BFF"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:id="@+id/lblLocationInfo3"/>
+
+    </LinearLayout>
+     <!-- <1> -->
+<com.google.android.gms.maps.MapView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mapView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+</LinearLayout>
