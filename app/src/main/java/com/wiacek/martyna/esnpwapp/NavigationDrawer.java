@@ -1,34 +1,27 @@
 package com.wiacek.martyna.esnpwapp;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.FragmentTransaction;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceFragment;
 import android.support.v4.app.Fragment;
 import android.content.res.Configuration;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.wiacek.martyna.esnpwapp.Adapter.NavigationDrawerAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.DrawerItem;
@@ -47,6 +40,7 @@ public class NavigationDrawer extends ActionBarActivity {
     private CharSequence mTitle;
     private boolean webBrowserBack;
     NavigationDrawerAdapter adapter;
+    boolean uploadedPicture;
 
     android.app.Fragment nativeFragment = null;
 
@@ -61,6 +55,7 @@ public class NavigationDrawer extends ActionBarActivity {
         // Initializing
         session = new SessionManager(getApplicationContext());
         webBrowserBack = false;
+        uploadedPicture = false;
         dataList = new ArrayList<>();
         mTitle = mDrawerTitle = getTitle();
 
@@ -69,12 +64,37 @@ public class NavigationDrawer extends ActionBarActivity {
 
         View header = getLayoutInflater().inflate(R.layout.custom_header, null);
         TextView headerFirstName = (TextView) header.findViewById(R.id.firstName);
-        headerFirstName.setText(session.getValueOfFirstName());
-        TextView headerLastName = (TextView) header.findViewById(R.id.lastName);
-        headerLastName.setText(session.getValueOfLastName());
-        ImageView profilePic = (ImageView) header.findViewById(R.id.imageView);
+        headerFirstName.setText(session.getValueOfFirstName()+ " " + session.getValueOfLastName());
+        final ImageView profilePic = (ImageView) header.findViewById(R.id.imageView);
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ChangePictureFragment fragment = new ChangePictureFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
 
-       Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).into(profilePic);
+                if (nativeFragment != null) {
+                    Log.d("1", "2");
+                    getFragmentManager().beginTransaction().
+                            remove(getFragmentManager().findFragmentById(R.id.content_frame)).commit();
+                    getSupportFragmentManager().beginTransaction()
+                            .remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
+                    nativeFragment = null;
+                }
+                Log.d("1", "3");
+              //  FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, fragment).commit();
+
+                setTitle("Change picture");
+                mDrawerLayout.closeDrawer(mDrawerList);
+                uploadedPicture = true;
+
+            }
+        });
+
+       Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE).into(profilePic);
+
+
       //  new DownloadImageTask((ImageView) header.findViewById(R.id.imageView))
         //        .execute(ServerUrl.BASE_URL + session.getValueOfProfileImage());
 
@@ -130,12 +150,19 @@ public class NavigationDrawer extends ActionBarActivity {
                 R.string.drawer_close) {
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(mTitle);
+                adapter.notifyDataSetChanged();
                 invalidateOptionsMenu(); // creates call to
                 // onPrepareOptionsMenu()
             }
 
             public void onDrawerOpened(View drawerView) {
                 getSupportActionBar().setTitle(mDrawerTitle);
+               // adapter.notifyDataSetChanged();
+                if (uploadedPicture == true) {
+                    Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE).into(profilePic);
+                    uploadedPicture = false;
+                }
+
                 invalidateOptionsMenu(); // creates call to
                 // onPrepareOptionsMenu()
             }
@@ -377,11 +404,18 @@ public class NavigationDrawer extends ActionBarActivity {
             }
 */
 
+
+
         if (useNativeFragment) {
             Log.d("1", "1");
             android.app.FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, nativeFragment).commit();
+
+            if (fragmentManager.findFragmentById(R.id.content_frame) == null) {
+
+                Log.d("ODP","OWSZEM");
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame, nativeFragment).commit();
+            }
         } else {
             if (nativeFragment != null) {
                 Log.d("1", "2");

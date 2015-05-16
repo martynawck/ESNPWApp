@@ -11,13 +11,12 @@
         android:layout_gravity="center_horizontal">
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:id="@+id/imageView"
         android:layout_alignTop="@+id/imageView2"
-        android:layout_marginLeft="10dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:background="@color/white"
+        android:padding="2dp"
         android:src="@drawable/user_ic"/>
 
     <ImageView
@@ -37,26 +36,12 @@
             android:id="@+id/firstName"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
-
+            android:layout_marginTop="5dp"
             android:layout_gravity="center"
+            android:text="aaa"
             android:layout_below="@+id/imageView"
             android:layout_alignLeft="@+id/imageView"
             android:layout_alignStart="@+id/imageView" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/lastName"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center"
-            android:layout_below="@+id/firstName"
-            android:layout_alignLeft="@+id/firstName"
-            android:layout_alignStart="@+id/firstName" />
-
-
     </RelativeLayout>
 
 

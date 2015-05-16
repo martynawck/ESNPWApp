@@ -24,6 +24,12 @@ public class SessionManager {
     public static final String KEY_FIRST_NAME = "FIRST_NAME";
     public static final String KEY_LAST_NAME = "LAST_NAME";
     public static final String KEY_PROFILE_IMAGE = "PROFILE_IMAGE";
+    public static final String KEY_PROFILE_EMAIL = "PROFILE_EMAIL";
+    public static final String KEY_PROFILE_PHONE = "PROFILE_PHONE";
+    public static final String KEY_PROFILE_FACEBOOK = "PROFILE_FACEBOOK";
+    public static final String KEY_PROFILE_WHATSAPP = "PROFILE_WHATSAPP";
+    public static final String KEY_PROFILE_SKYPE = "PROFILE_SKYPE";
+
 
     // Constructor
     public SessionManager(Context context){
@@ -43,6 +49,10 @@ public class SessionManager {
         return _sharedPreferences.getString(KEY_USERNAME, "");
     }
 
+    public String getValueOfPassword() {
+        return _sharedPreferences.getString(KEY_PASSWORD, "");
+    }
+
     public String getValueOfUserId() { return _sharedPreferences.getString(KEY_USER_ID, ""); }
 
     public String getValueOfFaculty() { return _sharedPreferences.getString(KEY_FACULTY, "") ;}
@@ -52,6 +62,51 @@ public class SessionManager {
     public String getValueOfLastName() { return _sharedPreferences.getString(KEY_LAST_NAME, ""); }
 
     public String getValueOfProfileImage() { return _sharedPreferences.getString(KEY_PROFILE_IMAGE, "");}
+
+    public String getValueOfProfileEmail() { return _sharedPreferences.getString(KEY_PROFILE_EMAIL, "");}
+
+    public String getValueOfProfilePhone() { return _sharedPreferences.getString(KEY_PROFILE_PHONE, "");}
+
+    public String getValueOfProfileFacebook() { return _sharedPreferences.getString(KEY_PROFILE_FACEBOOK, "");}
+
+    public String getValueOfProfileWhatsapp() { return _sharedPreferences.getString(KEY_PROFILE_WHATSAPP, "");}
+
+    public String getValueOfProfileSkype() { return _sharedPreferences.getString(KEY_PROFILE_SKYPE, "");}
+
+    public void setValueOfEmail(String s) {
+
+        SharedPreferences.Editor editor = _sharedPreferences.edit();
+        editor.putString(KEY_PROFILE_EMAIL, s);
+        editor.apply();
+    }
+
+    public void setValueOfFacebook(String s) {
+
+        SharedPreferences.Editor editor = _sharedPreferences.edit();
+        editor.putString(KEY_PROFILE_FACEBOOK, s);
+        editor.apply();
+    }
+
+    public void setValueOfWhatsapp(String s) {
+
+        SharedPreferences.Editor editor = _sharedPreferences.edit();
+        editor.putString(KEY_PROFILE_WHATSAPP, s);
+        editor.apply();
+    }
+
+    public void setValueOfSkype(String s) {
+
+        SharedPreferences.Editor editor = _sharedPreferences.edit();
+        editor.putString(KEY_PROFILE_SKYPE, s);
+        editor.apply();
+    }
+
+    public void setValueOfPhone(String s) {
+
+        SharedPreferences.Editor editor = _sharedPreferences.edit();
+        editor.putString(KEY_PROFILE_PHONE, s);
+        editor.apply();
+    }
 
     public void setValueOfFaculty(String s) {
 
@@ -78,6 +133,11 @@ public class SessionManager {
         editor.apply();
     }
 
+    public void setValueOfPassword(String s) {
+        SharedPreferences.Editor editor = _sharedPreferences.edit();
+        editor.putString(KEY_PASSWORD,s);
+        editor.apply();
+    }
 
     public boolean resumeSession(){
         if (_sharedPreferences.contains(KEY_USERNAME) && _sharedPreferences.contains(KEY_PASSWORD))

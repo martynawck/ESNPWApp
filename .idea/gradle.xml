@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/butterknife-6.1.0" />
             <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/retrofit-1.9.0" />
+            <option value="$PROJECT_DIR$/volley" />
           </set>
         </option>
       </GradleProjectSettings>

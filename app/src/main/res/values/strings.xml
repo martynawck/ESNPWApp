@@ -59,5 +59,6 @@
     <string name="title_activity_entirely_new_drawer">ESN PW App</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_settings">SettingsActivity</string>
+    <string name="myCoolButton">CoolButton</string>
 
 </resources>

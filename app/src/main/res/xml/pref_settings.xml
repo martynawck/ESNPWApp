@@ -3,12 +3,43 @@
     >
 
     <PreferenceCategory
-        android:title="LALAL">
+        android:title="SECURITY">
+        <com.wiacek.martyna.esnpwapp.ViewEnhancements.PasswordDialog
+            android:summary="Change your password"
+            android:title="Password"
+            android:key="password"/>
+        </PreferenceCategory>
 
-        <CheckBoxPreference
-            android:key="checkbox_preference"
-            android:title="dsfdf"
-            android:summary="sfsfds" />
-
+    <PreferenceCategory
+        android:title="PERSONAL INFO">
+        <EditTextPreference
+            android:key="email"
+            android:summary="Change your E-mail"
+            android:title="E-mail" />
+        <EditTextPreference
+            android:key="phone"
+            android:summary="Change your phone number"
+            android:title="Phone number" />
+        <EditTextPreference
+            android:key="skype"
+            android:summary="Change your Skype id"
+            android:title="Skype Id" />
+        <EditTextPreference
+            android:key="whatsapp"
+            android:summary="Change your Whatsapp Id"
+            android:title="Whatsapp Id" />
+        <EditTextPreference
+            android:key="facebook"
+            android:summary="Change your Facebook Id"
+            android:title="Facebook Id" />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="ANONIMITY">
+        <CheckBoxPreference
+            android:key="checkbox_visibility"
+            android:title="Visibility"
+            android:summary="Do you want to make your contact data visible for everyone using this
+            application?" />
+        </PreferenceCategory>
+
 </PreferenceScreen>

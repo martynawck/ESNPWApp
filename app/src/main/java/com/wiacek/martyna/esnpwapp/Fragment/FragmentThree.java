@@ -1,6 +1,6 @@
 package com.wiacek.martyna.esnpwapp.Fragment;
 
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,7 +32,7 @@ public class FragmentThree extends Fragment {
      //   ivIcon = (ImageView) view.findViewById(R.id.frag3_icon);
         tvItemName = (TextView) view.findViewById(R.id.frag3_text);
 
-        tvItemName.setText(getArguments().getString(ITEM_NAME));
+//        tvItemName.setText(getArguments().getString(ITEM_NAME));
 //        ivIcon.setImageDrawable(view.getResources().getDrawable(
         //        getArguments().getInt(IMAGE_RESOURCE_ID)));
         return view;

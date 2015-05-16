@@ -98,12 +98,16 @@ public class ESNEventsFragment extends Fragment {
                         if (jsonObject.has("place")) {
                             JSONObject placeObject = jsonObject.getJSONObject("place");
                             e.setPlace(placeObject.getString("name"));
-                            JSONObject locationObject = placeObject.getJSONObject("location");
-                            e.setWhere(locationObject.getString("city"));
+                            if (placeObject.has("city")) {
+                                JSONObject locationObject = placeObject.getJSONObject("location");
+                                e.setWhere(locationObject.getString("city"));
+                            } else {
+                                e.setWhere("");
+                            }
                             //it has it, do appropriate processing
                         } else {
-                            e.setWhere("");
                             e.setPlace("");
+                            e.setWhere("");
                         }
 
                         if (jsonObject.has("start_time")) {

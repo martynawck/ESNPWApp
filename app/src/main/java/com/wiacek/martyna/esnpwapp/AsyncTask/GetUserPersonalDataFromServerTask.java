@@ -65,15 +65,15 @@ public class GetUserPersonalDataFromServerTask extends AsyncTask<String, Void, S
             if(!response.equalsIgnoreCase("null")){
                 JSONObject json = new JSONObject(response);
 
-                String faculty = json.getString("faculty");
-                String firstname = json.getString("first_name");
-                String lastname = json.getString("last_name");
-                String profile_image = json.getString("image");
-
-                session.setValueOfFaculty(faculty);
-                session.setValueOfFirstName(firstname);
-                session.setValueOfLastName(lastname);
-                session.setValueOfProfileImage(profile_image);
+                session.setValueOfFaculty(json.getString("faculty"));
+                session.setValueOfFirstName(json.getString("first_name"));
+                session.setValueOfLastName(json.getString("last_name"));
+                session.setValueOfProfileImage(json.getString("image"));
+                session.setValueOfEmail(json.getString("email"));
+                session.setValueOfFacebook(json.getString("facebook_id"));
+                session.setValueOfPhone(json.getString("phone_number"));
+                session.setValueOfSkype(json.getString("skype_id"));
+                session.setValueOfWhatsapp(json.getString("whatsapp_id"));
 
                 return "0";
             }
