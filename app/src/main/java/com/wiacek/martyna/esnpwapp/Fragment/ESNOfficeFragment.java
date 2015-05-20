@@ -30,8 +30,6 @@ public class ESNOfficeFragment extends Fragment {
     public static final String ITEM_NAME = "itemName";
     RawFileReader rfr;
 
-    //TextView content;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -94,6 +94,7 @@ public class DownloadPointsMarkers extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
 
+
         fragment.setList(markerOptions,places);
     }
 }

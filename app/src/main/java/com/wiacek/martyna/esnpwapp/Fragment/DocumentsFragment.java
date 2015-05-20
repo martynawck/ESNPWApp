@@ -29,9 +29,6 @@ public class DocumentsFragment extends Fragment {
     public static final String ITEM_NAME = "itemName";
 
     RawFileReader rfr;
-
-    //TextView content;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,7 +40,7 @@ public class DocumentsFragment extends Fragment {
 
         DocumentView documentView = new DocumentView(getActivity().getApplicationContext(), DocumentView.FORMATTED_TEXT );
         documentView.getDocumentLayoutParams().setTextAlignment(TextAlignment.JUSTIFIED);
-         documentView.getDocumentLayoutParams().setTextColor(0xff888888);
+        documentView.getDocumentLayoutParams().setTextColor(0xff888888);
         documentView.getDocumentLayoutParams().setTextTypeface(Typeface.createFromAsset(getActivity().getAssets(),
                 "fonts/roboto.ttf"));
         documentView.getDocumentLayoutParams().setTextSize(TypedValue.COMPLEX_UNIT_SP,18);
@@ -52,13 +49,11 @@ public class DocumentsFragment extends Fragment {
         documentView.getDocumentLayoutParams().setInsetPaddingTop(50f);
         documentView.getDocumentLayoutParams().setInsetPaddingBottom(50f);
         documentView.getDocumentLayoutParams().setLineHeightMultiplier(1f);
-
         documentView.setFadeInDuration(800);
         documentView.setFadeInAnimationStepDelay(30);
 
         ArticleBuilder amb = new ArticleBuilder();
         amb.append(rfr.DocumentsRawResources().toString(), false,  new RelativeSizeSpan(10f), new JustifiedSpan(),new MyLeadingMarginSpan2(2, 100));
-
         try {
 
             documentView.setText(amb);
@@ -66,7 +61,6 @@ public class DocumentsFragment extends Fragment {
             Toast.makeText(getActivity().getApplicationContext(),
                     "Problems: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
-
         LinearLayout linearLayout = new LinearLayout(getActivity().getApplicationContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         linearLayout.setLayoutParams(
@@ -78,6 +72,5 @@ public class DocumentsFragment extends Fragment {
         articleList.addView(linearLayout);
 
         return view;
-
     }
 }

@@ -116,14 +116,11 @@ public class DownloadAllMarkers extends AsyncTask<String, Void, String> {
 
             }
 
-
         }catch(Exception e){
-            // progressDialog.dismiss();
             System.out.println("Exception : " + e.getMessage());
         }
 
         return "0";
-
     }
 
     @Override

@@ -29,10 +29,6 @@ package com.wiacek.martyna.esnpwapp.ViewEnhancements;
  * Date: 1/27/15 3:35 AM
  */
 
-/*
- * Provided by @levifan
- * https://github.com/bluejamesbond/Sandbox/issues/2#issuecomment-60928630
- */
 
 import android.graphics.Canvas;
 import android.graphics.Paint;

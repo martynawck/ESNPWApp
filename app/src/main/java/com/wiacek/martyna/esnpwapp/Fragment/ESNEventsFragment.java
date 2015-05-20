@@ -19,8 +19,10 @@ import android.widget.TextView;
 
 import com.wiacek.martyna.esnpwapp.Adapter.EmergencyAdapter;
 import com.wiacek.martyna.esnpwapp.Adapter.EventsAdapter;
+import com.wiacek.martyna.esnpwapp.AsyncTask.GetEventsFromServerTask;
 import com.wiacek.martyna.esnpwapp.Domain.Event;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
+import com.wiacek.martyna.esnpwapp.Interface.OnEventTaskCompleted;
 import com.wiacek.martyna.esnpwapp.R;
 
 import org.apache.http.client.HttpClient;
@@ -56,127 +58,10 @@ public class ESNEventsFragment extends Fragment {
                 false);
         listView1 = (ListView) view.findViewById(R.id.listView1);
         progressDialog = ProgressDialog.show(getActivity(), "","Updating Events...", true);
-
-    //    tvItemName = (TextView) view.findViewById(R.id.frag1_text);
-
-//        tvItemName.setText(getArguments().getString(ITEM_NAME));
-        new GetEventsFromServerTask().execute();
-
-        return view;
-
-    }
-
-    private class GetEventsFromServerTask extends AsyncTask<Void, Void, String> {
-
-        private Context mContext;
-        HttpPost httppost;
-        HttpClient httpclient;
-        Fragment fragment;
-
-
-        protected String doInBackground(Void... urls) {
-            try {
-                httpclient = new DefaultHttpClient();
-                httppost = new HttpPost(ServerUrl.BASE_URL + "events.php");
-
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                final String response = httpclient.execute(httppost, responseHandler);
-
-
-                if (!response.equalsIgnoreCase("null")) {
-                    Log.d("RESP", "NOT NULL");
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject;
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-
-                        jsonObject = jsonArray.getJSONObject(i);
-                        Event e = new Event();
-                        e.setId(jsonObject.getString("id"));
-                        e.setName(jsonObject.getString("name"));
-
-                        if (jsonObject.has("place")) {
-                            JSONObject placeObject = jsonObject.getJSONObject("place");
-                            e.setPlace(placeObject.getString("name"));
-                            if (placeObject.has("city")) {
-                                JSONObject locationObject = placeObject.getJSONObject("location");
-                                e.setWhere(locationObject.getString("city"));
-                            } else {
-                                e.setWhere("");
-                            }
-                            //it has it, do appropriate processing
-                        } else {
-                            e.setPlace("");
-                            e.setWhere("");
-                        }
-
-                        if (jsonObject.has("start_time")) {
-
-                            String stringStartTime = jsonObject.getString("start_time");
-
-                            SimpleDateFormat incomingFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-                            Date date = new Date();
-                            try {
-                                date = incomingFormat.parse(stringStartTime);
-
-                            } catch (Exception ex ) {
-                                SimpleDateFormat incomingFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-                                date = incomingFormat2.parse(stringStartTime);
-                            }
-                            //    SimpleDateFormat outgoingFormat = new SimpleDateFormat(" EEEE, dd MMMM yyyy, HH:mm", Locale.ENGLISH);
-                            e.setStartTime(date);
-                            //   outgoingFormat.
-
-                            //     Log.d("lalala",outgoingFormat.format(date));
-                        }
-
-                        if (jsonObject.has("owner")) {
-                            JSONObject ownerObject = jsonObject.getJSONObject("owner");
-                            e.setOwner(ownerObject.getString("name"));
-                            e.setOwnerId(ownerObject.getString("id"));
-                        } else {
-                            e.setOwner("");
-                        }
-
-                        if (jsonObject.has("cover")) {
-                            JSONObject coverObject = jsonObject.getJSONObject("cover");
-                            e.setImageUrl(coverObject.getString("source"));
-
-                        } else {
-                            e.setImageUrl("");
-                        }
-
-                        Log.d("asdad",e.getName());
-                        events.add(e);
-
-                    }
-
-                    Collections.sort(events, new Comparator<Event>() {
-                        public int compare(Event o1, Event o2) {
-                            if (o1.getStartTime() == null || o2.getStartTime() == null)
-                                return 0;
-                            return o1.getStartTime().compareTo(o2.getStartTime());
-                        }
-                    });
-
-                    progressDialog.dismiss();
-                    return "0";
-                }
-
-            } catch (Exception e) {
-//            progressDialog.dismiss();
-                progressDialog.dismiss();
-                System.out.println("Exception : " + e.getMessage());
-            }
-            return "-1";
-
-        }
-
-        protected void onPostExecute(String result) {
-
-            if (!result.equals("-1")) {
-              //
-              //  Log.d("lalal",Integer.toString(events.size() ));
+        new GetEventsFromServerTask(progressDialog, new OnEventTaskCompleted() {
+            @Override
+            public void onTaskCompleted(ArrayList<Event> strings) {
+                events = strings;
                 EventsAdapter adapter = new EventsAdapter(getActivity().getApplicationContext(), R.layout.listview_item_row_event, events);
 
                 listView1.setAdapter(adapter);
@@ -187,8 +72,7 @@ public class ESNEventsFragment extends Fragment {
                                             int position, long id) {
                         String eventId = events.get(position).getId();
                         try {
-                            //fb://messaging/
-                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://event/"+ eventId));
+                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://event/" + eventId));
                             startActivity(intent);
                         } catch (ActivityNotFoundException e) {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -197,11 +81,10 @@ public class ESNEventsFragment extends Fragment {
                         }
                     }
                 });
-
-
-
-
             }
-        }
+        }).execute();
+
+        return view;
     }
+
 }

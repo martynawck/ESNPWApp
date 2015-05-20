@@ -13,7 +13,10 @@ import android.widget.TextView;
 
 import com.wiacek.martyna.esnpwapp.Adapter.EmergencyAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.EmergencyContact;
+import com.wiacek.martyna.esnpwapp.Domain.EmergencyContactList;
 import com.wiacek.martyna.esnpwapp.R;
+
+import java.util.ArrayList;
 
 
 public class EmergencyFragment extends Fragment {
@@ -33,15 +36,7 @@ public class EmergencyFragment extends Fragment {
 
         listView1 = (ListView) view.findViewById(R.id.listView1);
 
-        EmergencyContact emergency_data[] = new EmergencyContact[]
-                {
-                        new EmergencyContact(R.drawable.rys112, "General Emergency", "+48112"),
-                        new EmergencyContact(R.drawable.ryspog,"Ambulance", "+4822999"),
-                        new EmergencyContact(R.drawable.ryspoz,"Fire Brigade", "+4822998"),
-                        new EmergencyContact(R.drawable.ryspol,"Police", "+4822997"),
-                        new EmergencyContact(R.drawable.rysdrog,"Road Assistance", "+4822981"),
-                        new EmergencyContact(R.drawable.rysmiej,"Municipal Police", "+4822985"),
-                };
+        ArrayList<EmergencyContact> emergency_data = new EmergencyContactList().getEmergencyContacts();
 
         EmergencyAdapter adapter = new EmergencyAdapter(getActivity().getApplicationContext(), R.layout.listview_item_row, emergency_data);
 
@@ -59,9 +54,6 @@ public class EmergencyFragment extends Fragment {
                 startActivity(callIntent);
             }
         });
-
         return view;
     }
-
-
 }

@@ -10,7 +10,6 @@ import android.text.Spanned;
 public class ArticleBuilder extends SpannableStringBuilder {
 
     public ArticleBuilder append(CharSequence text, boolean newline, Object... spans) {
-        int start = this.length();
         this.append(Html.fromHtml(text + "<br/>" + (newline ? "<br/>" : "")));
         return this;
     }

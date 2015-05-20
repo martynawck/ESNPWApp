@@ -11,15 +11,17 @@ import android.widget.TextView;
 import com.wiacek.martyna.esnpwapp.Domain.EmergencyContact;
 import com.wiacek.martyna.esnpwapp.R;
 
+import java.util.ArrayList;
+
 /**
  * Created by Martyna on 2015-03-03.
  */
 public class EmergencyAdapter extends ArrayAdapter<EmergencyContact> {
     Context context;
     int layoutResourceId;
-    EmergencyContact data[] = null;
+    ArrayList<EmergencyContact> data;
 
-    public EmergencyAdapter(Context context, int layoutResourceId, EmergencyContact[] data) {
+    public EmergencyAdapter(Context context, int layoutResourceId, ArrayList<EmergencyContact> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -48,7 +50,7 @@ public class EmergencyAdapter extends ArrayAdapter<EmergencyContact> {
             holder = (EmergencyHolder)row.getTag();
         }
 
-        EmergencyContact emergency = data[position];
+        EmergencyContact emergency = data.get(position);
         holder.txtTitle.setText(emergency.name);
         holder.phoneNumber.setText(emergency.telephone_number);
         holder.imgIcon.setImageResource(emergency.icon);
