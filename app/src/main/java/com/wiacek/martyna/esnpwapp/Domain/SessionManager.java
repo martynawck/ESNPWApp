@@ -10,13 +10,9 @@ public class SessionManager {
     SharedPreferences _sharedPreferences;
     SharedPreferences.Editor _editor;
     Context _context;
-    // Sharedpref file name
     private static final String SESSION_NAME = "ESN_PW_APP";
 
-    // All Shared Preferences Keys
     private static final String IS_LOGIN = "USER_IS_LOGGED_IN";
-
-    // User name (make variable public to access from outside)
     public static final String KEY_USERNAME = "LOGIN";
     public static final String KEY_PASSWORD = "PASSWORD";
     public static final String KEY_USER_ID = "USER_ID";
@@ -29,9 +25,9 @@ public class SessionManager {
     public static final String KEY_PROFILE_FACEBOOK = "PROFILE_FACEBOOK";
     public static final String KEY_PROFILE_WHATSAPP = "PROFILE_WHATSAPP";
     public static final String KEY_PROFILE_SKYPE = "PROFILE_SKYPE";
+    public static final String KEY_VISIBILITY = "PROFILE_VISIBILITY";
 
 
-    // Constructor
     public SessionManager(Context context){
         this._context = context;
         _sharedPreferences = _context.getSharedPreferences(SESSION_NAME, Context.MODE_PRIVATE);
@@ -73,10 +69,20 @@ public class SessionManager {
 
     public String getValueOfProfileSkype() { return _sharedPreferences.getString(KEY_PROFILE_SKYPE, "");}
 
+    public String getValueOfProfileVisibility() { return _sharedPreferences.getString(KEY_VISIBILITY, "");}
+
+
     public void setValueOfEmail(String s) {
 
         SharedPreferences.Editor editor = _sharedPreferences.edit();
         editor.putString(KEY_PROFILE_EMAIL, s);
+        editor.apply();
+    }
+
+    public void setValueOfProfileVisibility(String s) {
+
+        SharedPreferences.Editor editor = _sharedPreferences.edit();
+        editor.putString(KEY_VISIBILITY, s);
         editor.apply();
     }
 
@@ -142,8 +148,6 @@ public class SessionManager {
     public boolean resumeSession(){
         if (_sharedPreferences.contains(KEY_USERNAME) && _sharedPreferences.contains(KEY_PASSWORD))
         {
-           // Intent i = new Intent(_context,com.example.martyna.androidphp.UserPage.class);
-           // _context.startActivity(i);
             return true;
         }
         return false;

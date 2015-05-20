@@ -30,7 +30,6 @@ public class NavigationDrawerAdapter extends ArrayAdapter<DrawerItem> {
         this.context = context;
         this.drawerItemList = listItems;
         this.layoutResID = layoutResourceID;
-
     }
 
     public boolean isEnabled(int position)

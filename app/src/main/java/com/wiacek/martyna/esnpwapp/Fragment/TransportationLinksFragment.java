@@ -45,7 +45,9 @@ public class TransportationLinksFragment extends Fragment {
         final ClickableLink emergency_data[] = new ClickableLink[]
                 {
                         new ClickableLink("ZTM", "http://www.ztm.pl"),
-                        new ClickableLink("Ambulance", "http://www.pw.edu.pl")
+                        new ClickableLink("PKP", "http://www.rozklad-pkp.pl"),
+                        new ClickableLink("Polski Bus", "http://www.polskibus.com")
+
                 };
 
         ClickableLinkAdapter adapter = new ClickableLinkAdapter(getActivity().getApplicationContext(), R.layout.listview_item_row_no_img, emergency_data);

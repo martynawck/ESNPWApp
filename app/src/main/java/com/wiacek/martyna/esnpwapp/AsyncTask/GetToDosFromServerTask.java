@@ -32,12 +32,8 @@ public class GetToDosFromServerTask extends AsyncTask<String, Void, String> {
 
     private final ProgressDialog progressDialog;
     private Context mContext;
-    Buddy buddy;
-    // SessionManager session;
     ESNPWSQLHelper todoSQLHelper;
     HttpPost httppost;
-    StringBuffer buffer;
-    //HttpResponse response;
     HttpClient httpclient;
     List<NameValuePair> nameValuePairs;
     ArrayList<TodoTask> tasksToAdd;
@@ -52,24 +48,14 @@ public class GetToDosFromServerTask extends AsyncTask<String, Void, String> {
 
             httpclient = new DefaultHttpClient();
             httppost = new HttpPost(ServerUrl.BASE_URL + "todos.php");
-            //       session = new SessionManager(mContext);
-
             sessionManager = new SessionManager(mContext);
             final String login_session = sessionManager.getValueOfUserId();
-            // Log.d("LALA2",login_session);
             nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("id", login_session));
-
-            Log.d("LALA", login_session);
-
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            //response = httpclient.execute(httppost);
-
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             final String response = httpclient.execute(httppost, responseHandler);
             tasksToAdd = new ArrayList<>();
-
 
             if(!response.equalsIgnoreCase("null")){
                 Log.d("RESP","NOT NULL");
@@ -86,7 +72,6 @@ public class GetToDosFromServerTask extends AsyncTask<String, Void, String> {
                 }
 
                 for (TodoTask t : tasksToAdd)
-                    Log.d("TASKS",t.getDescription());
                 return "0";
             }
         }catch(Exception e){
@@ -101,42 +86,14 @@ public class GetToDosFromServerTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
 
         if (!result.equals("-1")) {
-            Log.d("HELLOO","HELLOOO2");
-            //              todoSQLHelper = new ESNPWSQLHelper(mContext);
-            //todoSQLHelper.delete();
-
             todoSQLHelper = new ESNPWSQLHelper(mContext);
             Integer userId = Integer.parseInt(sessionManager.getValueOfUserId());
             for (TodoTask t : tasksToAdd) {
-                Log.d("TASKS",t.getDescription());
                 todoSQLHelper.insertToDo(userId, t);
-                Log.d("HAHA","TUT");
             }
 
-//                Log.d("IF EXISTS", Boolean.toString(todoSQLHelper.doesBuddyTableExist()) );
-            //               Log.d("IF EXISTS", Boolean.toString(todoSQLHelper.doesTodoTableExist()) );
-
-            ArrayList<TodoTask> testTasks = new ArrayList<>();
-            testTasks = todoSQLHelper.getTodosAfter(sessionManager.getValueOfUserId());
-            String s = Integer.toString(testTasks.size());
-            Log.d("SIZE", s);
-
-
-
-
-            //buddySQLHelper.insertBuddy(userId, buddy);
-            //  buddySQLHelper = new BuddySQLHelper(mContext);
-            // Integer userId = Integer.parseInt(session.getValueOfUserId());
-            // buddySQLHelper.insertBuddy(userId, buddy);
-
-               /* runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(AndroidPHPConnectionDemo.this,"You are now logged on!", Toast.LENGTH_SHORT).show();
-                    }
-                });
-*/
-            //   Intent i = new Intent(mContext, EntirelyNewDrawer.class);
-            //  startActivity(i);
+       //     ArrayList<TodoTask> testTasks = new ArrayList<>();
+         //   testTasks = todoSQLHelper.getTodosAfter(sessionManager.getValueOfUserId());
         }
     }
 }

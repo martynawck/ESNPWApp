@@ -25,8 +25,6 @@ public class ESNPartner implements   Comparable<ESNPartner> {
         return howToUse;
     }
 
-
-
     public void setName(String name) {
         this.name = name;
     }

@@ -82,7 +82,7 @@ public class ChangePictureFragment extends Fragment {
         prgDialog = new ProgressDialog(getActivity());
         prgDialog.setCancelable(false);
 
-        Picasso.with(getActivity().getApplicationContext()).load(ServerUrl.BASE_URL + new SessionManager(getActivity().getApplicationContext()).getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE).into(profilePic);
+        Picasso.with(getActivity().getApplicationContext()).load(ServerUrl.BASE_URL + new SessionManager(getActivity().getApplicationContext()).getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(profilePic);
       //  ivIcon=(ImageView)view.findViewById(R.id.frag2_icon);
        // tvItemName=(TextView)view.findViewById(R.id.frag2_text);
 
@@ -224,6 +224,7 @@ public class ChangePictureFragment extends Fragment {
                 options.outWidth = 200;
                 bitmap = BitmapFactory.decodeFile(imgPath,
                         options);
+                bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 // Must compress the Image to reduce image size to make upload easy
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -274,7 +275,7 @@ public class ChangePictureFragment extends Fragment {
                             "The image was successfully uploaded!", Toast.LENGTH_SHORT)
                             .show();
 
-                    Picasso.with(getActivity().getBaseContext()).load(ServerUrl.BASE_URL + new SessionManager(getActivity().getApplicationContext()).getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE).into(profilePic);//
+                    Picasso.with(getActivity().getBaseContext()).load(ServerUrl.BASE_URL + new SessionManager(getActivity().getApplicationContext()).getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(profilePic);//
                     // invalidate(ServerUrl.BASE_URL + new SessionManager(getActivity().getApplicationContext()).getValueOfProfileImage());
 
 

@@ -15,7 +15,7 @@
         android:layout_height="120dp"
         android:id="@+id/imageView"
         android:layout_alignTop="@+id/imageView2"
-        android:background="@color/white"
+        android:background="@color/bg_main"
         android:padding="2dp"
         android:src="@drawable/user_ic"/>
 

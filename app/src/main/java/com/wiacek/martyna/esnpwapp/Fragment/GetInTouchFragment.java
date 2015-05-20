@@ -23,10 +23,15 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.wiacek.martyna.esnpwapp.Adapter.GetInTouchAdapter;
 import com.wiacek.martyna.esnpwapp.Adapter.OffersListAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.Buddy;
 import com.wiacek.martyna.esnpwapp.Domain.ESNPartner;
+import com.wiacek.martyna.esnpwapp.Domain.FunMapCategory;
+import com.wiacek.martyna.esnpwapp.Domain.FunMapPlace;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Domain.Student;
@@ -51,6 +56,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 public class GetInTouchFragment extends Fragment implements SearchView.OnQueryTextListener {
 
@@ -220,6 +226,7 @@ public class GetInTouchFragment extends Fragment implements SearchView.OnQueryTe
                         student.setFirstname(postObject.getString("first_name"));
                         student.setLastname(postObject.getString("last_name"));
                         student.setImgUrl(postObject.getString("image"));
+                        student.setId(postObject.getString("id"));
                         students.add(student);
                     }
 
@@ -255,39 +262,110 @@ public class GetInTouchFragment extends Fragment implements SearchView.OnQueryTe
                         //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
 
-                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
 
 
-                        StudentProfileFragment fragment = new StudentProfileFragment();
+                        GetStudentDetails task = new GetStudentDetails(student);
+                        String[] string = new String[1];
+                        string[0] = student.getId();
 
-                        Bundle bundles = new Bundle();
+                        task.execute(string);
 
-// ensure your object has not null
-                        if (student != null) {
-                            bundles.putString("profile_first_name",student.getFirstname());
-                            bundles.putString("profile_last_name",student.getLastname());
-                            bundles.putString("profile_faculty",student.getFaculty());
-                            bundles.putString("profile_img_url",student.getImgUrl());
-                            bundles.putString("profile_facebook_id",student.getFacebook());
-                            bundles.putString("profile_phone_no",student.getPhone());
-                            bundles.putString("profile_skype_id",student.getSkype());
-                            bundles.putString("profile_whatsapp_id",student.getWhatsapp());
-                            bundles.putString("profile_email",student.getEmail());
-                            Log.e("aDivision", "is valid");
-                        } else {
-                            Log.e("aDivision", "is null");
-                        }
-                        fragment.setArguments(bundles);
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.content_frame, fragment, "STUDENT_PROFILE").addToBackStack(null).commit();
-                     //   ft.replace(android.R.id.content, frag);
-                      ///  ft.addToBackStack(null);
-                       // ft.commit();
+
                     }
                 });
                 setupSearchView();
             }
         }
     }
+
+
+
+
+    public class GetStudentDetails extends AsyncTask<String, Void, String> {
+
+        Student student;
+        ArrayList<String> details;
+        ArrayList<NameValuePair> nameValuePairs;
+        public GetStudentDetails (Student student){
+            this.student = student;
+        }
+
+        protected void onPreExecute ( ) {
+        }
+
+        protected String doInBackground(String... urls) {
+            try{
+
+                details = new ArrayList<String>();
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost(ServerUrl.BASE_URL + "studentDetails.php");
+
+                nameValuePairs = new ArrayList<NameValuePair>(1);
+                nameValuePairs.add(new BasicNameValuePair("id", urls[0]));
+
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                final String response = httpclient.execute(httppost, responseHandler);
+
+                if(!response.equalsIgnoreCase("null")){
+                    Log.d("RESP","NOT NULL");
+                    JSONArray jsonArray = new JSONArray(response);
+                    JSONObject jsonObject;
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        jsonObject = jsonArray.getJSONObject(i);
+                        String post = jsonObject.getString("post");
+                        JSONObject postObject = new JSONObject(post);
+                        details.add(postObject.getString("email"));
+                        details.add(postObject.getString("phone_number"));
+                        details.add(postObject.getString("skype_id"));
+                        details.add(postObject.getString("facebook_id"));
+                        details.add(postObject.getString("whatsapp_id"));
+                    }
+
+                    for (String s : details)
+                        Log.d("STR",s);
+                }
+
+            }catch(Exception e){
+            }
+            return "0";
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            StudentProfileFragment fragment = new StudentProfileFragment();
+
+            Bundle bundles = new Bundle();
+
+// ensure your object has not null
+            if (student != null) {
+                bundles.putString("profile_first_name",student.getFirstname());
+                bundles.putString("profile_last_name",student.getLastname());
+                bundles.putString("profile_faculty",student.getFaculty());
+                bundles.putString("profile_img_url",student.getImgUrl());
+                bundles.putString("profile_facebook_id",details.get(3));
+                bundles.putString("profile_phone_no",details.get(1));
+                bundles.putString("profile_skype_id",details.get(2));
+                bundles.putString("profile_whatsapp_id", details.get(4));
+                bundles.putString("profile_email",details.get(0));
+                Log.e("aDivision", "is valid");
+            } else {
+                Log.e("aDivision", "is null");
+            }
+            fragment.setArguments(bundles);
+
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.content_frame, fragment, "STUDENT_PROFILE").addToBackStack(null).commit();
+            //   ft.replace(android.R.id.content, frag);
+            ///  ft.addToBackStack(null);
+            // ft.commit();
+
+        }
+    }
+
+
 }

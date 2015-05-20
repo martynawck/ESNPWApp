@@ -3,7 +3,6 @@ package com.wiacek.martyna.esnpwapp;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.content.res.Configuration;
@@ -92,11 +91,7 @@ public class NavigationDrawer extends ActionBarActivity {
             }
         });
 
-       Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE).into(profilePic);
-
-
-      //  new DownloadImageTask((ImageView) header.findViewById(R.id.imageView))
-        //        .execute(ServerUrl.BASE_URL + session.getValueOfProfileImage());
+       Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(profilePic);
 
 
         mDrawerList.addHeaderView(header);
@@ -128,7 +123,6 @@ public class NavigationDrawer extends ActionBarActivity {
         dataList.add(new DrawerItem("ESN offers", R.drawable.ic_partners));
         dataList.add(new DrawerItem("ESN events", R.drawable.ic_events));
         dataList.add(new DrawerItem("ESN FunMap", R.drawable.ic_fun));
-        dataList.add(new DrawerItem("Party scheduler", R.drawable.ic_party));
         dataList.add(new DrawerItem("Get in touch", R.drawable.ic_intouch));
 
         dataList.add(new DrawerItem("OTHERS")); // adding a header to the list
@@ -159,7 +153,7 @@ public class NavigationDrawer extends ActionBarActivity {
                 getSupportActionBar().setTitle(mDrawerTitle);
                // adapter.notifyDataSetChanged();
                 if (uploadedPicture == true) {
-                    Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE).into(profilePic);
+                    Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(profilePic);
                     uploadedPicture = false;
                 }
 
@@ -311,27 +305,20 @@ public class NavigationDrawer extends ActionBarActivity {
                         .getImgResID());
                 break;
             case 21:
-                fragment = new FunMapFragment();
-                args.putString(FunMapFragment.ITEM_NAME, dataList.get(positionInDataSet)
+                fragment = new FragmentFunMap();
+                args.putString(FragmentFunMap.ITEM_NAME, dataList.get(positionInDataSet)
                         .getItemName());
-                args.putInt(FunMapFragment.IMAGE_RESOURCE_ID, dataList.get(positionInDataSet)
+                args.putInt(FragmentFunMap.IMAGE_RESOURCE_ID, dataList.get(positionInDataSet)
                         .getImgResID());
                 break;
             case 22:
-                fragment = new PartySchedulerFragment();
-                args.putString(PartySchedulerFragment.ITEM_NAME, dataList.get(positionInDataSet)
-                        .getItemName());
-                args.putInt(PartySchedulerFragment.IMAGE_RESOURCE_ID, dataList.get(positionInDataSet)
-                        .getImgResID());
-                break;
-            case 23:
                 fragment = new GetInTouchFragment();
                 args.putString(GetInTouchFragment.ITEM_NAME, dataList.get(positionInDataSet)
                         .getItemName());
                 args.putInt(GetInTouchFragment.IMAGE_RESOURCE_ID, dataList.get(positionInDataSet)
                         .getImgResID());
                 break;
-            case 25:
+            case 24:
                 useNativeFragment = true;
                 nativeFragment = new SettingsFragment();
                 args.putString(SettingsFragment.ITEM_NAME, dataList.get(positionInDataSet)
@@ -348,7 +335,7 @@ public class NavigationDrawer extends ActionBarActivity {
                // Intent intent = new Intent(this, SettingsActivity.class);
                // startActivity(intent);
                // break;
-            case 26:
+            case 25:
                 fragment = new HelpFragment();
                 args.putString(HelpFragment.ITEM_NAME, dataList.get(positionInDataSet)
                         .getItemName());
@@ -363,46 +350,6 @@ public class NavigationDrawer extends ActionBarActivity {
             webBrowserBack = true;
         else
             webBrowserBack = false;
-
-
-      //  if (possition != 25) {
-
-
-      //  } else {
-
-        //    android.app.Fragment infoFragment = new InfoFragment();
-          //  FragmentTransaction ft = getFragmentManager().beginTransaction();
-        //    ft.replace(R.id.content_frame, fragment).commit();
-      //  }
-
-
-      //  if (possition != 25) {
-          //  fragment.setArguments(args);
-        //    android.support.v4.app.FragmentManager frgManager = getSupportFragmentManager();
-          //  frgManager.beginTransaction().replace(R.id.content_frame, fragment)
-             //       .commit();
-
-            //frgManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-      //  }
-        /*
-
-            if (possition != 25) {
-                getFragmentManager().beginTransaction().remove(R.id.content_frame, SettingsActivity.SettingsFragment)
-                        .commit();
-                nativeFragment = null;
-                fragment.setArguments(args);
-                //android.support.v4.app.FragmentManager frgManager = getSupportFragmentManager();
-                //frgManager.beginTransaction().replace(R.id.content_frame, fragment)
-                  //      .commit();
-                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,fragment).commit();
-            } else {
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, new SettingsActivity.SettingsFragment())
-                        .commit();
-                ActionBar actionBar = getSupportActionBar();
-
-            }
-*/
 
 
 

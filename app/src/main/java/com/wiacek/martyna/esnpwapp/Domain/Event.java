@@ -7,6 +7,70 @@ import java.util.Date;
  */
 public class Event implements  Comparable<Event> {
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getWhere() {
+        return where;
+    }
+
+    public void setWhere(String where) {
+        this.where = where;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private String id;
     private String name;
     private String where;
@@ -17,24 +81,6 @@ public class Event implements  Comparable<Event> {
     private String imageUrl;
 
 
-
-    public String getId () { return id; }
-    public String getName() { return name; }
-    public String getWhere() { return  where; }
-    public String getPlace() { return  place; }
-    public String getOwner() { return  owner; }
-    public String getImageUrl() { return imageUrl; }
-    public Date getStartTime () { return  startTime; }
-    public String getOwnerId () { return  ownerId; }
-
-    public void setId (String id) { this.id = id; }
-    public void setOwnerId ( String ownerId) { this.ownerId = ownerId ;}
-    public void setName (String name) { this.name = name; }
-    public void setWhere (String where ) {this.where = where; }
-    public void setPlace (String place) {this.place = place; }
-    public void setStartTime (Date date) { this.startTime = date; }
-    public void setOwner (String owner) { this.owner = owner; }
-    public void setImageUrl (String imageUrl ) { this.imageUrl = imageUrl; }
 
     @Override
     public int compareTo(Event o) {

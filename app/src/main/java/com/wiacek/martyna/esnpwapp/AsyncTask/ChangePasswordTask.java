@@ -45,18 +45,14 @@ import java.util.List;
 
             nameValuePairs.add(new BasicNameValuePair("id", sessionManager.getValueOfUserId()));
             nameValuePairs.add(new BasicNameValuePair("old_password", urls[0]));
-            Log.d("URL0",urls[0]);
-            Log.d("URL1",urls[1]);
             nameValuePairs.add(new BasicNameValuePair("new_password", urls[1]));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             final String response = httpclient.execute(httppost, responseHandler);
-            Log.d("MyApp", "Response : " + response);
 
             if(response != "Error"){
-              //  sessionManager.setValueOfPassword(urls[1]);
                 return "Success";
             }else{
                 return "-1";

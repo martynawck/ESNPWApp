@@ -41,11 +41,6 @@ public class ToDoAdapter extends ArrayAdapter<TodoTask>
         session = new SessionManager(context);
     }
 
-    /**
-     * This method will DEFINe what the view inside the list view will
-     * finally look like Here we are going to code that the checkbox state
-     * is the status of task and check box text is the task name
-     */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         CheckBox chk = null;
@@ -82,7 +77,6 @@ public class ToDoAdapter extends ArrayAdapter<TodoTask>
         if (current.getValue() == 1)
             chk.setPaintFlags(chk.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         chk.setTag(current);
-        Log.d("listener", String.valueOf(current.getTodo_id()));
         return convertView;
     }
 

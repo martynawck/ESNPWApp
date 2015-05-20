@@ -28,8 +28,6 @@ import java.util.List;
 
     private Context mContext;
     HttpPost httppost;
-    StringBuffer buffer;
-    // httpresponse;
     HttpClient httpclient;
     List<NameValuePair> nameValuePairs;
     SessionManager sessionManager;
@@ -41,18 +39,11 @@ import java.util.List;
 
     public UpdateUserDataTask(Context context) {
         mContext = context;
-        this.login = login;
-        this.progressDialog = progressDialog;
-        this.password = password;
-        this.activity = activity;
     }
     protected String doInBackground(String... urls) {
         try{
-
-           // progressDialog = new ProgressDialog(mContext);
             sessionManager = new SessionManager(mContext);
             httpclient = new DefaultHttpClient();
-
             String url_endpoint;
 
             switch (urls[0]) {
@@ -88,41 +79,26 @@ import java.util.List;
             httppost = new HttpPost(ServerUrl.BASE_URL +url_endpoint);
             nameValuePairs = new ArrayList<NameValuePair>(2);
 
-            //for posting android side and php side variables should be similar
             nameValuePairs.add(new BasicNameValuePair("id", sessionManager.getValueOfUserId()));
             nameValuePairs.add(new BasicNameValuePair("value", urls[1]));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             final String response = httpclient.execute(httppost, responseHandler);
-            Log.d("MyApp", "Response : " + response);
-
 
             if(response == "Success" ){
-             //   progressDialog.dismiss();
-
-                //   httpresponse.getEntity().consumeContent();
-
                 return response;
 
             }else{
-             //   progressDialog.dismiss();
-            //    showAlert();
                 return "-1";
             }
 
         }catch(Exception e){
-          //  progressDialog.dismiss();
             System.out.println("Exception : " + e.getMessage());
             return "-1";
         }
     }
 
     protected void onPostExecute(String result) {
-
-        if (!result.equals("-1")) {
-
-
-        }
     }
 }

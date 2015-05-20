@@ -76,12 +76,18 @@ public class SettingsFragment extends PreferenceFragment {
         facebook.setText(sessionManager.getValueOfProfileFacebook());
         phone.setText(sessionManager.getValueOfProfilePhone());
 
-
         whatsapp.setTitle("Whatsapp Id:\t"+sessionManager.getValueOfProfileWhatsapp());
         email.setTitle("E-mail:\t"+sessionManager.getValueOfProfileEmail());
         skype.setTitle("Skype Id:\t"+sessionManager.getValueOfProfileSkype());
         facebook.setTitle("Facebook Id:\t"+sessionManager.getValueOfProfileFacebook());
         phone.setTitle("Phone number:\t"+sessionManager.getValueOfProfilePhone());
+
+        if (sessionManager.getValueOfProfileVisibility().equals("1")) {
+            visible.setChecked(true);
+        }
+        else {
+            visible.setChecked(false);
+        }
 
         visible.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 

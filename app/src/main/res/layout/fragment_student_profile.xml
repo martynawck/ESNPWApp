@@ -17,6 +17,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="10dp"
+            android:padding="5dp"
+            android:background="@color/bg_main"
             android:src="@drawable/letter_q" />
 
         <LinearLayout

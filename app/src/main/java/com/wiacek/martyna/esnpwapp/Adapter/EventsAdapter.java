@@ -49,7 +49,6 @@ public class EventsAdapter extends ArrayAdapter<Event> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new EventHolder();
-           // holder.image = (ImageView)row.findViewById(R.id.image);
             holder.name = (TextView)row.findViewById(R.id.name);
             holder.date = (TextView) row.findViewById(R.id.date);
             holder.owner = (TextView) row.findViewById(R.id.owner);
@@ -66,13 +65,9 @@ public class EventsAdapter extends ArrayAdapter<Event> {
 
         Event event = data.get(position);
         holder.name.setText(event.getName());
-      //  Bitmap bmp = BitmapFactory.decodeStream(event.getImageUrl().getInputStream());
 
         ImageView image = (ImageView) row.findViewById(R.id.image);
         Picasso.with(getContext()).load(event.getImageUrl()).into(image);
-    //    new DownloadImageTask((ImageView) row.findViewById(R.id.image))
-      //          .execute(event.getImageUrl());
-      //  holder.image.setImageBitmap(bmp);
         SimpleDateFormat outgoingFormat = new SimpleDateFormat(" EEEE, dd MMMM yyyy, HH:mm", Locale.ENGLISH);
         holder.date.setText(outgoingFormat.format(event.getStartTime()));
         holder.owner.setText(event.getOwner());
@@ -84,37 +79,10 @@ public class EventsAdapter extends ArrayAdapter<Event> {
 
     static class EventHolder
     {
-        ImageView image;
         TextView name;
         TextView date;
         TextView place;
         TextView where;
         TextView owner;
-    }
-
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
     }
 }

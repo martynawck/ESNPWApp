@@ -58,11 +58,19 @@ public class FacultyMarker {
         this.internationalOffice = s;
     }
 
-    public Double getLatitude() { return this.latitude;  }
+    public Double getLatitude() {
+        return this.latitude;
+    }
 
-    public Double getLongitude() { return this.longitude; }
+    public Double getLongitude() {
+        return this.longitude;
+    }
 
-    public void setLatitude(Double latitude) { this.latitude = latitude; }
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
 
-    public void setLongitude(Double longitude) { this.longitude = longitude; }
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 }

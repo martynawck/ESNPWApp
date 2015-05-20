@@ -22,10 +22,8 @@ public class RentHouseAdapter extends FragmentPagerAdapter {
 
         switch (index) {
             case 0:
-                // Top Rated fragment activity
                 return new RentAHouseInfoFragment();
             case 1:
-                // Games fragment activity
                 return new RentAHouseLinksFragment();
         }
 
@@ -34,7 +32,6 @@ public class RentHouseAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // get item count - equal to number of tabs
         return 2;
     }
 

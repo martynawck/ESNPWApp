@@ -22,10 +22,8 @@ public class TransportationAdapter extends FragmentPagerAdapter {
 
         switch (index) {
             case 0:
-                // Top Rated fragment activity
                 return new TransportationInfoFragment();
             case 1:
-                // Games fragment activity
                 return new TransportationLinksFragment();
         }
 
@@ -34,7 +32,6 @@ public class TransportationAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        // get item count - equal to number of tabs
         return 2;
     }
 

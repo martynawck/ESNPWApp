@@ -74,8 +74,6 @@ public class OffersListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int listPosition) {
-      //  return this.expandableListDetail.get(this.expandableListTitle.get(listPosition))
-        //        .size();
         return 1;
     }
 
@@ -110,9 +108,6 @@ public class OffersListAdapter extends BaseExpandableListAdapter {
         listTitleTextView.setText(listTitle);
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
         Picasso.with(context).load(ServerUrl.BASE_URL + expandableListDetail.get(listPosition).get(0).getImage()).into(image);
-      //  new DownloadImageTask((ImageView) convertView.findViewById(R.id.image))
-        //        .execute(ServerUrl.BASE_URL + expandableListDetail.get(Integer.toString(listPosition)).get(0).getImage());
-
         return convertView;
     }
 
@@ -127,28 +122,4 @@ public class OffersListAdapter extends BaseExpandableListAdapter {
     }
 
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }
 }

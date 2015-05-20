@@ -29,14 +29,12 @@ public class GetInTouchAdapter extends ArrayAdapter<Student> {
     Context context;
     Activity activity;
     int layoutResourceId;
-   // ArrayList<Student> data = null;
     ArrayList<Student> originalList;
     ArrayList<Student> studentList;
     private GetInTouchFilter filter;
 
     public GetInTouchAdapter(Context context, Activity activity, int layoutResourceId, ArrayList<Student> studentList) {
         super(context, layoutResourceId, studentList);
-        //super();
         this.activity = activity;
         this.layoutResourceId = layoutResourceId;
         this.context = context;

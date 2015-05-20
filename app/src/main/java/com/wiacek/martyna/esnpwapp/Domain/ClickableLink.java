@@ -12,7 +12,6 @@ public class ClickableLink {
     }
 
     public ClickableLink(String name, String website) {
-     //   super();
         this.name = name;
         this.website = website;
     }

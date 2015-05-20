@@ -27,8 +27,6 @@ import java.util.List;
 
     private Context mContext;
     HttpPost httppost;
-    StringBuffer buffer;
-    // httpresponse;
     HttpClient httpclient;
     List<NameValuePair> nameValuePairs;
     SessionManager sessionManager;
@@ -53,36 +51,26 @@ import java.util.List;
             httppost = new HttpPost(ServerUrl.BASE_URL +"check.php");
             nameValuePairs = new ArrayList<NameValuePair>(2);
 
-            //for posting android side and php side variables should be similar
             nameValuePairs.add(new BasicNameValuePair("username", login));
             nameValuePairs.add(new BasicNameValuePair("password", password));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-            //Execute HTTP Post Request
-            //   httpresponse = httpclient.execute(httppost);
-
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             final String response = httpclient.execute(httppost, responseHandler);
-            Log.d("MyApp", "Response : " + response);
 
             Integer parsedInt = Integer.parseInt(response);
             if(parsedInt != -1){
                 sessionManager.createSession(login, password, parsedInt);
                 progressDialog.dismiss();
-
-                //   httpresponse.getEntity().consumeContent();
-
                 return parsedInt.toString();
 
             }else{
                 progressDialog.dismiss();
-            //    showAlert();
                 return "-1";
             }
 
         }catch(Exception e){
             progressDialog.dismiss();
-            System.out.println("Exception : " + e.getMessage());
             return "-1";
         }
     }
@@ -93,16 +81,11 @@ import java.util.List;
 
             GetUserPersonalDataFromServerTask task2 = new GetUserPersonalDataFromServerTask(mContext, activity, progressDialog);
             task2.execute();
-            // StartAsyncTaskInParallel(task2);
-
-
 
             GetBuddyFromServerTask buddy_task = new GetBuddyFromServerTask(mContext, progressDialog);
             GetToDosFromServerTask todos_task = new GetToDosFromServerTask(mContext, progressDialog);
             buddy_task.execute();
             todos_task.execute();
-            //StartAsyncTaskInParallel(buddy_task);//, new String[] {ServerUrl.BASE_URL + "buddy.php"});
-
         }
     }
 }

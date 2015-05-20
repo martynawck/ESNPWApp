@@ -14,12 +14,9 @@ import java.io.InputStreamReader;
  */
 public class RawFileReader {
 
-    //String buffer;
     Context mContext;
 
     public RawFileReader(Context context) {
-
-      //  buffer = "";
         mContext = context;
     }
 

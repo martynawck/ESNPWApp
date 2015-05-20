@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
@@ -33,7 +34,6 @@ public class GetUserPersonalDataFromServerTask extends AsyncTask<String, Void, S
     private Context mContext;
     HttpPost httppost;
     StringBuffer buffer;
-    //HttpResponse response;
     HttpClient httpclient;
     SessionManager session;
     List<NameValuePair> nameValuePairs;
@@ -57,23 +57,23 @@ public class GetUserPersonalDataFromServerTask extends AsyncTask<String, Void, S
             nameValuePairs.add(new BasicNameValuePair("id",login_session));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-            //      response = httpclient.execute(httppost);
-
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             final String response = httpclient.execute(httppost, responseHandler);
 
             if(!response.equalsIgnoreCase("null")){
                 JSONObject json = new JSONObject(response);
 
-                session.setValueOfFaculty(json.getString("faculty"));
-                session.setValueOfFirstName(json.getString("first_name"));
-                session.setValueOfLastName(json.getString("last_name"));
-                session.setValueOfProfileImage(json.getString("image"));
-                session.setValueOfEmail(json.getString("email"));
-                session.setValueOfFacebook(json.getString("facebook_id"));
-                session.setValueOfPhone(json.getString("phone_number"));
-                session.setValueOfSkype(json.getString("skype_id"));
-                session.setValueOfWhatsapp(json.getString("whatsapp_id"));
+                session.setValueOfFaculty( ( json.getString("faculty").equals("null")) ?"" : json.getString("faculty") );
+                session.setValueOfFirstName(( json.getString("first_name").equals("null")) ?"" : json.getString("first_name") );
+                session.setValueOfLastName( ( json.getString("last_name").equals("null")) ?"" : json.getString("last_name") );
+                session.setValueOfProfileImage( ( json.getString("image").equals("null")) ?"" : json.getString("image") );
+                session.setValueOfEmail( ( json.getString("email").equals("null")) ?"" : json.getString("email") );
+                session.setValueOfFacebook( ( json.getString("facebook_id").equals("null")) ?"" : json.getString("facebook_id") );
+                session.setValueOfPhone( ( json.getString("phone_number").equals("null")) ?"" : json.getString("phone_number") );
+                session.setValueOfSkype( ( json.getString("skype_id").equals("null")) ?"" : json.getString("skype_id") );
+                session.setValueOfWhatsapp( ( json.getString("whatsapp_id").equals("null")) ?"" : json.getString("whatsapp_id") );
+                Log.d("VISIBILITY", json.getString("share_data"));
+                        session.setValueOfProfileVisibility( json.getString("share_data"));
 
                 return "0";
             }
@@ -99,11 +99,6 @@ public class GetUserPersonalDataFromServerTask extends AsyncTask<String, Void, S
 
             Intent i = new Intent(mContext, NavigationDrawer.class);
             activity.startActivity(i);
-
-            //GetBuddyFromServerTask task3 = new GetBuddyFromServerTask();
-            //StartAsyncTaskInParallel(task3);
-            //GetToDosFromServerTask task4 = new GetToDosFromServerTask();
-            //StartAsyncTaskInParallel(task4);
 
         }
     }

@@ -38,8 +38,7 @@
         <CheckBoxPreference
             android:key="checkbox_visibility"
             android:title="Visibility"
-            android:summary="Do you want to make your contact data visible for everyone using this
-            application?" />
+            android:summary="Do you want to make your contact data visible for everyone using this application?" />
         </PreferenceCategory>
 
 </PreferenceScreen>

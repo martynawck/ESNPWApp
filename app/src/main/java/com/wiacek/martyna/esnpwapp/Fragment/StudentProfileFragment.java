@@ -63,11 +63,11 @@ public class StudentProfileFragment extends Fragment {
 
         MentorContact data[] = new MentorContact[]
                 {
-                        new MentorContact(R.drawable.mobile, "23453"),
-                        new MentorContact(R.drawable.mail, "34234234"),
-                        new MentorContact(R.drawable.fb, "23123d"),
-                        new MentorContact(R.drawable.skype, "3423423$"),
-                        new MentorContact(R.drawable.whatsapp, "34324")
+                        new MentorContact(R.drawable.mobile, bundle.getString("profile_phone_no")),
+                        new MentorContact(R.drawable.mail, bundle.getString("profile_email")),
+                        new MentorContact(R.drawable.fb, bundle.getString("profile_facebook_id")),
+                        new MentorContact(R.drawable.skype, bundle.getString("profile_skype_id")),
+                        new MentorContact(R.drawable.whatsapp, bundle.getString("profile_whatsapp_id"))
                 };
 
 
@@ -117,13 +117,6 @@ public class StudentProfileFragment extends Fragment {
                         Intent whatsappIntent = new Intent(Intent.ACTION_SENDTO, uri);
                         whatsappIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
                         whatsappIntent.setPackage("com.whatsapp");
-                        //whatsappIntent.setType("text/plain");
-
-
-                        // Intent sendIntent = new Intent(Intent.ACTION_SENDTO, uri);
-                        //sendIntent.putExtra(Intent.EXTRA_TEXT, "Hi this is demo");
-                        //sendIntent.setPackage("com.whatsapp");
-                        //startActivity(Intent.createChooser(sendIntent, ""));
                         try{
                             startActivity(Intent.createChooser(whatsappIntent, ""));
                         }
