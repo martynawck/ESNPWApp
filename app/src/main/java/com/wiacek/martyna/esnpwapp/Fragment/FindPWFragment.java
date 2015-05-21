@@ -43,7 +43,6 @@ public class FindPWFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    //fb://messaging/
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/267478455347"));
                     startActivity(intent);
                 } catch(ActivityNotFoundException e) {
@@ -61,14 +60,11 @@ public class FindPWFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("twitter://user?screen_name=PW_edu"));
                     startActivity(intent);
-
                 }catch (ActivityNotFoundException e) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("http://www.twitter.com/PW_edu"));
                     startActivity(intent);
                 }
-
-
             }
         });
 
@@ -80,7 +76,6 @@ public class FindPWFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                     intent.setPackage("com.instagram.android");
                     startActivity(intent);
-
                 } catch (ActivityNotFoundException e) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("http://www.instagram.com/politechnika_warszawska"));
@@ -96,14 +91,11 @@ public class FindPWFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_VIEW,
                             Uri.parse("linkedin://profile/politechnika-warszawska-15980"));
                     startActivity(intent);
-
                 } catch (ActivityNotFoundException e) {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse("https://pl.linkedin.com/edu/politechnika-warszawska-15980"));
                     startActivity(intent);
                 }
-
-
             }
         });
 

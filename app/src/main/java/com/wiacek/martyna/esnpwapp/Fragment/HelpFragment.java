@@ -23,10 +23,6 @@ public class HelpFragment extends Fragment {
     public static final String ITEM_NAME = "itemName";
     private final String ESN_MAIL = "pw@esn.pl";
 
-    public HelpFragment() {
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

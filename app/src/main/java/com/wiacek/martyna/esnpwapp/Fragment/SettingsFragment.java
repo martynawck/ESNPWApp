@@ -43,14 +43,11 @@ public class SettingsFragment extends PreferenceFragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
     SessionManager sessionManager;
-    private int PICK_IMAGE_REQUEST = 1;
-
 
     @Override
     public void onCreate(Bundle paramBundle) {
         super.onCreate(paramBundle);
         addPreferencesFromResource(R.xml.pref_settings);
-
     }
 
     @Override
@@ -58,8 +55,6 @@ public class SettingsFragment extends PreferenceFragment {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         view.setBackgroundColor(getResources().getColor(android.R.color.white));
         sessionManager = new SessionManager(getActivity().getApplicationContext());
-
-        Preference picProfile = (Preference) findPreference("picture");
 
         EditTextPreference email = (EditTextPreference) findPreference("email");
         EditTextPreference whatsapp = (EditTextPreference) findPreference("whatsapp");
@@ -100,14 +95,10 @@ public class SettingsFragment extends PreferenceFragment {
                 UpdateUserDataTask task = new UpdateUserDataTask(getActivity().getApplicationContext());
                 task.execute(new String[] { "visibility", newValue.toString()});
                 Toast.makeText(getActivity().getApplicationContext(), "Value updated!", Toast.LENGTH_LONG).show();
-
-
                 return true;
             }
 
         });
-
-
 
         email.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 

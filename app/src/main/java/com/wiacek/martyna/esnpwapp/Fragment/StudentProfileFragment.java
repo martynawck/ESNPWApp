@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
+import com.wiacek.martyna.esnpwapp.AsyncTask.GetDirectFbIdTask;
 import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.Student;
@@ -31,14 +32,8 @@ import org.json.JSONObject;
 
 public class StudentProfileFragment extends Fragment {
 
-  //  ImageView ivIcon;
-    Student s;
-    MentorContact data[] = null;
-
-
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,8 +44,6 @@ public class StudentProfileFragment extends Fragment {
 
         Bundle bundle = getArguments();
 
-
-     //   ivIcon = (ImageView) view.findViewById(R.id.frag3_icon);
         TextView name = (TextView) view.findViewById(R.id.firstlastname);
         name.setText(bundle.getString("profile_first_name") + " " +bundle.getString("profile_last_name"));
         TextView faculty = (TextView) view.findViewById(R.id.faculty);
@@ -69,7 +62,6 @@ public class StudentProfileFragment extends Fragment {
                         new MentorContact(R.drawable.skype, bundle.getString("profile_skype_id")),
                         new MentorContact(R.drawable.whatsapp, bundle.getString("profile_whatsapp_id"))
                 };
-
 
         MentorAdapter adapter = new MentorAdapter(getActivity().getApplicationContext(), R.layout.listview_student_item_row, data);
 
@@ -95,14 +87,13 @@ public class StudentProfileFragment extends Fragment {
                         startActivity(Intent.createChooser(emailIntent, "Send email to your buddy:"));
                         break;
                     case 2:
-                        GetDirectFbIdTask task = new GetDirectFbIdTask(getActivity().getApplicationContext());
+                        GetDirectFbIdTask task = new GetDirectFbIdTask(getActivity().getApplicationContext(), getActivity());
                         task.execute(new String[] { data });
                         break;
                     case 3:
                         Intent skypeIntent = new Intent(Intent.ACTION_VIEW);
                         skypeIntent.setData(Uri.parse("skype:" + data.trim()+"?chat"));
                         skypeIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        //startActivity(skypeIntent);
                         try{
                             startActivity(skypeIntent);
                         }
@@ -125,57 +116,9 @@ public class StudentProfileFragment extends Fragment {
                                     Toast.LENGTH_SHORT).show();
                         }
                         break;
-
                 }
-
             }
         });
-//        ivIcon.setImageDrawable(view.getResources().getDrawable(
-        //        getArguments().getInt(IMAGE_RESOURCE_ID)));
         return view;
     }
-
-    private class GetDirectFbIdTask extends AsyncTask<String, Void, String> {
-
-        private Context mContext;
-        private String ID;
-
-        public GetDirectFbIdTask (Context context) {
-            mContext = context;
-        }
-        protected String doInBackground(String... urls) {
-            HttpClient client = new DefaultHttpClient();
-            HttpGet request = new HttpGet("http://graph.facebook.com/" + urls[0]);
-            // replace with your url
-            String response = "";
-            //HttpResponse response = null;
-            try {
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                response = client.execute(request, responseHandler);
-                //response = client.execute(request);
-                JSONObject jsonObject = new JSONObject(response);
-                ID = jsonObject.getString("id");
-
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            return ID;
-        }
-
-        protected void onPostExecute(String result) {
-
-            if (ID != null) {
-
-                try {
-                    //fb://messaging/
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://messaging/"+ID));
-                    startActivity(intent);
-                } catch(Exception e) {
-                    Toast.makeText(mContext,"Facebook is not installed. Please install Facebook!",
-                            Toast.LENGTH_SHORT).show(); }
-            }
-        }
-    }
-
 }

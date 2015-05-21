@@ -39,7 +39,6 @@ public class TransportationLinksFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_emergency, container, false);
-
         listView1 = (ListView) view.findViewById(R.id.listView1);
 
         final ClickableLink emergency_data[] = new ClickableLink[]
@@ -51,9 +50,7 @@ public class TransportationLinksFragment extends Fragment {
                 };
 
         ClickableLinkAdapter adapter = new ClickableLinkAdapter(getActivity().getApplicationContext(), R.layout.listview_item_row_no_img, emergency_data);
-
         listView1.setAdapter(adapter);
-
         listView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,

@@ -28,14 +28,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.wiacek.martyna.esnpwapp.Adapter.GetInTouchAdapter;
 import com.wiacek.martyna.esnpwapp.Adapter.OffersListAdapter;
+import com.wiacek.martyna.esnpwapp.AsyncTask.GetStudentDetails;
+import com.wiacek.martyna.esnpwapp.AsyncTask.GetStudentsFromServerTask;
 import com.wiacek.martyna.esnpwapp.Domain.Buddy;
 import com.wiacek.martyna.esnpwapp.Domain.ESNPartner;
+import com.wiacek.martyna.esnpwapp.Domain.FacultyNames;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapCategory;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapPlace;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Domain.Student;
 import com.wiacek.martyna.esnpwapp.Domain.TodoTask;
+import com.wiacek.martyna.esnpwapp.Interface.OnStudentsListTaskCompleted;
+import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
 import com.wiacek.martyna.esnpwapp.JSONFunctions;
 import com.wiacek.martyna.esnpwapp.R;
 import com.wiacek.martyna.esnpwapp.SQLHelpers.ESNPWSQLHelper;
@@ -75,14 +80,56 @@ public class GetInTouchFragment extends Fragment implements SearchView.OnQueryTe
                 false);
 
         students = new ArrayList<>();
-
         progressDialog = ProgressDialog.show(getActivity(), "","Updating students...", true);
         mListView = (ListView) view.findViewById(R.id.list_view);
         searchView = (SearchView) view.findViewById(R.id.search_view);
 
+        GetStudentsFromServerTask task = new GetStudentsFromServerTask(getActivity().getApplicationContext(),progressDialog, new OnStudentsListTaskCompleted() {
+            @Override
+            public void onTaskCompleted(ArrayList<Student> strings) {
+                students = strings;
+                mListView.setAdapter(new GetInTouchAdapter(getActivity().getApplicationContext(), getActivity(),
+                        R.layout.listview_item_row_big_img,
+                        students));
+                mListView.setTextFilterEnabled(true);
+                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        final Student student = (Student) parent.getItemAtPosition(position);
 
+                        GetStudentDetails task = new GetStudentDetails(student, new OnTaskCompleted() {
+                            @Override
+                            public void onTaskCompleted(ArrayList<String> strings) {
+                                ArrayList<String>details = strings;
+                                StudentProfileFragment fragment = new StudentProfileFragment();
+                                Bundle bundles = new Bundle();
+                                if (student != null) {
+                                    bundles.putString("profile_first_name",student.getFirstname());
+                                    bundles.putString("profile_last_name",student.getLastname());
+                                    bundles.putString("profile_faculty",student.getFaculty());
+                                    bundles.putString("profile_img_url",student.getImgUrl());
+                                    bundles.putString("profile_facebook_id",details.get(3));
+                                    bundles.putString("profile_phone_no",details.get(1));
+                                    bundles.putString("profile_skype_id",details.get(2));
+                                    bundles.putString("profile_whatsapp_id", details.get(4));
+                                    bundles.putString("profile_email",details.get(0));
+                                }
 
-        GetStudentsFromServerTask task = new GetStudentsFromServerTask(getActivity().getApplicationContext(),progressDialog);
+                                fragment.setArguments(bundles);
+
+                                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                                fragmentManager.beginTransaction()
+                                        .replace(R.id.content_frame, fragment, "STUDENT_PROFILE").addToBackStack(null).commit();
+                            }
+                        });
+                        String[] string = new String[1];
+                        string[0] = student.getId();
+                        task.execute(string);
+                    }
+                });
+                setupSearchView();
+            }
+        });
         task.execute();
 
         return view;
@@ -109,263 +156,9 @@ public class GetInTouchFragment extends Fragment implements SearchView.OnQueryTe
         return false;
     }
 
-    public class GetStudentsFromServerTask extends AsyncTask<String, Void, String> {
-
-        private final ProgressDialog progressDialog;
-        private Context mContext;
-        HttpPost httppost;
-        HttpClient httpclient;
-        List<NameValuePair> nameValuePairs;
-        ArrayList<Student> students;
-        SessionManager sessionManager;
-
-        public GetStudentsFromServerTask (Context context, ProgressDialog progressDialog) {
-            mContext = context;
-            this.progressDialog = progressDialog;
-        }
-        protected String doInBackground(String... urls) {
-            try{
-
-                httpclient = new DefaultHttpClient();
-                httppost = new HttpPost(ServerUrl.BASE_URL + "students.php");
-
-                sessionManager = new SessionManager(mContext);
-                final String login_session = sessionManager.getValueOfUserId();
-                nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("id", login_session));
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                final String response = httpclient.execute(httppost, responseHandler);
-                students = new ArrayList<>();
-
-                if(!response.equalsIgnoreCase("null")){
-                    Log.d("RESP","NOT NULL");
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject;
-
-                    Log.d("length",Integer.toString(jsonArray.length()));
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        jsonObject = jsonArray.getJSONObject(i);
-                        String post = jsonObject.getString("post");
-                        JSONObject postObject = new JSONObject(post);
-                        Student student = new Student();
-                        String faculty = postObject.getString("faculty");
-                        Log.d("FACULTY",faculty);
-                        String longFaculty = "";
-
-                        switch(faculty) {
-                            case "ANS":
-                                longFaculty = "Faculty of Administration and Social Sciences";
-                                break;
-                            case "ARCH":
-                                longFaculty = "Faculty of Architecture";
-                                break;
-                            case "CH":
-                                longFaculty ="Faculty of Chemistry";
-                                break;
-                            case "ELKA":
-                                longFaculty = "Faculty of Electronics and Information Technology";
-                                break;
-                            case "EE":
-                                longFaculty = "Faculty of Electrical Engineering";
-                                break;
-                            case "FIZYKA":
-                                longFaculty = "Faculty of Physics";
-                                break;
-                            case "GIK":
-                                longFaculty = "Faculty of Geodesy and Cartography";
-                                break;
-                            case "ICHIP":
-                                longFaculty = "Faculty of Chemical and Process Engineering";
-                                break;
-                            case "IL":
-                                longFaculty = "Faculty of Civil Engineering";
-                                break;
-                            case "INMAT":
-                                longFaculty = "Faculty of Materials Science and Engineering";
-                                break;
-                            case "WIP":
-                                longFaculty = "Faculty of Production Engineering";
-                                break;
-                            case "IS":
-                                longFaculty = "Faculty of Environmental Engineering";
-                                break;
-                            case "MINI":
-                                longFaculty = "Faculty of Mathematics and Information Science";
-                                break;
-                            case "MEIL":
-                                longFaculty = "Faculty of Power and Aeronautical Engineering";
-                                break;
-                            case "MCHTR":
-                                longFaculty = "Faculty of Mechatronics";
-                                break;
-                            case "SIMR":
-                                longFaculty = "Faculty of Automotive and Construction Machinery Engineering";
-                                break;
-                            case "WT":
-                                longFaculty = "Faculty of Transport";
-                                break;
-                            case "WZ":
-                                longFaculty = "Faculty of Management";
-                                break;
-                            case "PLOCK":
-                                longFaculty = "Faculty of Civil Engineering, Mechanics and Petrochemistry (Plock)";
-                                break;
-                            case "PLOCK2":
-                                longFaculty = "College of Economics and Social Sciences ";
-                                break;
-                            case "WUTBUIS":
-                                longFaculty = "WUT Business School ";
-                                break;
-                            default:
-                                longFaculty = "";
-                        }
-
-                        student.setFaculty(longFaculty);
-                        student.setFirstname(postObject.getString("first_name"));
-                        student.setLastname(postObject.getString("last_name"));
-                        student.setImgUrl(postObject.getString("image"));
-                        student.setId(postObject.getString("id"));
-                        students.add(student);
-                    }
-
-                    progressDialog.dismiss();
-                    return "0";
-                }
-            }catch(Exception e){
-                progressDialog.dismiss();
-                System.out.println("Exception : " + e.getMessage());
-            }
-            progressDialog.dismiss();
-            return "-1";
-
-        }
-
-
-        protected void onPostExecute(String result) {
-
-            if (!result.equals("-1")) {
-                Log.d("HELLOO","HELLOOO2");
-                mListView.setAdapter(new GetInTouchAdapter(getActivity().getApplicationContext(), getActivity(),
-                        R.layout.listview_item_row_big_img,
-                        students));
-                mListView.setTextFilterEnabled(true);
-                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    public void onItemClick(AdapterView<?> parent, View view,
-                                            int position, long id) {
-                        // When clicked, show a toast with the TextView text
-                        Student student = (Student) parent.getItemAtPosition(position);
-
-                       // android.support.v4.app.FragmentTransaction ft =
-                         //       getActivity().getSupportFragmentManager().beginTransaction();
-                        //ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 
 
 
-
-
-                        GetStudentDetails task = new GetStudentDetails(student);
-                        String[] string = new String[1];
-                        string[0] = student.getId();
-
-                        task.execute(string);
-
-
-                    }
-                });
-                setupSearchView();
-            }
-        }
-    }
-
-
-
-
-    public class GetStudentDetails extends AsyncTask<String, Void, String> {
-
-        Student student;
-        ArrayList<String> details;
-        ArrayList<NameValuePair> nameValuePairs;
-        public GetStudentDetails (Student student){
-            this.student = student;
-        }
-
-        protected void onPreExecute ( ) {
-        }
-
-        protected String doInBackground(String... urls) {
-            try{
-
-                details = new ArrayList<String>();
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost(ServerUrl.BASE_URL + "studentDetails.php");
-
-                nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("id", urls[0]));
-
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                final String response = httpclient.execute(httppost, responseHandler);
-
-                if(!response.equalsIgnoreCase("null")){
-                    Log.d("RESP","NOT NULL");
-                    JSONArray jsonArray = new JSONArray(response);
-                    JSONObject jsonObject;
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        jsonObject = jsonArray.getJSONObject(i);
-                        String post = jsonObject.getString("post");
-                        JSONObject postObject = new JSONObject(post);
-                        details.add(postObject.getString("email"));
-                        details.add(postObject.getString("phone_number"));
-                        details.add(postObject.getString("skype_id"));
-                        details.add(postObject.getString("facebook_id"));
-                        details.add(postObject.getString("whatsapp_id"));
-                    }
-
-                    for (String s : details)
-                        Log.d("STR",s);
-                }
-
-            }catch(Exception e){
-            }
-            return "0";
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            StudentProfileFragment fragment = new StudentProfileFragment();
-
-            Bundle bundles = new Bundle();
-
-// ensure your object has not null
-            if (student != null) {
-                bundles.putString("profile_first_name",student.getFirstname());
-                bundles.putString("profile_last_name",student.getLastname());
-                bundles.putString("profile_faculty",student.getFaculty());
-                bundles.putString("profile_img_url",student.getImgUrl());
-                bundles.putString("profile_facebook_id",details.get(3));
-                bundles.putString("profile_phone_no",details.get(1));
-                bundles.putString("profile_skype_id",details.get(2));
-                bundles.putString("profile_whatsapp_id", details.get(4));
-                bundles.putString("profile_email",details.get(0));
-                Log.e("aDivision", "is valid");
-            } else {
-                Log.e("aDivision", "is null");
-            }
-            fragment.setArguments(bundles);
-
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame, fragment, "STUDENT_PROFILE").addToBackStack(null).commit();
-            //   ft.replace(android.R.id.content, frag);
-            ///  ft.addToBackStack(null);
-            // ft.commit();
-
-        }
-    }
 
 
 }

@@ -45,12 +45,8 @@ import com.wiacek.martyna.esnpwapp.SQLHelpers.ESNPWSQLHelper;
 public class Login extends Activity {
     Button b;
     EditText et,pass;
-    TextView tv;
-
     ProgressDialog dialog = null;
     SessionManager session;
-  //  ToDoSQLHelper toDoSQLHelper;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,8 +77,6 @@ public class Login extends Activity {
 
         super.onResume();
     }
-
-
 
     public void showAlert(){
         Login.this.runOnUiThread(new Runnable() {

@@ -82,7 +82,6 @@ public class CampusMap extends Fragment {
                 markerDeansOffice.setText(myMarker.getDeansOffice());
                 markerInternationalOffice.setText(myMarker.getInternationalOffice());
                 return v;
-
             }
         });
 
@@ -101,9 +100,7 @@ public class CampusMap extends Fragment {
         {
             for (FacultyMarker myMarker : markers)
             {
-
                 String shortFacName = sessionManager.getValueOfFaculty();
-
                 String longFacName = new FacultyNames().returnLongName(shortFacName);
 
                 MarkerOptions markerOption = new MarkerOptions().position(new LatLng(myMarker.getLatitude(), myMarker.getLongitude()));

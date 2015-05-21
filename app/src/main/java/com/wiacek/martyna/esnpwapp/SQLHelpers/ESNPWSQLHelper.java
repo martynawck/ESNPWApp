@@ -193,8 +193,14 @@ public class ESNPWSQLHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                buddy = new Buddy (cursor.getString(2), cursor.getString(3), cursor.getString(4),
-                        cursor.getString(7), cursor.getString(8), cursor.getString(5), cursor.getString(6));
+                buddy = new Buddy();
+                buddy.setFirstname(cursor.getString(2));
+                buddy.setLastname(cursor.getString(3));
+                buddy.setEmail(cursor.getString(4));
+                buddy.setPhone(cursor.getString(5));
+                buddy.setWhatsapp(cursor.getString(6));
+                buddy.setSkype(cursor.getString(7));
+                buddy.setFacebook(cursor.getString(8));
             } while (cursor.moveToNext());
         }
         return buddy;

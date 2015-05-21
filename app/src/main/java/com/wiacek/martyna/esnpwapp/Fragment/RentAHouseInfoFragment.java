@@ -23,14 +23,9 @@ import com.wiacek.martyna.esnpwapp.ViewEnhancements.MyLeadingMarginSpan2;
 
 public class RentAHouseInfoFragment extends Fragment {
 
-    ImageView ivIcon;
-    TextView tvItemName;
-
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
     RawFileReader rfr;
-
-    //TextView content;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

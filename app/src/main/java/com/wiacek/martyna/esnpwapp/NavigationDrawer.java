@@ -24,6 +24,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.wiacek.martyna.esnpwapp.Adapter.NavigationDrawerAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.DrawerItem;
+import com.wiacek.martyna.esnpwapp.Domain.NavigationDrawerModel;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Fragment.BuddyFragment;
@@ -40,6 +41,7 @@ public class NavigationDrawer extends ActionBarActivity {
     private boolean webBrowserBack;
     NavigationDrawerAdapter adapter;
     boolean uploadedPicture;
+    NavigationDrawerModel navigationDrawerModel;
 
     android.app.Fragment nativeFragment = null;
 
@@ -51,8 +53,8 @@ public class NavigationDrawer extends ActionBarActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_entirely_new_drawer);
-        // Initializing
         session = new SessionManager(getApplicationContext());
+        navigationDrawerModel = new NavigationDrawerModel();
         webBrowserBack = false;
         uploadedPicture = false;
         dataList = new ArrayList<>();
@@ -71,16 +73,13 @@ public class NavigationDrawer extends ActionBarActivity {
                 ChangePictureFragment fragment = new ChangePictureFragment();
                 FragmentManager fragmentManager = getSupportFragmentManager();
 
-                if (nativeFragment != null) {
-                    Log.d("1", "2");
+                if (navigationDrawerModel.getNativeFragment() != null) {
                     getFragmentManager().beginTransaction().
                             remove(getFragmentManager().findFragmentById(R.id.content_frame)).commit();
                     getSupportFragmentManager().beginTransaction()
                             .remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
-                    nativeFragment = null;
+                    navigationDrawerModel.setNativeFragment(null);
                 }
-                Log.d("1", "3");
-              //  FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, fragment).commit();
 
@@ -93,41 +92,12 @@ public class NavigationDrawer extends ActionBarActivity {
 
        Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(profilePic);
 
-
         mDrawerList.addHeaderView(header);
 
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow,
                 GravityCompat.START);
 
-        dataList.add(new DrawerItem("HOME", R.drawable.ic_home));
-        dataList.add(new DrawerItem("EMERGENCY", R.drawable.ic_emergency));
-
-        dataList.add(new DrawerItem("YOUR STAY")); // adding a header to the list
-        dataList.add(new DrawerItem("ESN PW website", R.drawable.ic_web));
-        dataList.add(new DrawerItem("Your buddy", R.drawable.ic_buddy));
-        dataList.add(new DrawerItem("Documents", R.drawable.ic_documents));
-        dataList.add(new DrawerItem("Transportation", R.drawable.ic_transport));
-        dataList.add(new DrawerItem("Rent a house", R.drawable.ic_rent));
-        dataList.add(new DrawerItem("ToDos", R.drawable.ic_todos));
-        dataList.add(new DrawerItem("FAQ", R.drawable.ic_faq));
-        dataList.add(new DrawerItem("Useful apps", R.drawable.ic_apps));
-
-        dataList.add(new DrawerItem("UNIVERSITY"));// adding a header to the list
-        dataList.add(new DrawerItem("Your faculty", R.drawable.ic_faculty));
-        dataList.add(new DrawerItem("ESN office", R.drawable.ic_office));
-        dataList.add(new DrawerItem("Campus map", R.drawable.ic_campus));
-        dataList.add(new DrawerItem("PW website", R.drawable.ic_network));
-        dataList.add(new DrawerItem("PW online", R.drawable.ic_online));
-
-        dataList.add(new DrawerItem("ENTERTAINMENT")); // adding a header to the list
-        dataList.add(new DrawerItem("ESN offers", R.drawable.ic_partners));
-        dataList.add(new DrawerItem("ESN events", R.drawable.ic_events));
-        dataList.add(new DrawerItem("ESN FunMap", R.drawable.ic_fun));
-        dataList.add(new DrawerItem("Get in touch", R.drawable.ic_intouch));
-
-        dataList.add(new DrawerItem("OTHERS")); // adding a header to the list
-        dataList.add(new DrawerItem("Settings", R.drawable.settings));
-        dataList.add(new DrawerItem("Help", R.drawable.ic_help));
+        dataList = navigationDrawerModel.getMenu();
 
         adapter = new NavigationDrawerAdapter(this, R.layout.custom_drawer_item,
                 dataList);
@@ -145,20 +115,17 @@ public class NavigationDrawer extends ActionBarActivity {
             public void onDrawerClosed(View view) {
                 getSupportActionBar().setTitle(mTitle);
                 adapter.notifyDataSetChanged();
-                invalidateOptionsMenu(); // creates call to
-                // onPrepareOptionsMenu()
+                invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
                 getSupportActionBar().setTitle(mDrawerTitle);
-               // adapter.notifyDataSetChanged();
                 if (uploadedPicture == true) {
                     Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(profilePic);
                     uploadedPicture = false;
                 }
 
-                invalidateOptionsMenu(); // creates call to
-                // onPrepareOptionsMenu()
+                invalidateOptionsMenu();
             }
         };
 
@@ -175,14 +142,13 @@ public class NavigationDrawer extends ActionBarActivity {
         return true;
     }
 
-    public void SelectItem(int possition) {
+    public void SelectItem(int position) {
 
         Fragment fragment = null;
         boolean useNativeFragment = false;
-      //  android.app.Fragment nativeFragment = null;
         Bundle args = new Bundle();
-        int positionInDataSet = possition - 1;
-        switch (possition) {
+        int positionInDataSet = position - 1;
+        switch (position) {
 
             case 1:
                 fragment = new HomeFragment();
@@ -326,15 +292,6 @@ public class NavigationDrawer extends ActionBarActivity {
                 args.putInt(SettingsFragment.IMAGE_RESOURCE_ID, dataList.get(positionInDataSet)
                         .getImgResID());
                 break;
-               /* fragment = new FragmentThree();
-                args.putString(FragmentThree.ITEM_NAME, dataList.get(positionInDataSet)
-                        .getItemName());
-                args.putInt(FragmentThree.IMAGE_RESOURCE_ID, dataList.get(positionInDataSet)
-                        .getImgResID());
-                break;*/
-               // Intent intent = new Intent(this, SettingsActivity.class);
-               // startActivity(intent);
-               // break;
             case 25:
                 fragment = new HelpFragment();
                 args.putString(HelpFragment.ITEM_NAME, dataList.get(positionInDataSet)
@@ -346,43 +303,37 @@ public class NavigationDrawer extends ActionBarActivity {
                 break;
         }
 
-        if (possition == 10)
+        if (position == 10)
             webBrowserBack = true;
         else
             webBrowserBack = false;
 
-
-
         if (useNativeFragment) {
-            Log.d("1", "1");
             android.app.FragmentManager fragmentManager = getFragmentManager();
 
             if (fragmentManager.findFragmentById(R.id.content_frame) == null) {
-
-                Log.d("ODP","OWSZEM");
                 fragmentManager.beginTransaction()
                         .replace(R.id.content_frame, nativeFragment).commit();
             }
         } else {
             if (nativeFragment != null) {
-                Log.d("1", "2");
                 getFragmentManager().beginTransaction().
                         remove(getFragmentManager().findFragmentById(R.id.content_frame)).commit();
                 getSupportFragmentManager().beginTransaction()
                         .remove(getSupportFragmentManager().findFragmentById(R.id.content_frame)).commit();
                 nativeFragment = null;
             }
-            Log.d("1", "3");
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.content_frame, fragment).commit();
         }
-            mDrawerList.setItemChecked(possition, true);
-            setTitle(dataList.get(positionInDataSet).getItemName());
-            mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerList.setItemChecked(position, true);
+        setTitle(dataList.get(positionInDataSet).getItemName());
+        mDrawerLayout.closeDrawer(mDrawerList);
 
 
     }
+
 
     @Override
     public void setTitle(CharSequence title) {
@@ -393,21 +344,17 @@ public class NavigationDrawer extends ActionBarActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -420,13 +367,11 @@ public class NavigationDrawer extends ActionBarActivity {
                 moveToBackAndFinish();
                 return true;
             case R.id.action_settings:
-                SelectItem(25);
+                SelectItem(24);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
-      //  return false;
     }
 
     private class DrawerItemClickListener implements
@@ -439,7 +384,6 @@ public class NavigationDrawer extends ActionBarActivity {
                     SelectItem(position);
                 }
             }
-
         }
     }
 
@@ -452,12 +396,9 @@ public class NavigationDrawer extends ActionBarActivity {
 
         StudentProfileFragment myFragment = (StudentProfileFragment)getSupportFragmentManager().findFragmentByTag("STUDENT_PROFILE");
         if (myFragment != null) {
-            Log.d("WIDOCZN","TAK");
             FragmentManager fm = getSupportFragmentManager();
             fm.popBackStack();
-            // add your code here
         } else {
-
             moveToBackAndFinish();
         }
     }

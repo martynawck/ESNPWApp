@@ -44,16 +44,6 @@ public class Buddy {
 
     public Buddy() {}
 
-    public Buddy (String firstname, String lastname, String email, String skype, String facebook, String phone, String whatsapp) {
-
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.skype = skype;
-        this.facebook = facebook;
-        this.phone = phone;
-        this.whatsapp = whatsapp;
-    }
 
     public String getFirstname() {
         return  firstname;

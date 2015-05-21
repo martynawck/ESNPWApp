@@ -30,8 +30,6 @@ public class TransportationInfoFragment extends Fragment {
     public static final String ITEM_NAME = "itemName";
     RawFileReader rfr;
 
-    //TextView content;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,7 +50,6 @@ public class TransportationInfoFragment extends Fragment {
         documentView.getDocumentLayoutParams().setInsetPaddingTop(50f);
         documentView.getDocumentLayoutParams().setInsetPaddingBottom(50f);
         documentView.getDocumentLayoutParams().setLineHeightMultiplier(1f);
-
         documentView.setFadeInDuration(800);
         documentView.setFadeInAnimationStepDelay(30);
 

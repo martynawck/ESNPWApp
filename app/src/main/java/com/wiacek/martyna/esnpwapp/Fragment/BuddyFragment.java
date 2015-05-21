@@ -46,18 +46,11 @@ public class BuddyFragment extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    ProgressDialog dialog = null;
     TextView fName, lName;
     ListView listView1;
     View view;
     ArrayList<String> buddyData;
 
-   // OnTaskCompleted listener;
-
-    public BuddyFragment() {}
-
-
-  // public void onTaskCompleted() { Log.d("lalala, "AAAA"");}
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
@@ -73,7 +66,6 @@ public class BuddyFragment extends Fragment {
             @Override
             public void onTaskCompleted(ArrayList<String> strings) {
                 buddyData = strings;
-                Log.d("LALALA","LALALAL");
                 fName.setText(buddyData.get(0));
                 lName.setText(buddyData.get(1));
 
@@ -81,8 +73,8 @@ public class BuddyFragment extends Fragment {
                         {
                                 new MentorContact(R.drawable.mobile, buddyData.get(3)),
                                 new MentorContact(R.drawable.mail, buddyData.get(2)),
-                                new MentorContact(R.drawable.fb, buddyData.get(4)),
-                                new MentorContact(R.drawable.skype, buddyData.get(5)),
+                                new MentorContact(R.drawable.fb, buddyData.get(5)),
+                                new MentorContact(R.drawable.skype, buddyData.get(4)),
                                 new MentorContact(R.drawable.whatsapp, buddyData.get(6))
                         };
 
@@ -149,7 +141,7 @@ public class BuddyFragment extends Fragment {
 
             }
         });
-        task.execute(new String[]{ServerUrl.BASE_URL + "buddy.php"});
+        task.execute(new String[]{});
         return view;
     }
 

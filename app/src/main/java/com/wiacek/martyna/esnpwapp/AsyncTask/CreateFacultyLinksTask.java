@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
+import com.wiacek.martyna.esnpwapp.Domain.FacultyNames;
 import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
 import com.wiacek.martyna.esnpwapp.Domain.PWFacultyMarkerList;
 import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
@@ -32,7 +33,7 @@ public class CreateFacultyLinksTask extends AsyncTask<String, Void, String> {
 
     protected String doInBackground(String... urls) {
 
-        data = new PWFacultyMarkerList().getDetailedData(urls[0]);
+        data = new FacultyNames().getDetailedData(urls[0]);
 
         return "0";
     }

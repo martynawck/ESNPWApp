@@ -36,7 +36,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    //fb://messaging/
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("fb://page/138320816228452"));
                     startActivity(intent);
                 } catch(ActivityNotFoundException e) {
@@ -60,8 +59,6 @@ public class HomeFragment extends Fragment {
                     intent.setData(Uri.parse("http://www.twitter.com/ESN_PW"));
                     startActivity(intent);
                 }
-
-
             }
         });
 

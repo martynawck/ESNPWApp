@@ -40,7 +40,6 @@ public class GetDirectFbIdTask extends AsyncTask<String, Void, String> {
             ID = jsonObject.getString("id");
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return ID;

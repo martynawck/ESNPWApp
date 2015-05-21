@@ -34,7 +34,6 @@ public class RentAHouseLinksFragment extends Fragment {
                         new ClickableLink("Gumtree", "http://www.gumtree.pl"),
                         new ClickableLink("Dom gratka", "http://www.dom.gratka.pl"),
                         new ClickableLink("OLX", "http://www.olx.pl")
-
                 };
 
         ClickableLinkAdapter adapter = new ClickableLinkAdapter(getActivity().getApplicationContext(), R.layout.listview_item_row_no_img, emergency_data);

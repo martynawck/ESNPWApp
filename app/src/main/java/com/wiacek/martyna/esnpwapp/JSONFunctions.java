@@ -24,7 +24,6 @@ public class JSONFunctions {
         String result = "";
         JSONObject jArray = null;
 
-        // Download JSON data from URL
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(url);
@@ -36,7 +35,6 @@ public class JSONFunctions {
             Log.e("log_tag", "Error in http connection " + e.toString());
         }
 
-        // Convert response to string
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     is, "iso-8859-1"), 8);

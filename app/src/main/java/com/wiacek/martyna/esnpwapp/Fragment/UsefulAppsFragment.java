@@ -42,26 +42,19 @@ public class UsefulAppsFragment extends Fragment {
         mContext = getActivity().getApplicationContext();
         gridView = (GridView) view.findViewById(R.id.grid_view);
 
-     //   UsefulAppsFragment adapter = new UsefulAppsFragment();
-        // Instance of ImageAdapter Class
         UsefulAppsFragment.this.gridView.setAdapter(new UsefulAppAdapter(mContext));
 
-        /**
-         * On Click event for Single Gridview Item
-         * */
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
 
-                final String appPackageName = getPackageName(position); // getPackageName() from Context or Activity object
+                final String appPackageName = getPackageName(position);
                 try {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
                 } catch (android.content.ActivityNotFoundException e) {
                     startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + appPackageName)));
                 }
-
-                Log.d("LALAL", "DOTKNIETO" + position);
             }
         });
 

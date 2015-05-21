@@ -21,10 +21,6 @@ public class PWWebsiteFragment extends Fragment {
     final static String PWWebsiteAddress = "http://www.pw.edu.pl/engpw";
     String myUrl;
 
-
-    public PWWebsiteFragment() {
-    }
-
     public WebView getMyWebView() {
         return myWebView;
     }
@@ -36,7 +32,6 @@ public class PWWebsiteFragment extends Fragment {
 
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setWebViewClient(new MyWebViewClient());
-
         myWebView.getSettings().setLoadWithOverviewMode(true);
         myWebView.getSettings().setUseWideViewPort(true);
         myWebView.getSettings().setDisplayZoomControls(true);

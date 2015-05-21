@@ -3,7 +3,7 @@ package com.wiacek.martyna.esnpwapp.Domain;
 /**
  * Created by Martyna on 2015-05-18.
  */
-public class FunMapCategory {
+public class FunMapCategory implements Comparable {
 
     String id;
     String name;
@@ -29,5 +29,12 @@ public class FunMapCategory {
    @Override
    public String toString() {
         return this.name;
+    }
+
+    public int compareTo(Object anotherPerson) throws ClassCastException {
+        if (!(anotherPerson instanceof FunMapCategory))
+            throw new ClassCastException("A Person object expected.");
+        String anotherName = ((FunMapCategory) anotherPerson).getName();
+        return this.name.compareTo(anotherName);
     }
 }

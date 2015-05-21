@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.wiacek.martyna.esnpwapp.Adapter.QandAListAdapter;
+import com.wiacek.martyna.esnpwapp.AsyncTask.DownloadQandATask;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
+import com.wiacek.martyna.esnpwapp.Interface.OnQADownload;
 import com.wiacek.martyna.esnpwapp.JSONFunctions;
 import com.wiacek.martyna.esnpwapp.R;
 
@@ -37,9 +39,6 @@ public class QAFragment extends Fragment {
     QandAListAdapter expandableListAdapter;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
-    HttpPost httppost;
-    HttpResponse response;
-    HttpClient httpclient;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,75 +48,17 @@ public class QAFragment extends Fragment {
 
         expandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView);
 
-        DownloadQandATask task = new DownloadQandATask(getActivity().getApplicationContext());
+        DownloadQandATask task = new DownloadQandATask(new OnQADownload() {
+            @Override
+            public void onTaskCompleted(List<String> titles, HashMap<String, List<String>> expandableListDetails) {
+                expandableListDetail = expandableListDetails;
+                expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
+                expandableListAdapter = new QandAListAdapter(getActivity().getApplicationContext(), expandableListTitle, expandableListDetail);
+                expandableListView.setAdapter(expandableListAdapter);
+            }
+        });
         task.execute(new String[] { ServerUrl.BASE_URL + "/include/file.json" });
 
         return view;
-
     }
-
-
-    private class DownloadQandATask extends AsyncTask<String, Void, String> {
-
-        private Context mContext;
-        ProgressDialog mDialog;
-
-        public DownloadQandATask(Context context){
-            mContext = context;
-
-/*            mDialog = new ProgressDialog(context);
-            mDialog.setCancelable(false);
-  */      }
-
-        protected void onPreExecute ( ) {
-            // mDialog.show ( ) ;
-//            requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-            //           setProgressBarIndeterminateVisibility(true);
-        }
-
-        protected String doInBackground(String... urls) {
-            try{
-
-                expandableListDetail = new HashMap<>();
-
-
-                JSONObject jsonQuery = JSONFunctions
-                        .getJSONfromURL(ServerUrl.BASE_URL + "include/qanda_data.txt");
-
-
-
-                  //  JSONArray jsonArray = new JSONArray(response);
-                JSONObject jsonObject;
-                JSONArray jsonArray = jsonQuery.getJSONArray("data");
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        jsonObject = jsonArray.getJSONObject(i);
-                        String question = jsonObject.getString("question");
-                        String answer = jsonObject.getString("answer");
-                        List<String> list = new ArrayList<>();
-                        list.add(answer);
-
-                        expandableListDetail.put(question, list);
-                    }
-                    return "0";
-
-
-            }catch(Exception e){
-                System.out.println("Exception : " + e.getMessage());
-            }
-            return "1";
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            //mDialog.dismiss();
-            //setProgressBarIndeterminateVisibility(false);
-            expandableListTitle = new ArrayList<>(expandableListDetail.keySet());
-            expandableListAdapter = new QandAListAdapter(mContext, expandableListTitle, expandableListDetail);
-            expandableListView.setAdapter(expandableListAdapter);
-
-        }
-    }
-
 }

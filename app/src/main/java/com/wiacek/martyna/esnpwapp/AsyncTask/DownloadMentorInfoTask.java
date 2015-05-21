@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -28,7 +29,6 @@ public class DownloadMentorInfoTask extends AsyncTask<String, Void, String> {
     private OnTaskCompleted listener;
     private Context mContext;
     ArrayList <String> buddyData;
-    private View mView;
     ESNPWSQLHelper buddySQLHelper;
     SessionManager sessionManager;
 
@@ -40,11 +40,13 @@ public class DownloadMentorInfoTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... urls) {
         try{
 
+            Log.d("tutaj","A");
             sessionManager = new SessionManager(mContext);
             buddySQLHelper = new ESNPWSQLHelper(mContext);
             buddyData = new ArrayList<>();
-            Buddy buddy = new Buddy();
-            buddy = buddySQLHelper.getBuddyInfo(sessionManager.getValueOfUserId());
+
+            Buddy buddy = buddySQLHelper.getBuddyInfo(sessionManager.getValueOfUserId());
+            Log.d("buddy name", buddy.getFirstname());
             buddyData.add(buddy.getFirstname());
             buddyData.add(buddy.getLastname());
             buddyData.add(buddy.getEmail());

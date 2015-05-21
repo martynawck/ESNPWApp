@@ -23,7 +23,6 @@ public class ToDoAfterFragment extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    public static final String ARG_SECTION_NUMBER = "section_number";
     ESNPWSQLHelper db;
     ArrayList<TodoTask> tasksAfterComing;
     ToDoAdapter adapter;
@@ -38,11 +37,9 @@ public class ToDoAfterFragment extends Fragment {
 
         db = new ESNPWSQLHelper(getActivity().getApplicationContext());
         tasksAfterComing = db.getTodosAfter(new SessionManager(getActivity().getApplicationContext()).getValueOfUserId());
-
         adapter = new ToDoAdapter(getActivity().getApplicationContext(), R.layout.listview_todo_view, tasksAfterComing);
         ListView listTask = (ListView) rootView.findViewById(R.id.listView1);
         listTask.setAdapter(adapter);
         return rootView;
-
     }
 }

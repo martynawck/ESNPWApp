@@ -43,21 +43,27 @@ public class GetBuddyFromServerTask extends AsyncTask<String, Void, String> {
     }
     protected String doInBackground(String... urls) {
         try{
+            Log.d("GET BUDDY","GET BUDDY");
             sessionManager = new SessionManager(mContext);
             httpclient = new DefaultHttpClient();
             httppost = new HttpPost(ServerUrl.BASE_URL + "buddy.php");
-
+            nameValuePairs = new ArrayList<NameValuePair>(1);
             final String login_session = sessionManager.getValueOfUserId();
             nameValuePairs.add(new BasicNameValuePair("id", login_session));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
             final String response = httpclient.execute(httppost, responseHandler);
-
             if(!response.equalsIgnoreCase("null")){
                 JSONObject json = new JSONObject(response);
-                buddy = new Buddy(json.getString("firstname"), json.getString("lastname"), json.getString("email"),
-                        json.getString("skype_id"), json.getString("facebook_id"), json.getString("phone_number"),json.getString("whatsapp_id"));
+                buddy = new Buddy();
+                buddy.setFirstname(json.getString("firstname"));
+                buddy.setLastname(json.getString("lastname"));
+                buddy.setEmail(json.getString("email"));
+                buddy.setSkype(json.getString("skype_id"));
+                buddy.setFacebook(json.getString("facebook_id"));
+                buddy.setPhone(json.getString("phone_number"));
+                buddy.setWhatsapp(json.getString("whatsapp_id"));
                 return "0";
             }
         }catch(Exception e){
@@ -65,7 +71,6 @@ public class GetBuddyFromServerTask extends AsyncTask<String, Void, String> {
             System.out.println("Exception : " + e.getMessage());
         }
         return "-1";
-
     }
 
 
