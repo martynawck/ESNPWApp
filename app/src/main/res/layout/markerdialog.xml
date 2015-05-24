@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:hint="Place name"
+        android:id="@+id/placeName"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:hint="Description"
+        android:id="@+id/description"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/placeName"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:paddingLeft="0dp"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:dropDownWidth="240dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/description"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <RelativeLayout
+        android:layout_below="@+id/spinner"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center">
+        <Button
+            android:id="@+id/declineButton"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Cancel "
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/abc_ab_share_pack_holo_light"
+            android:layout_alignTop="@+id/deleteButton" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:gravity="center"
+            android:background="@drawable/abc_ab_share_pack_holo_light"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/declineButton"
+            android:layout_toEndOf="@+id/declineButton" />
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:gravity="center"
+            android:background="@drawable/abc_ab_share_pack_holo_light"
+            android:layout_alignTop="@+id/deleteButton"
+            android:layout_toRightOf="@+id/deleteButton"
+            android:layout_toEndOf="@+id/deleteButton" />
+
+
+        </RelativeLayout>
+
+
+
+</RelativeLayout>

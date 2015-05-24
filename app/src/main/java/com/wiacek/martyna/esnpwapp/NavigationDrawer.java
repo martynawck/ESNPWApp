@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.wiacek.martyna.esnpwapp.Adapter.NavigationDrawerAdapter;
+import com.wiacek.martyna.esnpwapp.AsyncTask.UpdateToDosOnServerTask;
 import com.wiacek.martyna.esnpwapp.Domain.DrawerItem;
 import com.wiacek.martyna.esnpwapp.Domain.NavigationDrawerModel;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
@@ -363,7 +364,7 @@ public class NavigationDrawer extends ActionBarActivity {
 
         switch (id) {
             case R.id.action_logout:
-                session.destroySession();
+                //session.destroySession();
                 moveToBackAndFinish();
                 return true;
             case R.id.action_settings:
@@ -388,6 +389,8 @@ public class NavigationDrawer extends ActionBarActivity {
     }
 
     public void moveToBackAndFinish() {
+        UpdateToDosOnServerTask task = new UpdateToDosOnServerTask(getApplicationContext(), session);
+        task.execute(new String[] {});
         moveTaskToBack(true);
         NavigationDrawer.this.finish();
     }

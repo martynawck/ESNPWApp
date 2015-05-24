@@ -1,10 +1,6 @@
 package com.wiacek.martyna.esnpwapp.Adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +10,10 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.wiacek.martyna.esnpwapp.Domain.ESNPartner;
-import com.wiacek.martyna.esnpwapp.Domain.Event;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.R;
 
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Created by Martyna on 2015-03-03.

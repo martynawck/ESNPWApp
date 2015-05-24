@@ -69,7 +69,7 @@ public class DownloadPointsMarkers extends AsyncTask<String, Void, String> {
                 color = BitmapDescriptorFactory.HUE_ROSE;
                 break;
             case "7":
-                color = BitmapDescriptorFactory.HUE_YELLOW;
+                color = BitmapDescriptorFactory.HUE_CYAN;
                 break;
             case "8":
                 color = BitmapDescriptorFactory.HUE_ORANGE;

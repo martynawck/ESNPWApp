@@ -211,7 +211,6 @@ public class ChangePictureFragment extends Fragment {
             @Override
             public void onResponse(String response) {
                 try {
-                    Log.e("RESPONSE", response);
                     prgDialog.dismiss();
                     new SessionManager(getActivity().getApplicationContext()).setValueOfProfileImage("include/user_profile_pics/"+fileName);
                     Toast.makeText(getActivity().getBaseContext(),

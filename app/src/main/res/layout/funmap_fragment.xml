@@ -5,57 +5,37 @@
     android:weightSum="1">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_gravity="center"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="5dp"
         android:layout_height="wrap_content">
         <Spinner
             android:paddingLeft="0dp"
-            android:layout_marginLeft="0dp"
+            android:paddingTop="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_width="130dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/spinner"
 
-
             android:dropDownWidth="130dp"
-            android:layout_gravity="center_horizontal" />
-        <ImageButton
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:padding="0dp"
-            android:scaleType="fitCenter"
-            android:layout_marginLeft="150dp"
-            android:layout_alignStart="@+id/spinner"
-            android:layout_alignLeft="@id/spinner"
+            android:layout_gravity="center_horizontal"
+            android:layout_toLeftOf="@+id/button"
+            android:layout_toStartOf="@+id/button" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="YOUR PLACES"
+            android:background="@drawable/abc_ab_share_pack_holo_light"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/button"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
-            android:id="@+id/imageButton"
-            android:src="@drawable/add_but" />
-
-        <ImageButton
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:padding="0dp"
-            android:scaleType="fitCenter"
-
-            android:id="@+id/imageButton2"
-            android:layout_alignStart="@+id/imageButton"
-            android:layout_alignLeft="@id/imageButton"
-            android:layout_marginLeft="40dp"
-            android:src="@drawable/edit_but"
-            android:layout_gravity="right"/>
-
-        <ImageButton
-            android:layout_width="32dp"
-            android:src="@drawable/delete_but"
-            android:layout_height="32dp"
-            android:padding="0dp"
-            android:scaleType="fitCenter"
-            android:layout_marginLeft="40dp"
-            android:layout_alignStart="@+id/imageButton2"
-            android:layout_alignLeft="@id/imageButton2"
-            android:id="@+id/imageButton3" />
 
     </RelativeLayout>
 

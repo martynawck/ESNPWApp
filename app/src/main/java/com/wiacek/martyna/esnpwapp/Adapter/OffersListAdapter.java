@@ -1,10 +1,7 @@
 package com.wiacek.martyna.esnpwapp.Adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +15,6 @@ import com.wiacek.martyna.esnpwapp.Domain.ESNPartner;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.R;
 
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 

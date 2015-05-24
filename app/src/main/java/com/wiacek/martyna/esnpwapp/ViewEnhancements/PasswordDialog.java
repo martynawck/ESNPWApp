@@ -39,11 +39,7 @@ public class PasswordDialog extends DialogPreference {
     public void onClick(DialogInterface dialog, int which){
 
         if(which == DialogInterface.BUTTON_POSITIVE) {
-            Log.d("POS","POSITIVE");
-            Log.d("LSLDA", newPwdFirst.getText().toString());
-            Log.d("LSLDA",newPwdSecond.getText().toString());
             if (newPwdFirst.getText().toString().equals(newPwdSecond.getText().toString())) {
-                Log.d("RES", "TAK");
                 ChangePasswordTask task = new ChangePasswordTask(getContext());
                 task.execute(new String[] {originalPwd.getText().toString(), newPwdSecond.getText().toString()});
 

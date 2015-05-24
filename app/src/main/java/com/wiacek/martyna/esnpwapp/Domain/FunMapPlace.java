@@ -56,4 +56,24 @@ public class FunMapPlace {
         return description;
     }
 
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean sameSame = false;
+
+        if (object != null && object instanceof FunMapPlace)
+        {
+            sameSame = this.coordinate == ((FunMapPlace) object).coordinate;
+        }
+
+        return sameSame;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 7 * hash + this.coordinate.hashCode();
+        return hash;
+    }
+
 }

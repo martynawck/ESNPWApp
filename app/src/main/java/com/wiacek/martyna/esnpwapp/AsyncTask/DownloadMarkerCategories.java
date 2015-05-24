@@ -5,9 +5,16 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapCategory;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapPlace;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
+import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Interface.OnFunMapCategory;
 import com.wiacek.martyna.esnpwapp.R;
 
@@ -20,6 +27,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -29,18 +38,19 @@ public class DownloadMarkerCategories extends AsyncTask<String, Void, String> {
 
     private OnFunMapCategory listener;
     TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
+    Context context;
 
-    public DownloadMarkerCategories ( OnFunMapCategory listener){
+    public DownloadMarkerCategories ( Context context, OnFunMapCategory listener){
         this.listener = listener;
+        this.context = context;
     }
 
     protected void onPreExecute ( ) {
-
     }
 
     protected String doInBackground(String... urls) {
-        try{
 
+     try{
             places = new TreeMap<>();
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(ServerUrl.BASE_URL + "funmapCategories.php");
@@ -67,20 +77,13 @@ public class DownloadMarkerCategories extends AsyncTask<String, Void, String> {
 
                     places.put(category, new ArrayList<FunMapPlace>());
                 }
-
             }
 
-            Log.d("CATEGORY_SUM", Integer.toString(places.keySet().size() ));
-
-
             for (FunMapCategory cat : places.keySet()) {
-                //funMapCategoryArrayListNames.add(cat.getName());
                 places.put(cat, new ArrayList<FunMapPlace>());
             }
 
-
         }catch(Exception e){
-            // progressDialog.dismiss();
             System.out.println("Exception : " + e.getMessage());
         }
 

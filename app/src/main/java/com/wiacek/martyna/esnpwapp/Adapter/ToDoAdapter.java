@@ -2,17 +2,12 @@ package com.wiacek.martyna.esnpwapp.Adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Domain.TodoTask;
 import com.wiacek.martyna.esnpwapp.R;
