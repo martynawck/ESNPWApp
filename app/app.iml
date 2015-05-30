@@ -89,6 +89,8 @@
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="picasso-2.5.2" level="project" />
     <orderEntry type="library" exported="" name="1_picasso-2.5.2" level="project" />
+    <orderEntry type="library" exported="" name="butterknife-6.1.0" level="project" />
+    <orderEntry type="library" exported="" name="1_butterknife-6.1.0" level="project" />
     <orderEntry type="module" module-name="library" exported="" />
     <orderEntry type="module" module-name="volley" exported="" />
   </component>

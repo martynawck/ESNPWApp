@@ -2,84 +2,84 @@ package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.Buddy;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
+import com.wiacek.martyna.esnpwapp.JSONFunctions;
 import com.wiacek.martyna.esnpwapp.SQLHelpers.ESNPWSQLHelper;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by Martyna on 2015-04-29.
+ * Created by Martyna on 2015-05-30.
  */
-public class GetBuddyFromServerTask extends AsyncTask<String, Void, String> {
+public class GetBuddyFromServerTask {
 
     private final ProgressDialog progressDialog;
     private Context mContext;
     Buddy buddy;
     ESNPWSQLHelper buddySQLHelper;
-    HttpPost httppost;
-    HttpClient httpclient;
-    List<NameValuePair> nameValuePairs;
     SessionManager sessionManager;
 
-    public GetBuddyFromServerTask (Context context, ProgressDialog progressDialog) {
+    public GetBuddyFromServerTask (Context context, ProgressDialog progressDialog, SessionManager sessionManager) {
         this.progressDialog = progressDialog;
         mContext = context;
+        this.sessionManager = sessionManager;
     }
-    protected String doInBackground(String... urls) {
-        try{
-            Log.d("GET BUDDY","GET BUDDY");
-            sessionManager = new SessionManager(mContext);
-            httpclient = new DefaultHttpClient();
-            httppost = new HttpPost(ServerUrl.BASE_URL + "buddy.php");
-            nameValuePairs = new ArrayList<NameValuePair>(1);
-            final String login_session = sessionManager.getValueOfUserId();
-            nameValuePairs.add(new BasicNameValuePair("id", login_session));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            final String response = httpclient.execute(httppost, responseHandler);
-            if(!response.equalsIgnoreCase("null")){
-                JSONObject json = new JSONObject(response);
-                buddy = new Buddy();
-                buddy.setFirstname(json.getString("firstname"));
-                buddy.setLastname(json.getString("lastname"));
-                buddy.setEmail(json.getString("email"));
-                buddy.setSkype(json.getString("skype_id"));
-                buddy.setFacebook(json.getString("facebook_id"));
-                buddy.setPhone(json.getString("phone_number"));
-                buddy.setWhatsapp(json.getString("whatsapp_id"));
-                return "0";
+    public void runVolley() {
+
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        String uri = String.format("buddy.php?id=%1$s",
+                sessionManager.getValueOfUserId());
+        StringRequest sr = new StringRequest(Request.Method.GET, ServerUrl.BASE_URL + uri , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if(!response.equalsIgnoreCase("null")){
+                    try {
+                        JSONObject json = new JSONObject(response);
+                        buddy = JSONFunctions.JSONToBuddy(json);
+                        progressDialog.dismiss();
+                        buddySQLHelper = new ESNPWSQLHelper(mContext);
+                        Integer userId = Integer.parseInt(sessionManager.getValueOfUserId());
+                        buddySQLHelper.insertBuddy(userId, buddy);
+                    } catch (Exception e) {
+                        progressDialog.dismiss();
+                        Toast.makeText(mContext, "Error. Cannot get buddy data from server!", Toast.LENGTH_LONG).show();
+                    }
+
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "Error. Cannot get buddy data from server!", Toast.LENGTH_LONG).show();
+                }
             }
-        }catch(Exception e){
-            progressDialog.dismiss();
-            System.out.println("Exception : " + e.getMessage());
-        }
-        return "-1";
-    }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Error. Cannot get buddy data from server!", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id",sessionManager.getValueOfUserId());
 
+                return params;
+            }
+        };
+        queue.add(sr);
 
-    protected void onPostExecute(String result) {
-
-        if (!result.equals("-1")) {
-            buddySQLHelper = new ESNPWSQLHelper(mContext);
-            Integer userId = Integer.parseInt(sessionManager.getValueOfUserId());
-            buddySQLHelper.insertBuddy(userId, buddy);
-        }
     }
 }

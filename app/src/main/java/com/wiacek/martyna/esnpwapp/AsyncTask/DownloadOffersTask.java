@@ -2,9 +2,19 @@ package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Adapter.OffersListAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.ESNPartner;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
@@ -24,10 +34,9 @@ import java.util.TreeMap;
  * Created by Martyna on 2015-05-21.
  */
 
-public class DownloadOffersTask extends AsyncTask<String, Void, String> {
+public class DownloadOffersTask {
 
     private Context mContext;
-    ProgressDialog mDialog;
     OnOffersDownload listener;
     TreeMap<Integer, List<ESNPartner>> expandableListDetail;
     List<String> expandableListTitle;
@@ -37,64 +46,56 @@ public class DownloadOffersTask extends AsyncTask<String, Void, String> {
         this.listener = listener;
      }
 
-    protected void onPreExecute ( ) {
-    }
+    public void runVolley() {
 
-    protected String doInBackground(String... urls) {
-        try{
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        JsonObjectRequest sr = new JsonObjectRequest(Request.Method.GET,
+                ServerUrl.BASE_URL + "include/partners_data.json", null, new Response.Listener<JSONObject>()  {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    expandableListDetail = new TreeMap<>();
+                    expandableListTitle = new ArrayList<>();
+                    ArrayList<ESNPartner> partners = new ArrayList<>();
 
-            expandableListDetail = new TreeMap<>();
-            expandableListTitle = new ArrayList<>();
+                    JSONObject jsonObject;
+                    JSONArray jsonArray = response.getJSONArray("data");
 
-            ArrayList<ESNPartner> partners = new ArrayList<>();
-            JSONObject jsonQuery = JSONFunctions
-                    .getJSONfromURL(ServerUrl.BASE_URL + "include/partners_data.txt");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        jsonObject = jsonArray.getJSONObject(i);
+                        ESNPartner esnPartner = JSONFunctions.JSONToPartner(jsonObject);
+                        partners.add(esnPartner);
+                    }
 
-            JSONObject jsonObject;
-            JSONArray jsonArray = jsonQuery.getJSONArray("data");
+                    Collections.sort(partners, new Comparator<ESNPartner>() {
+                        public int compare(ESNPartner o1, ESNPartner o2) {
+                            if (o1.getName() == null || o2.getName() == null)
+                                return 0;
+                            return o1.getName().compareTo(o2.getName());
+                        }
+                    });
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObject = jsonArray.getJSONObject(i);
-                ESNPartner esnPartner = new ESNPartner();
-                esnPartner.setId(jsonObject.getString("id"));
-                esnPartner.setName(jsonObject.getString("name"));
-                esnPartner.setDescription(jsonObject.getString("description"));
-                esnPartner.setDiscount(jsonObject.getString("discount"));
-                esnPartner.setHowToUse(jsonObject.getString("how_to_use"));
-                esnPartner.setWebsite(jsonObject.getString("website"));
-                esnPartner.setImage(jsonObject.getString("img_url"));
+                    int i = 0;
+                    for (ESNPartner p : partners) {
+                        expandableListTitle.add(p.getName());
+                        ArrayList<ESNPartner> pa = new ArrayList<>();
+                        pa.add(p);
+                        expandableListDetail.put(i, pa);
+                        i++;
+                    }
 
-                partners.add(esnPartner);
-            }
+                    listener.onTaskCompleted(expandableListTitle, expandableListDetail);
 
-            Collections.sort(partners, new Comparator<ESNPartner>() {
-                public int compare(ESNPartner o1, ESNPartner o2) {
-                    if (o1.getName() == null || o2.getName() == null)
-                        return 0;
-                    return o1.getName().compareTo(o2.getName());
+                } catch (Exception e) {
+                    Toast.makeText(mContext, "Error. Cannot download offers!", Toast.LENGTH_LONG).show();
                 }
-            });
-
-            int i = 0;
-            for (ESNPartner p : partners) {
-                expandableListTitle.add(p.getName());
-                ArrayList<ESNPartner> pa = new ArrayList<>();
-                pa.add(p);
-                expandableListDetail.put(i, pa);
-                i++;
             }
-
-            return "0";
-
-        }catch(Exception e){
-            System.out.println("Exception : " + e.getMessage());
-        }
-        return "1";
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-
-        listener.onTaskCompleted(expandableListTitle, expandableListDetail);
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error. Cannot download offers!", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(sr);
     }
 }

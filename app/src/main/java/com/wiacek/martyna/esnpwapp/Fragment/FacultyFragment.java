@@ -42,6 +42,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 
 public class FacultyFragment extends Fragment {
 
@@ -51,8 +54,9 @@ public class FacultyFragment extends Fragment {
     public static final String ITEM_NAME = "itemName";
 
     ProgressDialog dialog = null;
-    TextView polishFacName, englishFacName;
-    ListView listView1;
+    @InjectView(R.id.polishFacName) TextView polishFacName;
+    @InjectView(R.id.englishFacName) TextView englishFacName;
+    @InjectView(R.id.listView1)ListView listView1;
     View view;
 
     public FacultyFragment() { }
@@ -62,15 +66,14 @@ public class FacultyFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_faculty, container, false);
-        polishFacName = (TextView) view.findViewById(R.id.polishFacName);
-        englishFacName = (TextView) view.findViewById(R.id.englishFacName);
-        listView1 = (ListView)view.findViewById(R.id.listView1);
+        ButterKnife.inject(this, view);
+
         sessionManager = new SessionManager(getActivity().getApplicationContext());
 
-        DownloadFacultyInfo task = new DownloadFacultyInfo(dialog, sessionManager, new OnSingleStringTaskCompleted() {
+        DownloadFacultyInfo task = new DownloadFacultyInfo(getActivity().getApplicationContext(),  dialog, sessionManager, new OnSingleStringTaskCompleted() {
             @Override
             public void onTaskCompleted(String string) {
-                CreateFacultyLinksTask task = new CreateFacultyLinksTask(new OnTaskCompleted() {
+                CreateFacultyLinksTask task = new CreateFacultyLinksTask(getActivity().getApplicationContext(), new OnTaskCompleted() {
                     @Override
                     public void onTaskCompleted(ArrayList<String> strings) {
                         final ArrayList<String> data = strings;

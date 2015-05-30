@@ -2,7 +2,6 @@ package com.wiacek.martyna.esnpwapp.Adapter;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +97,6 @@ public class OffersListAdapter extends BaseExpandableListAdapter {
         }
         TextView listTitleTextView = (TextView) convertView
                 .findViewById(R.id.name);
-        Log.d("LISTTITLE",listTitle);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
         listTitleTextView.setText(listTitle);
         ImageView image = (ImageView) convertView.findViewById(R.id.image);
@@ -115,6 +113,5 @@ public class OffersListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
     }
-
 
 }

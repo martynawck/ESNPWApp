@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <WebView
-        android:id="@+id/mywebview"
+        android:id="@+id/mywebView"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:clickable="true"/>

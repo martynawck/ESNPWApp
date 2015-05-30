@@ -1,9 +1,19 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -11,13 +21,18 @@ import com.wiacek.martyna.esnpwapp.Domain.FunMapCategory;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapPlace;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Fragment.FragmentFunMap;
+import com.wiacek.martyna.esnpwapp.JSONFunctions;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -31,12 +46,14 @@ import java.util.TreeMap;
 
 public class DownloadAllMarkers extends AsyncTask<String, Void, String> {
 
+    Context mContext;
     FragmentFunMap fragment;
     ArrayList<MarkerOptions> markerOptions;
     TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
 
-    public DownloadAllMarkers (FragmentFunMap fragment, TreeMap <FunMapCategory, ArrayList<FunMapPlace>> places){
+    public DownloadAllMarkers (Context context, FragmentFunMap fragment, TreeMap <FunMapCategory, ArrayList<FunMapPlace>> places){
         this.fragment = fragment;
+        this.mContext = context;
         this.places = places;
     }
 
@@ -46,12 +63,15 @@ public class DownloadAllMarkers extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... urls) {
         try{
 
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost(ServerUrl.BASE_URL + "funmapAllPlaces.php");
+            HttpParams httpParameters = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
+            HttpClient httpclient = new DefaultHttpClient(httpParameters);
+            HttpGet httpget = new HttpGet(ServerUrl.BASE_URL + "funmapAllPlaces.php");
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
 
             markerOptions = new ArrayList<>();
-            final String response = httpclient.execute(httppost, responseHandler);
+            final String response = httpclient.execute(httpget, responseHandler);
             float color = 0;
 
             if(!response.equalsIgnoreCase("null")){
@@ -62,17 +82,10 @@ public class DownloadAllMarkers extends AsyncTask<String, Void, String> {
                     jsonObject = jsonArray.getJSONObject(i);
                     String post = jsonObject.getString("post");
                     JSONObject postObject = new JSONObject(post);
-                    FunMapPlace place = new FunMapPlace();
-                    place.setId("");
-                    place.setName(postObject.getString("name"));
-                    place.setDescription(postObject.getString("description"));
-                    place.setCoordinate(new LatLng(Double.parseDouble(postObject.getString("x_coordinate")),
-                            Double.parseDouble(postObject.getString("y_coordinate"))));
+                    FunMapPlace place = JSONFunctions.JSONToFunMapPlace(postObject);
 
-                    Log.d("place name",place.getName());
                     for (FunMapCategory category : places.keySet()) {
                         if (postObject.getString("category_id").equals(category.getId())) {
-                            Log.d("category name", category.getName());
                             places.get(category).add(place);
                         }
                     }
@@ -105,28 +118,29 @@ public class DownloadAllMarkers extends AsyncTask<String, Void, String> {
 
                     }
                     MarkerOptions marker = new MarkerOptions();
-                    marker.position(new LatLng(Double.parseDouble(postObject.getString("x_coordinate")),
-                            Double.parseDouble(postObject.getString("y_coordinate"))));
-                    marker.title(postObject.getString("name"));
-                    marker.snippet(postObject.getString("description"));
+                    marker.position(place.getCoordinate());
+                    marker.title(place.getName());
+                    marker.snippet(place.getDescription());
                     marker.icon(BitmapDescriptorFactory.defaultMarker(color));
                     markerOptions.add(marker);
 
                 }
 
             }
+            return response;
 
         }catch(Exception e){
-            System.out.println("Exception : " + e.getMessage());
+            return "-1";
         }
-
-        return "0";
     }
 
     @Override
     protected void onPostExecute(String result) {
 
-        fragment.setList(markerOptions, places);
+        if (!result.equals("null") && !result.equals("-1"))
+            fragment.setList(markerOptions, places);
+        else
+            Toast.makeText(mContext, "Error. Cannot download all the markers! Try again later!", Toast.LENGTH_LONG).show();
 
     }
 }

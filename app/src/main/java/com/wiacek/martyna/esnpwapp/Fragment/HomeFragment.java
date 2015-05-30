@@ -11,11 +11,14 @@ import android.widget.ImageButton;
 
 import com.wiacek.martyna.esnpwapp.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class HomeFragment extends Fragment {
 
-    ImageButton facebook;
-    ImageButton twitter;
-    ImageButton youtube;
+    @InjectView(R.id.facebookButton)ImageButton facebook;
+    @InjectView(R.id.twitterButton)ImageButton twitter;
+    @InjectView(R.id.youtubeButton)ImageButton youtube;
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
@@ -27,10 +30,7 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
-
-        facebook = (ImageButton) rootView.findViewById(R.id.facebookButton);
-        twitter = (ImageButton) rootView.findViewById(R.id.twitterButton);
-        youtube = (ImageButton) rootView.findViewById(R.id.youtubeButton);
+        ButterKnife.inject(this, rootView);
 
         facebook.setOnClickListener(new View.OnClickListener() {
             @Override

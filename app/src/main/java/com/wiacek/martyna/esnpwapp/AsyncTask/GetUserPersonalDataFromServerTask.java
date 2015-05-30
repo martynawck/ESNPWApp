@@ -4,10 +4,17 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Login;
@@ -21,15 +28,20 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Martyna on 2015-04-29.
  */
-public class GetUserPersonalDataFromServerTask extends AsyncTask<String, Void, String> {
+public class GetUserPersonalDataFromServerTask {
 
     private Context mContext;
     HttpPost httppost;
@@ -45,61 +57,61 @@ public class GetUserPersonalDataFromServerTask extends AsyncTask<String, Void, S
         this.activity = activity;
         this.progressDialog = progressDialog;
     }
-    protected String doInBackground(String... urls) {
-        try{
-            session = new SessionManager(mContext);
-            httpclient = new DefaultHttpClient();
-            httppost = new HttpPost(ServerUrl.BASE_URL + "faculty.php");
 
-            final String login_session = session.getValueOfUserId();
-            nameValuePairs = new ArrayList<NameValuePair>(1);
+    public void runVolley() {
 
-            nameValuePairs.add(new BasicNameValuePair("id",login_session));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        session = new SessionManager(mContext);
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        String uri = String.format("faculty.php?id=%1$s",session.getValueOfUserId());
+        StringRequest sr = new StringRequest(Request.Method.GET, ServerUrl.BASE_URL + uri , new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    if(!response.equalsIgnoreCase("null")) {
 
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            final String response = httpclient.execute(httppost, responseHandler);
+                        JSONObject json = new JSONObject(response);
 
-            if(!response.equalsIgnoreCase("null")){
-                JSONObject json = new JSONObject(response);
-
-                session.setValueOfFaculty( ( json.getString("faculty").equals("null")) ?"" : json.getString("faculty") );
-                session.setValueOfFirstName(( json.getString("first_name").equals("null")) ?"" : json.getString("first_name") );
-                session.setValueOfLastName( ( json.getString("last_name").equals("null")) ?"" : json.getString("last_name") );
-                session.setValueOfProfileImage( ( json.getString("image").equals("null")) ?"" : json.getString("image") );
-                session.setValueOfEmail( ( json.getString("email").equals("null")) ?"" : json.getString("email") );
-                session.setValueOfFacebook( ( json.getString("facebook_id").equals("null")) ?"" : json.getString("facebook_id") );
-                session.setValueOfPhone( ( json.getString("phone_number").equals("null")) ?"" : json.getString("phone_number") );
-                session.setValueOfSkype( ( json.getString("skype_id").equals("null")) ?"" : json.getString("skype_id") );
-                session.setValueOfWhatsapp( ( json.getString("whatsapp_id").equals("null")) ?"" : json.getString("whatsapp_id") );
-                Log.d("VISIBILITY", json.getString("share_data"));
-                        session.setValueOfProfileVisibility( json.getString("share_data"));
-
-                return "0";
-            }
-
-        }catch(Exception e){
-            progressDialog.dismiss();
-            System.out.println("Exception : " + e.getMessage());
-        }
-        return "-1";
-
-    }
-
-    protected void onPostExecute(String result) {
-
-        if (!result.equals("-1")) {
+                        session.setValueOfFaculty((json.getString("faculty").equals("null")) ? "" : json.getString("faculty"));
+                        session.setValueOfFirstName((json.getString("first_name").equals("null")) ? "" : json.getString("first_name"));
+                        session.setValueOfLastName((json.getString("last_name").equals("null")) ? "" : json.getString("last_name"));
+                        session.setValueOfProfileImage((json.getString("image").equals("null")) ? "" : json.getString("image"));
+                        session.setValueOfEmail((json.getString("email").equals("null")) ? "" : json.getString("email"));
+                        session.setValueOfFacebook((json.getString("facebook_id").equals("null")) ? "" : json.getString("facebook_id"));
+                        session.setValueOfPhone((json.getString("phone_number").equals("null")) ? "" : json.getString("phone_number"));
+                        session.setValueOfSkype((json.getString("skype_id").equals("null")) ? "" : json.getString("skype_id"));
+                        session.setValueOfWhatsapp((json.getString("whatsapp_id").equals("null")) ? "" : json.getString("whatsapp_id"));
+                        session.setValueOfProfileVisibility(json.getString("share_data"));
 
 
-            activity.runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(mContext, "You are now logged on!", Toast.LENGTH_SHORT).show();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(mContext, "Facebook is not installed. Please install Facebook!",
+                            Toast.LENGTH_SHORT).show();
                 }
-            });
 
-            Intent i = new Intent(mContext, NavigationDrawer.class);
-            activity.startActivity(i);
+                activity.runOnUiThread(new Runnable() {
+                    public void run() {
+                        Toast.makeText(mContext, "You are now logged in!", Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-        }
+                Intent i = new Intent(mContext, NavigationDrawer.class);
+                activity.startActivity(i);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error. Cannot get user personal data from server!", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id",session.getValueOfUserId());
+
+                return params;
+            }
+        };
+        queue.add(sr);
     }
 }

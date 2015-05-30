@@ -45,12 +45,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class ChangePictureFragment extends Fragment {
 
-    ImageView profilePic;
-    Button takePic;
-    Button choosePic;
-    Button uploadPic;
+    @InjectView(R.id.profilePic) ImageView profilePic;
+    @InjectView(R.id.takePicButton)Button takePic;
+    @InjectView(R.id.choosePicButton)Button choosePic;
+    @InjectView(R.id.uploadPicButton) Button uploadPic;
     ProgressDialog prgDialog;
     String encodedString;
     String imgPath, fileName;
@@ -67,11 +70,8 @@ public class ChangePictureFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view=inflater.inflate(R.layout.custom_preference_picture_dialog,container, false);
+        ButterKnife.inject(this, view);
 
-        profilePic = (ImageView) view.findViewById(R.id.profilePic);
-        takePic = (Button) view.findViewById(R.id.takePicButton);
-        choosePic = (Button) view.findViewById(R.id.choosePicButton);
-        uploadPic = (Button) view.findViewById(R.id.uploadPicButton);
         prgDialog = new ProgressDialog(getActivity());
         prgDialog.setCancelable(false);
 

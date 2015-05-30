@@ -12,6 +12,11 @@ import android.widget.TextView;
 import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
 import com.wiacek.martyna.esnpwapp.R;
 
+import org.w3c.dom.Text;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Martyna on 2015-03-03.
  */
@@ -36,10 +41,7 @@ public class MentorAdapter extends ArrayAdapter<MentorContact> {
         {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             row = inflater.inflate(layoutResourceId, parent, false);
-
-            holder = new MentorHolder();
-            holder.imgIcon = (ImageView)row.findViewById(R.id.profilePic);
-            holder.txtTitle = (TextView)row.findViewById(R.id.name);
+            holder = new MentorHolder(row);
             row.setTag(holder);
         }
         else
@@ -56,7 +58,11 @@ public class MentorAdapter extends ArrayAdapter<MentorContact> {
 
     static class MentorHolder
     {
-        ImageView imgIcon;
-        TextView txtTitle;
+        @InjectView(R.id.profilePic) ImageView imgIcon;
+        @InjectView(R.id.name) TextView txtTitle;
+
+        public MentorHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

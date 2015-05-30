@@ -41,7 +41,6 @@ public class DownloadPointsMarkers extends AsyncTask<String, Void, String> {
         FunMapCategory category = null;
 
         for (FunMapCategory funMapCategory : places.keySet()) {
-            Log.d("CAT", funMapCategory.getName());
 
             if (funMapCategory.getName().equals(urls[0])) {
                 category = funMapCategory;
@@ -79,7 +78,6 @@ public class DownloadPointsMarkers extends AsyncTask<String, Void, String> {
         for (FunMapPlace place : places.get(category)) {
             MarkerOptions marker = new MarkerOptions();
             marker.position(place.getCoordinate());
-            Log.d("name",place.getName());
             marker.title(place.getName());
             marker.snippet(place.getDescription());
             marker.icon(BitmapDescriptorFactory.defaultMarker(color));

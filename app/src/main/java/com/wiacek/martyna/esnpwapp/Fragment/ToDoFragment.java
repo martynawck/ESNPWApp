@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import com.wiacek.martyna.esnpwapp.Adapter.ToDosListsAdapter;
 import com.wiacek.martyna.esnpwapp.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Martyna on 2015-04-19.
  */
@@ -19,7 +22,7 @@ public class ToDoFragment extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    ViewPager mViewPager;
+    @InjectView(R.id.pager )ViewPager mViewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -27,7 +30,7 @@ public class ToDoFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_to_do, container,
                 false);
-        mViewPager = (ViewPager) view.findViewById(R.id.pager);
+        ButterKnife.inject(this, view);
         mSectionsPagerAdapter = new ToDosListsAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
 

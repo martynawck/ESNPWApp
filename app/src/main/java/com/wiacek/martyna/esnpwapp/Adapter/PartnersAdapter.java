@@ -15,6 +15,9 @@ import com.wiacek.martyna.esnpwapp.R;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Martyna on 2015-03-03.
  */
@@ -39,11 +42,7 @@ public class PartnersAdapter extends ArrayAdapter<ESNPartner> {
         {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             row = inflater.inflate(layoutResourceId, parent, false);
-
-            holder = new ESNPartnerHolder();
-            holder.image = (ImageView)row.findViewById(R.id.image);
-            holder.name = (TextView)row.findViewById(R.id.name);
-
+            holder = new ESNPartnerHolder(row);
             row.setTag(holder);
         }
         else
@@ -53,17 +52,19 @@ public class PartnersAdapter extends ArrayAdapter<ESNPartner> {
 
         ESNPartner partner = data.get(position);
         holder.name.setText(partner.getName());
-
-        ImageView image = (ImageView) row.findViewById(R.id.image);
-        Picasso.with(getContext()).load(ServerUrl.BASE_URL + partner.getImage()).into(image);
+        Picasso.with(getContext()).load(ServerUrl.BASE_URL + partner.getImage()).into(holder.image);
 
         return row;
     }
 
     static class ESNPartnerHolder
     {
-        ImageView image;
-        TextView name;
+        @InjectView(R.id.image) ImageView image;
+        @InjectView(R.id.name) TextView name;
+
+        public ESNPartnerHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 
 }

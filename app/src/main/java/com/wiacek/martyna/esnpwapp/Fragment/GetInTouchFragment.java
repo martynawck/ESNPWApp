@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -63,13 +64,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class GetInTouchFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    private SearchView searchView;
-    private ListView mListView;
+    @InjectView(R.id.search_view)SearchView searchView;
+    @InjectView(R.id.list_view) ListView mListView;
     ProgressDialog progressDialog;
     ArrayList<Student> students = null;
 
@@ -78,11 +82,10 @@ public class GetInTouchFragment extends Fragment implements SearchView.OnQueryTe
 
         View view = inflater.inflate(R.layout.fragment_get_in_touch, container,
                 false);
+        ButterKnife.inject(this, view);
 
         students = new ArrayList<>();
         progressDialog = ProgressDialog.show(getActivity(), "","Updating students...", true);
-        mListView = (ListView) view.findViewById(R.id.list_view);
-        searchView = (SearchView) view.findViewById(R.id.search_view);
 
         GetStudentsFromServerTask task = new GetStudentsFromServerTask(getActivity().getApplicationContext(),progressDialog, new OnStudentsListTaskCompleted() {
             @Override
@@ -96,8 +99,7 @@ public class GetInTouchFragment extends Fragment implements SearchView.OnQueryTe
                     public void onItemClick(AdapterView<?> parent, View view,
                                             int position, long id) {
                         final Student student = (Student) parent.getItemAtPosition(position);
-
-                        GetStudentDetails task = new GetStudentDetails(student, new OnTaskCompleted() {
+                        GetStudentDetails task = new GetStudentDetails(student.getId(), getActivity().getApplicationContext(), student, new OnTaskCompleted() {
                             @Override
                             public void onTaskCompleted(ArrayList<String> strings) {
                                 ArrayList<String>details = strings;
@@ -122,9 +124,8 @@ public class GetInTouchFragment extends Fragment implements SearchView.OnQueryTe
                                         .replace(R.id.content_frame, fragment, "STUDENT_PROFILE").addToBackStack(null).commit();
                             }
                         });
-                        String[] string = new String[1];
-                        string[0] = student.getId();
-                        task.execute(string);
+
+                        task.runVolley();
                     }
                 });
                 setupSearchView();

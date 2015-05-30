@@ -1,9 +1,18 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Domain.TodoTask;
@@ -14,6 +23,9 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Martyna on 2015-05-22.
@@ -39,13 +53,17 @@ public class UpdateToDosOnServerTask extends AsyncTask<String, Void, String> {
         mContext = context;
         this.sessionManager = sessionManager;
     }
+
     protected String doInBackground(String... urls) {
 
         esnpwsqlHelper = new ESNPWSQLHelper(mContext);
         ArrayList<TodoTask> todoTasksAfter = esnpwsqlHelper.getTodosAfter(sessionManager.getValueOfUserId());
         ArrayList<TodoTask> todoTasksBefore = esnpwsqlHelper.getTodosBefore(sessionManager.getValueOfUserId());
 
-        HttpClient httpclient = new DefaultHttpClient();
+        HttpParams httpParameters = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
+        HttpConnectionParams.setSoTimeout(httpParameters, 10000);
+        HttpClient httpclient = new DefaultHttpClient(httpParameters);
         Log.d("user_id", sessionManager.getValueOfUserId());
         HttpPost httppost = new HttpPost(ServerUrl.BASE_URL+"updateTodos.php");
 
@@ -100,19 +118,30 @@ public class UpdateToDosOnServerTask extends AsyncTask<String, Void, String> {
                 }
                 //TODO if sb true ok else blad
             }
+            return "0";
 
 
         }catch (ClientProtocolException e) {
+            return "-1";
             // TODO Auto-generated catch block
         } catch (IOException e) {
+            return "-1";
             // TODO Auto-generated catch block
         } catch (Exception e) {
+            return "-1";
 
         }
-        return "0";
     }
 
     protected void onPostExecute(String result) {
-        sessionManager.destroySession();
+        if (result.equals("0"))
+            sessionManager.destroySession();
+        else
+            Toast.makeText(mContext, "Error. Cannot update ToDos on server!", Toast.LENGTH_LONG).show();
     }
+
+    /**
+     * Created by Martyna on 2015-05-30.
+     */
+
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +16,9 @@ import com.wiacek.martyna.esnpwapp.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Created by Martyna on 2015-03-03.
@@ -41,14 +45,7 @@ public class EventsAdapter extends ArrayAdapter<Event> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             row = inflater.inflate(layoutResourceId, parent, false);
 
-            holder = new EventHolder();
-            holder.name = (TextView)row.findViewById(R.id.name);
-            holder.date = (TextView) row.findViewById(R.id.date);
-            holder.owner = (TextView) row.findViewById(R.id.owner);
-            holder.place = (TextView) row.findViewById(R.id.place);
-            holder.where = (TextView) row.findViewById(R.id.where);
-
-
+            holder = new EventHolder(row);
             row.setTag(holder);
         }
         else
@@ -72,10 +69,14 @@ public class EventsAdapter extends ArrayAdapter<Event> {
 
     static class EventHolder
     {
-        TextView name;
-        TextView date;
-        TextView place;
-        TextView where;
-        TextView owner;
+        @InjectView(R.id.name) TextView name;
+        @InjectView(R.id.date) TextView date;
+        @InjectView(R.id.owner) TextView owner;
+        @InjectView(R.id.where) TextView where;
+        @InjectView(R.id.place) TextView place;
+
+        public EventHolder( View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

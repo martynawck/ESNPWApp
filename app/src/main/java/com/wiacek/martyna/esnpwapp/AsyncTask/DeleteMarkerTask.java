@@ -1,10 +1,18 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Domain.TodoTask;
@@ -20,6 +28,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,12 +39,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Martyna on 2015-05-23.
- */
-public class DeleteMarkerTask extends AsyncTask<String, Void, String> {
+ */public class DeleteMarkerTask {
 
     private Context mContext;
     HttpPost httppost;
@@ -41,52 +53,43 @@ public class DeleteMarkerTask extends AsyncTask<String, Void, String> {
     List<NameValuePair> nameValuePairs;
     ESNPWSQLHelper esnpwsqlHelper;
     SessionManager sessionManager;
+    String id;
 
 
-    public DeleteMarkerTask(Context context) {
+    public DeleteMarkerTask(String id, Context context) {
         mContext = context;
         this.sessionManager = sessionManager;
+        this.id = id;
     }
-    protected String doInBackground(String... urls) {
 
-       // HttpClient httpclient = new DefaultHttpClient();
-       // HttpPost httppost = new HttpPost(ServerUrl.BASE_URL+"deleteMarker.php");
+    public void runVolley() {
+        sessionManager = new SessionManager(mContext);
 
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        StringRequest sr = new StringRequest(Request.Method.POST, ServerUrl.BASE_URL +"deleteMarker.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-        try {
-            httpclient = new DefaultHttpClient();
-            //String url_endpoint;
-
-            httppost = new HttpPost(ServerUrl.BASE_URL+"deleteMarker.php");
-            nameValuePairs = new ArrayList<NameValuePair>(1);
-
-            nameValuePairs.add(new BasicNameValuePair("id", urls[0]));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            final String response = httpclient.execute(httppost, responseHandler);
-
-            if(response.equals("true") ){
-                return response;
-
-            }else{
-                return "-1";
+                Log.d("resp", response);
+                if (!response.equals("false"))
+                    Toast.makeText(mContext, "You deleted the chosen place!", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(mContext, "Error. Chosen place cannot be deleted!", Toast.LENGTH_LONG).show();
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error. Chosen place cannot be deleted!", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id",id);
 
-
-
-        }catch (ClientProtocolException e) {
-            // TODO Auto-generated catch block
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-        } catch (Exception e) {
-
-        }
-        return "0";
-    }
-
-    protected void onPostExecute(String result) {
-        Toast.makeText(mContext, "You deleted the chosen place!", Toast.LENGTH_SHORT).show();
-        //dialog.dismiss();
+                return params;
+            }
+        };
+        queue.add(sr);
     }
 }

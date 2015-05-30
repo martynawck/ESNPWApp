@@ -14,9 +14,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.wiacek.martyna.esnpwapp.Domain.DrawerItem;
 import com.wiacek.martyna.esnpwapp.R;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 public class NavigationDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
@@ -43,36 +44,20 @@ public class NavigationDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
 
         DrawerItemHolder drawerHolder;
         View view = convertView;
 
         if (view == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            drawerHolder = new DrawerItemHolder();
-
             view = inflater.inflate(layoutResID, parent, false);
-            drawerHolder.ItemName = (TextView) view
-                    .findViewById(R.id.drawer_itemName);
-            drawerHolder.icon = (ImageView) view.findViewById(R.id.drawer_icon);
-
-            drawerHolder.title = (TextView) view.findViewById(R.id.drawerTitle);
-
-            drawerHolder.headerLayout = (LinearLayout) view
-                    .findViewById(R.id.headerLayout);
-            drawerHolder.itemLayout = (LinearLayout) view
-                    .findViewById(R.id.itemLayout);
-
+            drawerHolder = new DrawerItemHolder(view);
             view.setTag(drawerHolder);
-
         } else {
             drawerHolder = (DrawerItemHolder) view.getTag();
-
         }
 
         DrawerItem dItem = (DrawerItem) this.drawerItemList.get(position);
-
 
         if (dItem.getTitle() != null) {
             drawerHolder.headerLayout.setVisibility(LinearLayout.VISIBLE);
@@ -91,9 +76,17 @@ public class NavigationDrawerAdapter extends ArrayAdapter<DrawerItem> {
         }
         return view;
     }
-    private static class DrawerItemHolder {
-        TextView ItemName, title;
-        ImageView icon;
-        LinearLayout headerLayout, itemLayout;
+    static class DrawerItemHolder {
+        @InjectView(R.id.drawer_itemName)  TextView ItemName;
+        @InjectView(R.id.drawerTitle) TextView title;
+        @InjectView(R.id.drawer_icon) ImageView icon;
+        @InjectView(R.id.headerLayout) LinearLayout headerLayout;
+        @InjectView(R.id.itemLayout) LinearLayout itemLayout;
+
+        public DrawerItemHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
+
+
 }

@@ -1,41 +1,19 @@
 package com.wiacek.martyna.esnpwapp.Fragment;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
-import android.preference.DialogPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.wiacek.martyna.esnpwapp.AsyncTask.UpdateUserDataTask;
-import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.R;
-import com.wiacek.martyna.esnpwapp.ViewEnhancements.ProfilePictureDialog;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.jar.Attributes;
 
 public class SettingsFragment extends PreferenceFragment {
 
@@ -63,8 +41,6 @@ public class SettingsFragment extends PreferenceFragment {
         EditTextPreference phone = (EditTextPreference) findPreference("phone");
         CheckBoxPreference visible = (CheckBoxPreference) findPreference("checkbox_visibility");
 
-        skype.setTitle("Skype: "+sessionManager.getValueOfProfileSkype());
-
         whatsapp.setText(sessionManager.getValueOfProfileWhatsapp());
         email.setText(sessionManager.getValueOfProfileEmail());
         skype.setText(sessionManager.getValueOfProfileSkype());
@@ -89,12 +65,9 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference,
                                               Object newValue) {
-                Log.d("TAG", "Working!");
-                Log.d("VALUE",newValue.toString());
                 sessionManager.setValueOfSkype(newValue.toString());
-                UpdateUserDataTask task = new UpdateUserDataTask(getActivity().getApplicationContext());
-                task.execute(new String[] { "visibility", newValue.toString()});
-                Toast.makeText(getActivity().getApplicationContext(), "Value updated!", Toast.LENGTH_LONG).show();
+                UpdateUserDataTask task = new UpdateUserDataTask("visibility", newValue.toString(), getActivity().getApplicationContext());
+                task.runVolley();
                 return true;
             }
 
@@ -105,12 +78,10 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference,
                                               Object newValue) {
-                Log.d("TAG", "Working!");
                 sessionManager.setValueOfEmail(newValue.toString());
                 preference.setTitle("E-mail:\t"+sessionManager.getValueOfProfileEmail());
-                UpdateUserDataTask task = new UpdateUserDataTask(getActivity().getApplicationContext());
-                task.execute(new String[] { "email", newValue.toString()});
-                Toast.makeText(getActivity().getApplicationContext(), "Value updated!", Toast.LENGTH_LONG).show();
+                UpdateUserDataTask task = new UpdateUserDataTask("email", newValue.toString(), getActivity().getApplicationContext());
+                task.runVolley();
                 return true;
             }
 
@@ -121,12 +92,10 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference,
                                               Object newValue) {
-                Log.d("TAG", "Working!");
                 sessionManager.setValueOfWhatsapp(newValue.toString());
                 preference.setTitle("Whatsapp Id:\t"+sessionManager.getValueOfProfileWhatsapp());
-                UpdateUserDataTask task = new UpdateUserDataTask(getActivity().getApplicationContext());
-                task.execute(new String[] { "whatsapp", newValue.toString()});
-                Toast.makeText(getActivity().getApplicationContext(), "Value updated!", Toast.LENGTH_LONG).show();
+                UpdateUserDataTask task = new UpdateUserDataTask("whatsapp", newValue.toString(), getActivity().getApplicationContext());
+                task.runVolley();
                 return true;
             }
 
@@ -137,13 +106,10 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference,
                                               Object newValue) {
-                Log.d("TAG", "Working!");
                 sessionManager.setValueOfSkype(newValue.toString());
                 preference.setTitle("Skype Id:\t"+sessionManager.getValueOfProfileSkype());
-                UpdateUserDataTask task = new UpdateUserDataTask(getActivity().getApplicationContext());
-                task.execute(new String[] { "skype", newValue.toString()});
-                Toast.makeText(getActivity().getApplicationContext(), "Value updated!", Toast.LENGTH_LONG).show();
-
+                UpdateUserDataTask task = new UpdateUserDataTask("skype", newValue.toString(), getActivity().getApplicationContext());
+                task.runVolley();
                 return true;
             }
 
@@ -154,12 +120,10 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference,
                                               Object newValue) {
-                Log.d("TAG", "Working!");
                 sessionManager.setValueOfFacebook(newValue.toString());
                 preference.setTitle("Facebook Id:\t"+sessionManager.getValueOfProfileFacebook());
-                UpdateUserDataTask task = new UpdateUserDataTask(getActivity().getApplicationContext());
-                task.execute(new String[] { "facebook", newValue.toString()});
-                Toast.makeText(getActivity().getApplicationContext(), "Value updated!", Toast.LENGTH_LONG).show();
+                UpdateUserDataTask task = new UpdateUserDataTask("facebook", newValue.toString(), getActivity().getApplicationContext());
+                task.runVolley();
                 return true;
             }
 
@@ -170,12 +134,10 @@ public class SettingsFragment extends PreferenceFragment {
             @Override
             public boolean onPreferenceChange(Preference preference,
                                               Object newValue) {
-                Log.d("TAG", "Working!");
                 sessionManager.setValueOfPhone(newValue.toString());
                 preference.setTitle("Phone number:\t"+sessionManager.getValueOfProfilePhone());
-                UpdateUserDataTask task = new UpdateUserDataTask(getActivity().getApplicationContext());
-                task.execute(new String[] { "phone", newValue.toString()});
-                Toast.makeText(getActivity().getApplicationContext(), "Value updated!", Toast.LENGTH_LONG).show();
+                UpdateUserDataTask task = new UpdateUserDataTask( "phone", newValue.toString(), getActivity().getApplicationContext());
+                task.runVolley();
                 return true;
             }
 

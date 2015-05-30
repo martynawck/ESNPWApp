@@ -13,13 +13,19 @@ import android.widget.Toast;
 import com.wiacek.martyna.esnpwapp.AsyncTask.ChangePasswordTask;
 import com.wiacek.martyna.esnpwapp.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Martyna on 2015-05-14.
  */
 public class PasswordDialog extends DialogPreference {
 
+    @InjectView(R.id.originalPassword)
     EditText originalPwd;
+    @InjectView(R.id.newPasswordFirst)
     EditText newPwdFirst;
+    @InjectView(R.id.newPasswordSecond)
     EditText newPwdSecond;
 
     public PasswordDialog(Context context, AttributeSet attrs) {
@@ -40,10 +46,8 @@ public class PasswordDialog extends DialogPreference {
 
         if(which == DialogInterface.BUTTON_POSITIVE) {
             if (newPwdFirst.getText().toString().equals(newPwdSecond.getText().toString())) {
-                ChangePasswordTask task = new ChangePasswordTask(getContext());
-                task.execute(new String[] {originalPwd.getText().toString(), newPwdSecond.getText().toString()});
-
-                Toast.makeText(getContext(), "Value updated!", Toast.LENGTH_LONG).show();
+                ChangePasswordTask task = new ChangePasswordTask(originalPwd.getText().toString(), newPwdSecond.getText().toString(), getContext());
+                task.runVolley();
                 setTitle("Password: changed");
             } else {
 
@@ -53,10 +57,7 @@ public class PasswordDialog extends DialogPreference {
 
     @Override
     public void onBindDialogView(View view){
-
-        originalPwd = (EditText)view.findViewById(R.id.originalPassword);
-        newPwdFirst = (EditText) view.findViewById(R.id.newPasswordFirst);
-        newPwdSecond = (EditText) view.findViewById(R.id.newPasswordSecond);
+        ButterKnife.inject(this,view);
         super.onBindDialogView(view);
     }
 

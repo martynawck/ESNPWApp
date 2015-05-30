@@ -23,9 +23,6 @@ import com.wiacek.martyna.esnpwapp.ViewEnhancements.MyLeadingMarginSpan2;
 
 public class ESNOfficeFragment extends Fragment {
 
-    TextView content;
-    TextView hours;
-
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
     RawFileReader rfr;

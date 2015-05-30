@@ -3,9 +3,18 @@ package com.wiacek.martyna.esnpwapp.AsyncTask;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 
@@ -17,56 +26,65 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Martyna on 2015-04-29.
- */public class ChangePasswordTask extends AsyncTask<String, Void, String> {
+ */public class ChangePasswordTask{
 
     private Context mContext;
     HttpPost httppost;
     HttpClient httpclient;
     List<NameValuePair> nameValuePairs;
     SessionManager sessionManager;
+    String oldPassword;
+    String newPassword;
 
 
-    public ChangePasswordTask(Context context) {
+    public ChangePasswordTask(String oldPassword, String newPassword, Context context) {
         mContext = context;
+        this.newPassword = newPassword;
+        this.oldPassword = oldPassword;
     }
-    protected String doInBackground(String... urls) {
-        try{
 
-            sessionManager = new SessionManager(mContext);
-            httpclient = new DefaultHttpClient();
-            httppost = new HttpPost(ServerUrl.BASE_URL +"changePassword.php");
-            nameValuePairs = new ArrayList<>(2);
+    public void runVolley() {
+        sessionManager = new SessionManager(mContext);
 
-            nameValuePairs.add(new BasicNameValuePair("id", sessionManager.getValueOfUserId()));
-            nameValuePairs.add(new BasicNameValuePair("old_password", urls[0]));
-            nameValuePairs.add(new BasicNameValuePair("new_password", urls[1]));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        StringRequest sr = new StringRequest(Request.Method.POST, ServerUrl.BASE_URL +"changePassword.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
 
-
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            final String response = httpclient.execute(httppost, responseHandler);
-
-            if(response != "Error"){
-                return "Success";
-            }else{
-                return "-1";
+                Log.d("resp", response);
+                if (!response.equals("Error"))
+                    Toast.makeText(mContext, "Value updated!", Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(mContext, "Error. Value was not updated!", Toast.LENGTH_LONG).show();
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error. Value was not updated!", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("id",sessionManager.getValueOfUserId());
+                params.put("old_password",oldPassword);
+                params.put("new_password", newPassword);
 
-        }catch(Exception e){
-            System.out.println("Exception : " + e.getMessage());
-            return "-1";
-        }
-    }
-
-    protected void onPostExecute(String result) {
-
-        if (!result.equals("-1")) {
-        }
+                return params;
+            }
+        };
+        queue.add(sr);
     }
 }

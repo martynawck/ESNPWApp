@@ -24,13 +24,15 @@ import com.wiacek.martyna.esnpwapp.R;
 import com.wiacek.martyna.esnpwapp.ViewEnhancements.ArticleBuilder;
 import com.wiacek.martyna.esnpwapp.ViewEnhancements.MyLeadingMarginSpan2;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class TransportationFragment extends Fragment {
 
     TransportationAdapter mSectionsPagerAdapter;
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
-
-    ViewPager mViewPager;
+    @InjectView(R.id.pager) ViewPager mViewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +40,7 @@ public class TransportationFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_to_do, container,
                 false);
-        mViewPager = (ViewPager) view.findViewById(R.id.pager);
+        ButterKnife.inject(this, view);
         mSectionsPagerAdapter = new TransportationAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
 

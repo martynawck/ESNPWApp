@@ -35,6 +35,7 @@ import java.io.ByteArrayOutputStream;
 public class ProfilePictureDialog extends DialogPreference {
     private static int RESULT_LOAD_IMAGE = 1;
 
+
     ImageView picture;
     ProgressDialog prgDialog;
     String encodedString;

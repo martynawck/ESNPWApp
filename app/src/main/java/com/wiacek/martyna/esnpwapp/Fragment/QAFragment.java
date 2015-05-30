@@ -48,7 +48,7 @@ public class QAFragment extends Fragment {
 
         expandableListView = (ExpandableListView) view.findViewById(R.id.expandableListView);
 
-        DownloadQandATask task = new DownloadQandATask(new OnQADownload() {
+        DownloadQandATask task = new DownloadQandATask(getActivity().getApplicationContext(), new OnQADownload() {
             @Override
             public void onTaskCompleted(List<String> titles, HashMap<String, List<String>> expandableListDetails) {
                 expandableListDetail = expandableListDetails;
@@ -57,7 +57,8 @@ public class QAFragment extends Fragment {
                 expandableListView.setAdapter(expandableListAdapter);
             }
         });
-        task.execute(new String[] { ServerUrl.BASE_URL + "/include/file.json" });
+        //task.execute(new String[] { ServerUrl.BASE_URL + "/include/file.json" });
+        task.runVolley();
 
         return view;
     }

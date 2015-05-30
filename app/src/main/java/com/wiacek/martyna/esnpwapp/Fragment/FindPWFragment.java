@@ -12,15 +12,18 @@ import android.widget.ImageButton;
 
 import com.wiacek.martyna.esnpwapp.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 
 public class FindPWFragment extends Fragment {
 
-    ImageButton facebook;
-    ImageButton twitter;
-    ImageButton linkedin;
-    ImageButton instagram;
-    ImageButton pinterest;
-    ImageButton wordpress;
+    @InjectView(R.id.facebookButton) ImageButton facebook;
+    @InjectView(R.id.twitterButton) ImageButton twitter;
+    @InjectView(R.id.linkedinButton) ImageButton linkedin;
+    @InjectView(R.id.instagramButton) ImageButton instagram;
+    @InjectView(R.id.pinterestButton) ImageButton pinterest;
+    @InjectView(R.id.wordpressButton) ImageButton wordpress;
 
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
@@ -32,12 +35,7 @@ public class FindPWFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_find_pw, container, false);
-        facebook = (ImageButton) rootView.findViewById(R.id.facebookButton);
-        twitter = (ImageButton) rootView.findViewById(R.id.twitterButton);
-        linkedin = (ImageButton) rootView.findViewById(R.id.linkedinButton);
-        instagram = (ImageButton) rootView.findViewById(R.id.instagramButton);
-        pinterest = (ImageButton) rootView.findViewById(R.id.pinterestButton);
-        wordpress = (ImageButton) rootView.findViewById(R.id.wordpressButton);
+        ButterKnife.inject(this, rootView);
 
         facebook.setOnClickListener(new View.OnClickListener() {
             @Override

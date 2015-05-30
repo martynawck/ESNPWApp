@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/grid_view"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:numColumns="3"
@@ -14,7 +13,8 @@
     android:layout_marginRight="20dp"
     android:stretchMode="columnWidth"
     android:scrollbarSize="8dp"
-    android:scrollbarThumbVertical="@color/bg_login">
+    android:scrollbarThumbVertical="@color/bg_login"
+    android:id="@+id/gridView">
 
 
 </GridView>

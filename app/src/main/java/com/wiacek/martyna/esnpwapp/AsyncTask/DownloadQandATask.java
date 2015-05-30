@@ -2,8 +2,20 @@ package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Adapter.QandAListAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Interface.OnQADownload;
@@ -21,49 +33,51 @@ import java.util.List;
  */
 
 
-public class DownloadQandATask extends AsyncTask<String, Void, String> {
+public class DownloadQandATask  {
 
     OnQADownload listener;
     List<String> expandableListTitle;
     HashMap<String, List<String>> expandableListDetail;
+    Context mContext;
 
-    public DownloadQandATask(OnQADownload listener){
+    public DownloadQandATask(Context context, OnQADownload listener){
         this.listener = listener;
+        this.mContext = context;
     }
 
-    protected void onPreExecute ( ) {
-    }
+    public void runVolley() {
 
-    protected String doInBackground(String... urls) {
-        try{
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        JsonObjectRequest sr = new JsonObjectRequest(Request.Method.GET,
+                ServerUrl.BASE_URL + "include/qanda_data.json", null, new Response.Listener<JSONObject>()  {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    expandableListDetail = new HashMap<>();
+                    JSONObject jsonObject;
+                    JSONArray jsonArray = response.getJSONArray("data");
 
-            expandableListDetail = new HashMap<>();
-            JSONObject jsonQuery = JSONFunctions
-                    .getJSONfromURL(ServerUrl.BASE_URL + "include/qanda_data.txt");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        jsonObject = jsonArray.getJSONObject(i);
+                        String question = jsonObject.getString("question");
+                        String answer = jsonObject.getString("answer");
+                        List<String> list = new ArrayList<>();
+                        list.add(answer);
+                        expandableListDetail.put(question, list);
+                    }
+                    listener.onTaskCompleted(expandableListTitle, expandableListDetail);
 
-            JSONObject jsonObject;
-            JSONArray jsonArray = jsonQuery.getJSONArray("data");
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                jsonObject = jsonArray.getJSONObject(i);
-                String question = jsonObject.getString("question");
-                String answer = jsonObject.getString("answer");
-                List<String> list = new ArrayList<>();
-                list.add(answer);
-                expandableListDetail.put(question, list);
+                } catch (Exception e) {
+                    Log.d("ERROR", e.getMessage());
+                    Toast.makeText(mContext, "Error. Cannot download Q&As!", Toast.LENGTH_LONG).show();
+                }
             }
-            return "0";
-
-
-        }catch(Exception e){
-            System.out.println("Exception : " + e.getMessage());
-        }
-        return "1";
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-
-        listener.onTaskCompleted(expandableListTitle, expandableListDetail);
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error. Cannot download Q&As!", Toast.LENGTH_LONG).show();
+            }
+        });
+        queue.add(sr);
     }
 }

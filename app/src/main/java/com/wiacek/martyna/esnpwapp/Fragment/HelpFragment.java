@@ -7,17 +7,21 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wiacek.martyna.esnpwapp.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class HelpFragment extends Fragment {
 
-    ImageButton button;
-    TextView description;
-    TextView email;
+    @InjectView(R.id.button) ImageButton button;
+    @InjectView(R.id.description) TextView description;
+    @InjectView(R.id.email)TextView email;
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
@@ -29,15 +33,13 @@ public class HelpFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_help, container,
                 false);
+        ButterKnife.inject(this, view);
 
-        description = (TextView) view.findViewById(R.id.description);
         description.setText("If you have any problems or enquiries please do contact us by visiting ESN PW Office during the office hours or via our" +
                 "Facebook profile!");
 
-        email = (TextView) view.findViewById(R.id.email);
         email.setText("In special cases contact us via e-mail using the envelope icon below! :)");
 
-        button = (ImageButton) view.findViewById(R.id.button);
         button.setImageResource(R.drawable.envel);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

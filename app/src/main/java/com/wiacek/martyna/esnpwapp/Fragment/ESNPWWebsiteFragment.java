@@ -11,13 +11,16 @@ import android.webkit.WebViewClient;
 
 import com.wiacek.martyna.esnpwapp.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 
 public class ESNPWWebsiteFragment extends Fragment {
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    public WebView myWebView;
+    @InjectView(R.id.mywebView) WebView myWebView;
     final static String PWWebsiteAddress = "http://www.pw.esn.pl/en";
     String myUrl;
 
@@ -32,7 +35,8 @@ public class ESNPWWebsiteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pwwebsite, container, false);
-        myWebView = (WebView)view.findViewById(R.id.mywebview);
+
+        ButterKnife.inject(this, view);
 
         myWebView.getSettings().setJavaScriptEnabled(true);
         myWebView.setWebViewClient(new MyWebViewClient());

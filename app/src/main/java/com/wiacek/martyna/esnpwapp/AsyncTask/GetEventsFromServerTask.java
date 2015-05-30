@@ -10,19 +10,33 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Adapter.EventsAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.Event;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Interface.OnEventTaskCompleted;
 import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
+import com.wiacek.martyna.esnpwapp.JSONFunctions;
 import com.wiacek.martyna.esnpwapp.R;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -40,78 +54,36 @@ public class GetEventsFromServerTask extends AsyncTask<Void, Void, String> {
 
     private OnEventTaskCompleted listener;
     private Context mContext;
-    HttpPost httppost;
     HttpClient httpclient;
     Fragment fragment;
     ArrayList<Event> events;
     ProgressDialog progressDialog;
 
-    public GetEventsFromServerTask ( ProgressDialog progressDialog, OnEventTaskCompleted listener) {
+    public GetEventsFromServerTask ( Context context, ProgressDialog progressDialog, OnEventTaskCompleted listener) {
         this.listener = listener;
+        this.mContext = context;
         this.progressDialog = progressDialog;
     }
+
 
     protected String doInBackground(Void... urls) {
         try {
             events = new ArrayList<>();
-            httpclient = new DefaultHttpClient();
-            httppost = new HttpPost(ServerUrl.BASE_URL + "events.php");
+            HttpParams httpParameters = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
+            HttpClient httpclient = new DefaultHttpClient(httpParameters);
+            HttpGet httpget = new HttpGet(ServerUrl.BASE_URL + "events.php");
             ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            final String response = httpclient.execute(httppost, responseHandler);
+            final String response = httpclient.execute(httpget, responseHandler);
 
             if (!response.equalsIgnoreCase("null")) {
-                Log.d("RESP", "NOT NULL");
                 JSONArray jsonArray = new JSONArray(response);
                 JSONObject jsonObject;
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     jsonObject = jsonArray.getJSONObject(i);
-                    Event e = new Event();
-                    e.setId(jsonObject.getString("id"));
-                    e.setName(jsonObject.getString("name"));
-
-                    if (jsonObject.has("place")) {
-                        JSONObject placeObject = jsonObject.getJSONObject("place");
-                        e.setPlace(placeObject.getString("name"));
-                        if (placeObject.has("city")) {
-                            JSONObject locationObject = placeObject.getJSONObject("location");
-                            e.setWhere(locationObject.getString("city"));
-                        } else {
-                            e.setWhere("");
-                        }
-                    } else {
-                        e.setPlace("");
-                        e.setWhere("");
-                    }
-
-                    if (jsonObject.has("start_time")) {
-                        String stringStartTime = jsonObject.getString("start_time");
-                        SimpleDateFormat incomingFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-                        Date date = new Date();
-                        try {
-                            date = incomingFormat.parse(stringStartTime);
-
-                        } catch (Exception ex ) {
-                            SimpleDateFormat incomingFormat2 = new SimpleDateFormat("yyyy-MM-dd");
-                            date = incomingFormat2.parse(stringStartTime);
-                        }
-                        e.setStartTime(date);
-                    }
-
-                    if (jsonObject.has("owner")) {
-                        JSONObject ownerObject = jsonObject.getJSONObject("owner");
-                        e.setOwner(ownerObject.getString("name"));
-                        e.setOwnerId(ownerObject.getString("id"));
-                    } else {
-                        e.setOwner("");
-                    }
-
-                    if (jsonObject.has("cover")) {
-                        JSONObject coverObject = jsonObject.getJSONObject("cover");
-                        e.setImageUrl(coverObject.getString("source"));
-                    } else {
-                        e.setImageUrl("");
-                    }
+                    Event e = JSONFunctions.JSONToEvent(jsonObject);
                     events.add(e);
                 }
 
@@ -136,6 +108,8 @@ public class GetEventsFromServerTask extends AsyncTask<Void, Void, String> {
 
         if (!result.equals("-1")) {
             listener.onTaskCompleted(events);
+        } else {
+            Toast.makeText(mContext, "Error. Cannot download ESN Events!", Toast.LENGTH_LONG).show();
         }
     }
 }

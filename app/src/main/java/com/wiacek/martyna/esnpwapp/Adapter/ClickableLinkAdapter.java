@@ -5,10 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.wiacek.martyna.esnpwapp.Domain.ClickableLink;
 import com.wiacek.martyna.esnpwapp.R;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 /**
  * Created by Martyna on 2015-03-03.
@@ -28,6 +32,7 @@ public class ClickableLinkAdapter extends ArrayAdapter<ClickableLink> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
+
         ClickableLinkHolder holder = null;
 
         if(row == null)
@@ -35,10 +40,7 @@ public class ClickableLinkAdapter extends ArrayAdapter<ClickableLink> {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             row = inflater.inflate(layoutResourceId, parent, false);
 
-            holder = new ClickableLinkHolder();
-            holder.txtTitle = (TextView)row.findViewById(R.id.name);
-            holder.phoneNumber = (TextView) row.findViewById(R.id.faculty);
-
+            holder = new ClickableLinkHolder(row);
             row.setTag(holder);
         }
         else
@@ -47,15 +49,19 @@ public class ClickableLinkAdapter extends ArrayAdapter<ClickableLink> {
         }
 
         ClickableLink emergency = data[position];
-        holder.txtTitle.setText(emergency.getName());
-        holder.phoneNumber.setText(emergency.getWebsite());
+        holder.name.setText(emergency.getName());
+        holder.faculty.setText(emergency.getWebsite());
 
         return row;
     }
 
     static class ClickableLinkHolder
     {
-        TextView txtTitle;
-        TextView phoneNumber;
+        @InjectView(R.id.name) TextView name;
+        @InjectView(R.id.faculty) TextView faculty;
+
+        public ClickableLinkHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

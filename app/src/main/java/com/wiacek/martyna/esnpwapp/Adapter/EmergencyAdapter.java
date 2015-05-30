@@ -13,6 +13,9 @@ import com.wiacek.martyna.esnpwapp.R;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Martyna on 2015-03-03.
  */
@@ -37,12 +40,7 @@ public class EmergencyAdapter extends ArrayAdapter<EmergencyContact> {
         {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             row = inflater.inflate(layoutResourceId, parent, false);
-
-            holder = new EmergencyHolder();
-            holder.imgIcon = (ImageView)row.findViewById(R.id.profilePic);
-            holder.txtTitle = (TextView)row.findViewById(R.id.name);
-            holder.phoneNumber = (TextView) row.findViewById(R.id.faculty);
-
+            holder = new EmergencyHolder(row);
             row.setTag(holder);
         }
         else
@@ -60,8 +58,12 @@ public class EmergencyAdapter extends ArrayAdapter<EmergencyContact> {
 
     static class EmergencyHolder
     {
-        ImageView imgIcon;
-        TextView txtTitle;
-        TextView phoneNumber;
+        @InjectView(R.id.profilePic) ImageView imgIcon;
+        @InjectView(R.id.name) TextView txtTitle;
+        @InjectView(R.id.faculty) TextView phoneNumber;
+
+        public EmergencyHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }

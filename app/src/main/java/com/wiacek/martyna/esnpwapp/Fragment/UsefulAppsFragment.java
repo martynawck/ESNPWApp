@@ -18,11 +18,12 @@ import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
 import com.wiacek.martyna.esnpwapp.Adapter.UsefulAppAdapter;
 import com.wiacek.martyna.esnpwapp.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class UsefulAppsFragment extends Fragment {
 
-    ImageView ivIcon;
-    TextView tvItemName;
-    GridView gridView;
+    @InjectView(R.id.gridView)GridView gridView;
     Context mContext;
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
@@ -39,8 +40,8 @@ public class UsefulAppsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_useful_apps, container,
                 false);
 
+        ButterKnife.inject(this, view);
         mContext = getActivity().getApplicationContext();
-        gridView = (GridView) view.findViewById(R.id.grid_view);
 
         UsefulAppsFragment.this.gridView.setAdapter(new UsefulAppAdapter(mContext));
 

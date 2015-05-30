@@ -17,6 +17,9 @@ import com.wiacek.martyna.esnpwapp.R;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * Created by Martyna on 2015-03-03.
  */
@@ -56,11 +59,7 @@ public class GetInTouchAdapter extends ArrayAdapter<Student> {
             LayoutInflater inflater = LayoutInflater.from(context);
             row = inflater.inflate(layoutResourceId, parent, false);
 
-            holder = new GetInTouchHolder();
-            holder.imgIcon = (ImageView)row.findViewById(R.id.profilePic);
-            holder.name = (TextView)row.findViewById(R.id.name);
-            holder.faculty = (TextView) row.findViewById(R.id.faculty);
-
+            holder = new GetInTouchHolder(row);
             row.setTag(holder);
         }
         else
@@ -79,9 +78,13 @@ public class GetInTouchAdapter extends ArrayAdapter<Student> {
 
     static class GetInTouchHolder
     {
-        ImageView imgIcon;
-        TextView name;
-        TextView faculty;
+        @InjectView(R.id.profilePic) ImageView imgIcon;
+        @InjectView(R.id.name) TextView name;
+        @InjectView(R.id.faculty) TextView faculty;
+
+        public GetInTouchHolder(View view){
+            ButterKnife.inject(this, view);
+        }
     }
 
     private class GetInTouchFilter extends Filter

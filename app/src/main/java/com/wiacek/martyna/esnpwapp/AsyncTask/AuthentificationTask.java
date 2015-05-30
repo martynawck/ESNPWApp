@@ -3,89 +3,79 @@ package com.wiacek.martyna.esnpwapp.AsyncTask;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.os.AsyncTask;
-import android.util.Log;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Created by Martyna on 2015-04-29.
- */public class AuthentificationTask extends AsyncTask<String, Void, String> {
+ * Created by Martyna on 2015-05-30.
+ */
+public class AuthentificationTask {
 
-    private Context mContext;
-    HttpPost httppost;
-    HttpClient httpclient;
-    List<NameValuePair> nameValuePairs;
-    SessionManager sessionManager;
-    String login;
-    String password;
-    ProgressDialog progressDialog;
-    Activity activity;
+    private final Context mContext;
+    private final String login;
+    private final ProgressDialog progressDialog;
+    private final String password;
+    private final Activity activity;
 
-
-    public AuthentificationTask (Context context, Activity activity, ProgressDialog progressDialog, SessionManager sessionManager, String login, String password) {
+    public AuthentificationTask(Context context, Activity activity, ProgressDialog progressDialog, SessionManager sessionManager, String login, String password) {
         mContext = context;
         this.login = login;
         this.progressDialog = progressDialog;
         this.password = password;
         this.activity = activity;
     }
-    protected String doInBackground(String... urls) {
-        try{
 
-            sessionManager = new SessionManager(mContext);
-            httpclient = new DefaultHttpClient();
-            httppost = new HttpPost(ServerUrl.BASE_URL +"check.php");
-            nameValuePairs = new ArrayList<NameValuePair>(2);
+    public void runVolley() {
 
-            nameValuePairs.add(new BasicNameValuePair("username", login));
-            nameValuePairs.add(new BasicNameValuePair("password", password));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        StringRequest sr = new StringRequest(Request.Method.POST, ServerUrl.BASE_URL +"check.php", new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (Integer.parseInt(response) != -1) {
+                    SessionManager sessionManager = new SessionManager(mContext);
+                    sessionManager.createSession(login, password, Integer.parseInt(response));
+                    progressDialog.dismiss();
 
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            final String response = httpclient.execute(httppost, responseHandler);
+                    GetUserPersonalDataFromServerTask task2 = new GetUserPersonalDataFromServerTask(mContext, activity, progressDialog);
+                    task2.runVolley();
 
-            Integer parsedInt = Integer.parseInt(response);
-            if(parsedInt != -1){
-                sessionManager.createSession(login, password, parsedInt);
-                progressDialog.dismiss();
-                return parsedInt.toString();
-
-            }else{
-                progressDialog.dismiss();
-                return "-1";
+                    GetBuddyFromServerTask buddy_task = new GetBuddyFromServerTask(mContext, progressDialog, sessionManager);
+                    GetToDosFromServerTask todos_task = new GetToDosFromServerTask(mContext, progressDialog, sessionManager);
+                    buddy_task.runVolley();
+                    todos_task.runVolley();
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(mContext, "Error. You cannot login right now, try it later!", Toast.LENGTH_LONG).show();
+                }
             }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                progressDialog.dismiss();
+                Toast.makeText(mContext, "Error. You cannot login right now, try it later!", Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("username",login);
+                params.put("password",password);
 
-        }catch(Exception e){
-            progressDialog.dismiss();
-            return "-1";
-        }
-    }
+                return params;
+            }
+        };
+        queue.add(sr);
 
-    protected void onPostExecute(String result) {
-
-        if (!result.equals("-1")) {
-
-            GetUserPersonalDataFromServerTask task2 = new GetUserPersonalDataFromServerTask(mContext, activity, progressDialog);
-            task2.execute();
-
-            GetBuddyFromServerTask buddy_task = new GetBuddyFromServerTask(mContext, progressDialog);
-            GetToDosFromServerTask todos_task = new GetToDosFromServerTask(mContext, progressDialog);
-            buddy_task.execute();
-            todos_task.execute();
-        }
     }
 }

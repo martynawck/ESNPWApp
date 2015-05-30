@@ -42,6 +42,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class FragmentFunMap extends Fragment {
 
     TextView tvItemName;
@@ -125,7 +128,7 @@ public class FragmentFunMap extends Fragment {
                 categoryListSpinner.setAdapter(dataAdapter);
             }
         });
-        task.execute();
+        task.runVolley();
 
         categoryListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id){
@@ -146,7 +149,7 @@ public class FragmentFunMap extends Fragment {
                 googleMap.clear();
 
                 DownloadMarkersByUser task = new DownloadMarkersByUser(getActivity().getApplicationContext(), FragmentFunMap.this, userPlaces);
-                task.execute();
+                task.runVolley();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("Long click on the map to insert marker and then click it to add it, change its details or delete it!")
@@ -263,10 +266,10 @@ public class FragmentFunMap extends Fragment {
 
                                                         final String[] strings = new String[1];
                                                         strings[0] = markerIdInDatabase;
-                                                        DeleteMarkerTask task = new DeleteMarkerTask(getActivity().getApplicationContext());
-                                                        task.execute(strings);
+                                                        DeleteMarkerTask task = new DeleteMarkerTask(markerIdInDatabase, getActivity().getApplicationContext());
+                                                        task.runVolley();
                                                         DownloadMarkersByUser task2 = new DownloadMarkersByUser(getActivity().getApplicationContext(), FragmentFunMap.this, userPlaces);
-                                                        task2.execute();
+                                                        task2.runVolley();
                                                         dialog.dismiss();
                                                     }
                                                 });
@@ -308,7 +311,7 @@ public class FragmentFunMap extends Fragment {
     public void runMarkersTask(String id ) {
         markers = new ArrayList<>();
         if (id.equals("0")) {
-            DownloadAllMarkers taskDownload = new DownloadAllMarkers(this, places);
+            DownloadAllMarkers taskDownload = new DownloadAllMarkers(getActivity().getApplicationContext(), this, places);
             taskDownload.execute();
         }
         else {

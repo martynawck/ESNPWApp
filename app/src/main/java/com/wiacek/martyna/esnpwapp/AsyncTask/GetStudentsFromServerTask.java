@@ -2,13 +2,22 @@ package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Adapter.GetInTouchAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.FacultyNames;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
@@ -17,6 +26,7 @@ import com.wiacek.martyna.esnpwapp.Domain.Student;
 import com.wiacek.martyna.esnpwapp.Fragment.StudentProfileFragment;
 import com.wiacek.martyna.esnpwapp.Interface.OnStudentsListTaskCompleted;
 import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
+import com.wiacek.martyna.esnpwapp.JSONFunctions;
 import com.wiacek.martyna.esnpwapp.R;
 
 import org.apache.http.NameValuePair;
@@ -27,6 +37,9 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -52,10 +65,14 @@ public class GetStudentsFromServerTask extends AsyncTask<String, Void, String> {
         this.listener = listener;
         this.progressDialog = progressDialog;
     }
+
     protected String doInBackground(String... urls) {
         try{
 
-            httpclient = new DefaultHttpClient();
+            HttpParams httpParameters = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
+            HttpConnectionParams.setSoTimeout(httpParameters, 10000);
+            HttpClient httpclient = new DefaultHttpClient(httpParameters);
             httppost = new HttpPost(ServerUrl.BASE_URL + "students.php");
 
             sessionManager = new SessionManager(mContext);
@@ -77,27 +94,17 @@ public class GetStudentsFromServerTask extends AsyncTask<String, Void, String> {
                     jsonObject = jsonArray.getJSONObject(i);
                     String post = jsonObject.getString("post");
                     JSONObject postObject = new JSONObject(post);
-                    Student student = new Student();
-                    String faculty = postObject.getString("faculty");
-                    String longFaculty = new FacultyNames().returnLongName(faculty);
-
-                    student.setFaculty(longFaculty);
-                    student.setFirstname(postObject.getString("first_name"));
-                    student.setLastname(postObject.getString("last_name"));
-                    student.setImgUrl(postObject.getString("image"));
-                    student.setId(postObject.getString("id"));
+                    Student student = JSONFunctions.JSONToStudent(postObject);
                     students.add(student);
                 }
-
-                progressDialog.dismiss();
-                return "0";
             }
+            progressDialog.dismiss();
+            return "0";
         }catch(Exception e){
             progressDialog.dismiss();
             System.out.println("Exception : " + e.getMessage());
+            return "-1";
         }
-        progressDialog.dismiss();
-        return "-1";
 
     }
 
@@ -107,6 +114,8 @@ public class GetStudentsFromServerTask extends AsyncTask<String, Void, String> {
         if (!result.equals("-1")) {
             listener.onTaskCompleted(students);
 
+        } else {
+            Toast.makeText(mContext, "Error. Cannot get students list from server!", Toast.LENGTH_LONG).show();
         }
     }
 }

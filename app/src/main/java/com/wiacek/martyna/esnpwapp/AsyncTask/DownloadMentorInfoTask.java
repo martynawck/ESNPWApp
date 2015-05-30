@@ -40,13 +40,11 @@ public class DownloadMentorInfoTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... urls) {
         try{
 
-            Log.d("tutaj","A");
             sessionManager = new SessionManager(mContext);
             buddySQLHelper = new ESNPWSQLHelper(mContext);
             buddyData = new ArrayList<>();
 
             Buddy buddy = buddySQLHelper.getBuddyInfo(sessionManager.getValueOfUserId());
-            Log.d("buddy name", buddy.getFirstname());
             buddyData.add(buddy.getFirstname());
             buddyData.add(buddy.getLastname());
             buddyData.add(buddy.getEmail());
@@ -55,8 +53,8 @@ public class DownloadMentorInfoTask extends AsyncTask<String, Void, String> {
             buddyData.add(buddy.getFacebook());
             buddyData.add(buddy.getWhatsapp());
 
+            return "0";
         }catch(Exception e){
-    //        dialog.dismiss();
             System.out.println("Exception : " + e.getMessage());
         }
         return "-1";
@@ -64,8 +62,9 @@ public class DownloadMentorInfoTask extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        listener.onTaskCompleted(buddyData);
-
-
+        if (result.equals("0"))
+            listener.onTaskCompleted(buddyData);
+        else
+            Toast.makeText(mContext, "Error. Cannot download buddy info!", Toast.LENGTH_LONG).show();
     }
 }

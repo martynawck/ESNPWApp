@@ -29,13 +29,16 @@ import com.wiacek.martyna.esnpwapp.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 
 public class CampusMap extends Fragment {
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    MapView mMapView;
+    @InjectView(R.id.mapView) MapView mMapView;
     private GoogleMap googleMap;
     private ArrayList<FacultyMarker> markers = new ArrayList<>();
     private HashMap<Marker, FacultyMarker> markersHashMap;
@@ -45,9 +48,8 @@ public class CampusMap extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_campus_map, container, false);
-
+        ButterKnife.inject(this, v);
         sessionManager = new SessionManager(getActivity().getApplicationContext());
-        mMapView = (MapView) v.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
 
         mMapView.onResume();
@@ -71,6 +73,7 @@ public class CampusMap extends Fragment {
             @Override
             public View getInfoContents(Marker arg0) {
                 View v = inflater.inflate(R.layout.info_window_layout, null);
+                ButterKnife.inject(this, v);
                 FacultyMarker myMarker = markersHashMap.get(arg0);
                 ImageView markerIcon = (ImageView) v.findViewById(R.id.marker_icon);
                 TextView markerLabel = (TextView)v.findViewById(R.id.marker_label);

@@ -7,6 +7,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 
@@ -18,87 +24,92 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Martyna on 2015-04-29.
- */public class UpdateUserDataTask extends AsyncTask<String, Void, String> {
+ */public class UpdateUserDataTask {
 
+    private final String type;
+    private final String value;
     private Context mContext;
     HttpPost httppost;
     HttpClient httpclient;
-    List<NameValuePair> nameValuePairs;
     SessionManager sessionManager;
-    String login;
-    String password;
-    ProgressDialog progressDialog;
-    Activity activity;
 
 
-    public UpdateUserDataTask(Context context) {
+    public UpdateUserDataTask(String type, String value, Context context) {
         mContext = context;
+        this.type = type;
+        this.value = value;
     }
-    protected String doInBackground(String... urls) {
-        try{
-            sessionManager = new SessionManager(mContext);
-            httpclient = new DefaultHttpClient();
-            String url_endpoint;
 
-            switch (urls[0]) {
+    public void runVolley() {
 
-                case "skype":
-                    url_endpoint = "updateSkype.php";
-                    break;
-                case "phone":
-                    url_endpoint = "updatePhone.php";
-                    break;
-                case "whatsapp":
-                    url_endpoint = "updateWhatsapp.php";
-                    break;
-                case "facebook":
-                    url_endpoint = "updateFacebook.php";
-                    break;
-                case "email":
-                    url_endpoint = "updateEmail.php";
-                    break;
-                case "visibility":
-                    url_endpoint = "updateVisibility.php";
-                    break;
-                case "password":
-                    url_endpoint = "updatePassword.php";
-                    break;
+        sessionManager = new SessionManager(mContext);
 
-                default:
-                    url_endpoint = "";
-                    break;
+        final String url_endpoint;
+        switch (type) {
 
+            case "skype":
+                url_endpoint = "updateSkype.php";
+                break;
+            case "phone":
+                url_endpoint = "updatePhone.php";
+                break;
+            case "whatsapp":
+                url_endpoint = "updateWhatsapp.php";
+                break;
+            case "facebook":
+                url_endpoint = "updateFacebook.php";
+                break;
+            case "email":
+                url_endpoint = "updateEmail.php";
+                break;
+            case "visibility":
+                url_endpoint = "updateVisibility.php";
+                break;
+            case "password":
+                url_endpoint = "updatePassword.php";
+                break;
 
-            }
-            httppost = new HttpPost(ServerUrl.BASE_URL +url_endpoint);
-            nameValuePairs = new ArrayList<NameValuePair>(2);
-
-            nameValuePairs.add(new BasicNameValuePair("id", sessionManager.getValueOfUserId()));
-            nameValuePairs.add(new BasicNameValuePair("value", urls[1]));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            final String response = httpclient.execute(httppost, responseHandler);
-
-            if(response == "Success" ){
-                return response;
-
-            }else{
-                return "-1";
-            }
-
-        }catch(Exception e){
-            System.out.println("Exception : " + e.getMessage());
-            return "-1";
+            default:
+                url_endpoint = "";
+                break;
         }
-    }
 
-    protected void onPostExecute(String result) {
+        RequestQueue queue = Volley.newRequestQueue(mContext);
+        StringRequest sr = new StringRequest(Request.Method.POST, ServerUrl.BASE_URL + url_endpoint, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("Success")) {
+                    Toast.makeText(mContext, "Value updated!", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(mContext, "Error. Value could not be updated!", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, "Error. Value could not be updated!", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", sessionManager.getValueOfUserId());
+                params.put("value", value);
+
+                return params;
+            }
+        };
+        queue.add(sr);
     }
 }

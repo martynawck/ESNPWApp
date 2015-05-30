@@ -31,10 +31,13 @@ import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Fragment.BuddyFragment;
 import com.wiacek.martyna.esnpwapp.Fragment.*;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class NavigationDrawer extends ActionBarActivity {
 
-    private DrawerLayout mDrawerLayout;
-    private ListView mDrawerList;
+    @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @InjectView(R.id.left_drawer) ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
     private CharSequence mDrawerTitle;
@@ -52,17 +55,14 @@ public class NavigationDrawer extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_entirely_new_drawer);
+        ButterKnife.inject(this);
         session = new SessionManager(getApplicationContext());
         navigationDrawerModel = new NavigationDrawerModel();
         webBrowserBack = false;
         uploadedPicture = false;
         dataList = new ArrayList<>();
         mTitle = mDrawerTitle = getTitle();
-
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
 
         View header = getLayoutInflater().inflate(R.layout.custom_header, null);
         TextView headerFirstName = (TextView) header.findViewById(R.id.firstName);
@@ -125,7 +125,6 @@ public class NavigationDrawer extends ActionBarActivity {
                     Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(profilePic);
                     uploadedPicture = false;
                 }
-
                 invalidateOptionsMenu();
             }
         };
@@ -331,8 +330,6 @@ public class NavigationDrawer extends ActionBarActivity {
         mDrawerList.setItemChecked(position, true);
         setTitle(dataList.get(positionInDataSet).getItemName());
         mDrawerLayout.closeDrawer(mDrawerList);
-
-
     }
 
 

@@ -18,13 +18,16 @@ import com.wiacek.martyna.esnpwapp.R;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 
 public class EmergencyFragment extends Fragment {
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    private ListView listView1;
+    @InjectView(R.id.listView1) ListView listView1;
 
     public EmergencyFragment() {}
 
@@ -33,8 +36,7 @@ public class EmergencyFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_emergency, container, false);
-
-        listView1 = (ListView) view.findViewById(R.id.listView1);
+        ButterKnife.inject(this, view);
 
         ArrayList<EmergencyContact> emergency_data = new EmergencyContactList().getEmergencyContacts();
 

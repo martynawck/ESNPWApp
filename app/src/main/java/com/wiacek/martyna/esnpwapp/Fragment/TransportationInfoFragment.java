@@ -23,9 +23,6 @@ import com.wiacek.martyna.esnpwapp.ViewEnhancements.MyLeadingMarginSpan2;
 
 public class TransportationInfoFragment extends Fragment {
 
-    ImageView ivIcon;
-    TextView tvItemName;
-
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
     RawFileReader rfr;

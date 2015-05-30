@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.FacultyNames;
@@ -25,20 +26,30 @@ import java.util.ArrayList;
 public class CreateFacultyLinksTask extends AsyncTask<String, Void, String> {
 
     private OnTaskCompleted listener;
+    Context mContext;
     ArrayList<String> data;
 
-    public CreateFacultyLinksTask (OnTaskCompleted listener) {
+    public CreateFacultyLinksTask (Context context, OnTaskCompleted listener) {
         this.listener = listener;
+        this.mContext = context;
     }
 
     protected String doInBackground(String... urls) {
 
-        data = new FacultyNames().getDetailedData(urls[0]);
-
+        try {
+            data = new FacultyNames().getDetailedData(urls[0]);
+        }
+        catch (Exception e) {
+            return "-1";
+        }
         return "0";
     }
 
     protected void onPostExecute(String result) {
-        listener.onTaskCompleted(data);
+
+        if (result.equals("0"))
+            listener.onTaskCompleted(data);
+        else
+            Toast.makeText(mContext, "Error. Cannot create faculty links!", Toast.LENGTH_LONG).show();
     }
 }

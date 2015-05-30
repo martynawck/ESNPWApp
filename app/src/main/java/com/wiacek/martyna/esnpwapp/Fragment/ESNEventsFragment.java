@@ -39,11 +39,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class ESNEventsFragment extends Fragment {
 
-    ImageView ivIcon;
-    TextView tvItemName;
-    private ListView listView1;
+    @InjectView(R.id.listView1) ListView listView1;
     private ProgressDialog progressDialog;
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
@@ -56,9 +57,9 @@ public class ESNEventsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_esn_events, container,
                 false);
-        listView1 = (ListView) view.findViewById(R.id.listView1);
+        ButterKnife.inject(this, view);
         progressDialog = ProgressDialog.show(getActivity(), "","Updating Events...", true);
-        new GetEventsFromServerTask(progressDialog, new OnEventTaskCompleted() {
+        new GetEventsFromServerTask(getActivity().getApplicationContext(), progressDialog, new OnEventTaskCompleted() {
             @Override
             public void onTaskCompleted(ArrayList<Event> strings) {
                 events = strings;
@@ -83,7 +84,6 @@ public class ESNEventsFragment extends Fragment {
                 });
             }
         }).execute();
-
         return view;
     }
 

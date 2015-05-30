@@ -63,7 +63,7 @@ public class OffersFragment extends Fragment {
 
             }
         });
-        task.execute();
+        task.runVolley();
 
         return view;
 
