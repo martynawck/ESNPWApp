@@ -1,11 +1,6 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -13,9 +8,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.wiacek.martyna.esnpwapp.Adapter.OffersListAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.ESNPartner;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Interface.OnOffersDownload;
@@ -36,10 +29,10 @@ import java.util.TreeMap;
 
 public class DownloadOffersTask {
 
-    private Context mContext;
-    OnOffersDownload listener;
-    TreeMap<Integer, List<ESNPartner>> expandableListDetail;
-    List<String> expandableListTitle;
+    private final Context mContext;
+    private final OnOffersDownload listener;
+    private TreeMap<Integer, List<ESNPartner>> expandableListDetail;
+    private List<String> expandableListTitle;
 
     public DownloadOffersTask(Context context, OnOffersDownload listener){
         mContext = context;

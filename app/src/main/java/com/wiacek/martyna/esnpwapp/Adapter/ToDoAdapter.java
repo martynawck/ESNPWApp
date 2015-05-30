@@ -20,16 +20,14 @@ import java.util.ArrayList;
  */
 public class ToDoAdapter extends ArrayAdapter<TodoTask>
 {
-    ESNPWSQLHelper db;
-    Context context;
-    ArrayList<TodoTask> taskList = new ArrayList<TodoTask>();
-    int layoutResourceId;
-    SessionManager session;
+    private final ESNPWSQLHelper db;
+    private final Context context;
+    private ArrayList<TodoTask> taskList = new ArrayList<>();
+    private final SessionManager session;
 
     public ToDoAdapter(Context context, int layoutResourceId,
                      ArrayList<TodoTask> objects) {
         super(context, layoutResourceId, objects);
-        this.layoutResourceId = layoutResourceId;
         this.taskList = objects;
         this.context = context;
         db = new ESNPWSQLHelper(context);
@@ -38,7 +36,7 @@ public class ToDoAdapter extends ArrayAdapter<TodoTask>
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        CheckBox chk = null;
+        CheckBox chk;
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -53,7 +51,7 @@ public class ToDoAdapter extends ArrayAdapter<TodoTask>
                 public void onClick(View v) {
                     CheckBox cb = (CheckBox) v;
                     TodoTask changeTask = (TodoTask) cb.getTag();
-                    changeTask.setValue(cb.isChecked() == true ? 1 : 0);
+                    changeTask.setValue(cb.isChecked() ? 1 : 0);
                     db.updateToDo(changeTask.getTodo_id(), Integer.parseInt(session.getValueOfUserId()), changeTask.getValue());
                     if (cb.isChecked())
                         cb.setPaintFlags(cb.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -68,7 +66,7 @@ public class ToDoAdapter extends ArrayAdapter<TodoTask>
 
         TodoTask current = taskList.get(position);
         chk.setText(current.getDescription());
-        chk.setChecked(current.getValue() == 1 ? true : false);
+        chk.setChecked(current.getValue() == 1);
         if (current.getValue() == 1)
             chk.setPaintFlags(chk.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         chk.setTag(current);

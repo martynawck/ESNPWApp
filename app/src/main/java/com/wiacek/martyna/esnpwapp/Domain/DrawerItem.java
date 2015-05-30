@@ -2,10 +2,10 @@ package com.wiacek.martyna.esnpwapp.Domain;
 
 public class DrawerItem {
 
-    String ItemName;
-    int imgResID;
-    String title;
-    boolean isTitle;
+    private String ItemName;
+    private int imgResID;
+    private String title;
+    private boolean isTitle;
 
     public DrawerItem(String itemName, int imgResID) {
         super();

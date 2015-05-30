@@ -14,8 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,23 +40,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.TreeMap;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
 public class FragmentFunMap extends Fragment {
 
-    TextView tvItemName;
-    Spinner categoryListSpinner;
-    List<String> funMapCategoryArrayListNames;
-    List<String> funMapCategoryArrayListNamesForUser;
-    TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
-    TreeMap<FunMapCategory, ArrayList<FunMapPlace>> userPlaces;
+    private Spinner categoryListSpinner;
+    private List<String> funMapCategoryArrayListNames;
+    private List<String> funMapCategoryArrayListNamesForUser;
+    private TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
+    private TreeMap<FunMapCategory, ArrayList<FunMapPlace>> userPlaces;
 
-    MapView mMapView;
     private GoogleMap googleMap;
-    String spinnerForUserMenu;
-    String markerIdInDatabase;
-    String previousCategory;
+    private String spinnerForUserMenu;
+    private String markerIdInDatabase;
+    private String previousCategory;
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
@@ -89,7 +82,7 @@ public class FragmentFunMap extends Fragment {
         View view = inflater.inflate(R.layout.funmap_fragment, container,
                 false);
 
-        mMapView = (MapView) view.findViewById(R.id.mapView);
+        MapView mMapView = (MapView) view.findViewById(R.id.mapView);
         mMapView.onCreate(savedInstanceState);
         mMapView.onResume();
 
@@ -107,7 +100,6 @@ public class FragmentFunMap extends Fragment {
         funMapCategoryArrayListNames = new ArrayList<>();
         funMapCategoryArrayListNamesForUser = new ArrayList<>();
 
-        tvItemName = (TextView) view.findViewById(R.id.frag1_text);
         categoryListSpinner = (Spinner) view.findViewById(R.id.spinner);
 
         DownloadMarkerCategories task = new DownloadMarkerCategories(getActivity().getApplicationContext(), new OnFunMapCategory() {
@@ -222,7 +214,7 @@ public class FragmentFunMap extends Fragment {
                                             }
                                         }
 
-                                        if (alreadyExists == false) {
+                                        if (!alreadyExists) {
                                             placeName.setText("");
                                             description.setText("");
                                             spinner.setSelection(0);
@@ -308,7 +300,7 @@ public class FragmentFunMap extends Fragment {
         return view;
     }
 
-    public void runMarkersTask(String id ) {
+    void runMarkersTask(String id) {
         markers = new ArrayList<>();
         if (id.equals("0")) {
             DownloadAllMarkers taskDownload = new DownloadAllMarkers(getActivity().getApplicationContext(), this, places);
@@ -322,7 +314,7 @@ public class FragmentFunMap extends Fragment {
         }
     }
 
-    class MyNameComp implements Comparator<FunMapCategory>{
+    private class MyNameComp implements Comparator<FunMapCategory>{
         @Override
         public int compare(FunMapCategory o1, FunMapCategory o2) {
             if (o1.getName() == null || o2.getName() == null)

@@ -3,9 +3,7 @@ package com.wiacek.martyna.esnpwapp.Fragment;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,20 +13,17 @@ import android.widget.Toast;
 
 import com.bluejamesbond.text.DocumentView;
 import com.bluejamesbond.text.style.JustifiedSpan;
-import com.bluejamesbond.text.style.LeftSpan;
 import com.bluejamesbond.text.style.TextAlignment;
 import com.wiacek.martyna.esnpwapp.Domain.RawFileReader;
 import com.wiacek.martyna.esnpwapp.R;
 import com.wiacek.martyna.esnpwapp.ViewEnhancements.ArticleBuilder;
 import com.wiacek.martyna.esnpwapp.ViewEnhancements.MyLeadingMarginSpan2;
-import com.wiacek.martyna.esnpwapp.ViewEnhancements.PreparedDocumentView;
 
 
 public class DocumentsFragment extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    RawFileReader rfr;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,7 +31,7 @@ public class DocumentsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_documents, container,
                 false);
 
-        rfr = new RawFileReader(getActivity().getApplicationContext());
+        RawFileReader rfr = new RawFileReader(getActivity().getApplicationContext());
 
         DocumentView documentView = new DocumentView(getActivity().getApplicationContext(), DocumentView.FORMATTED_TEXT );
         documentView.getDocumentLayoutParams().setTextAlignment(TextAlignment.JUSTIFIED);

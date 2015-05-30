@@ -5,40 +5,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 import com.wiacek.martyna.esnpwapp.Domain.Event;
 import com.wiacek.martyna.esnpwapp.R;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-/**
- * Created by Martyna on 2015-03-03.
- */
 public class EventsAdapter extends ArrayAdapter<Event> {
-    Context context;
-    int layoutResourceId;
-    ArrayList<Event> data = new ArrayList<>();
+    private final int layoutResourceId;
+    private ArrayList<Event> data = new ArrayList<>();
 
     public EventsAdapter(Context context, int layoutResourceId, ArrayList<Event> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
-        this.context = context;
         this.data = data;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        EventHolder holder = null;
+        EventHolder holder;
 
         if(row == null)
         {

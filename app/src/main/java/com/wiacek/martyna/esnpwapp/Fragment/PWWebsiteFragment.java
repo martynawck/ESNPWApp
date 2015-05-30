@@ -20,9 +20,10 @@ public class PWWebsiteFragment extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    @InjectView(R.id.mywebView)public WebView myWebView;
-    final static String PWWebsiteAddress = "http://www.pw.edu.pl/engpw";
-    String myUrl;
+    @InjectView(R.id.mywebView)
+    WebView myWebView;
+    private final static String PWWebsiteAddress = "http://www.pw.edu.pl/engpw";
+    private String myUrl;
 
     public WebView getMyWebView() {
         return myWebView;

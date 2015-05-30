@@ -4,19 +4,11 @@
     <color name="list_background">#ffffff</color>
     <color name="list_background_pressed">#5CB8E6</color>
     <color name="list_divider">#e2e2e2</color>
-    <color name="counter_text_bg">#626262</color>
     <color name="bg_login">#5cB8E6</color>
-    <color name="counter_text_color">#c5c4c4</color>
     <color name="white">#FFFFFF</color>
-    <color name="bg_register">#2e3237</color>
     <color name="bg_main">#428bca</color>
     <color name="input_login">#222222</color>
     <color name="input_login_hint">#999999</color>
-    <color name="input_register">#888888</color>
-    <color name="input_register_bg">#3b4148</color>
-    <color name="input_register_hint">#5e6266</color>
     <color name="btn_login">#ffffff</color>
     <color name="btn_login_bg">#428bca</color>
-    <color name="lbl_name">#333333</color>
-    <color name="btn_logut_bg">#ff6861</color>
 </resources>

@@ -20,7 +20,7 @@ public class SettingsFragment extends PreferenceFragment {
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
-    SessionManager sessionManager;
+    private SessionManager sessionManager;
 
     @Override
     public void onCreate(Bundle paramBundle) {
@@ -31,6 +31,7 @@ public class SettingsFragment extends PreferenceFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+        assert view != null;
         view.setBackgroundColor(getResources().getColor(android.R.color.white));
         sessionManager = new SessionManager(getActivity().getApplicationContext());
 

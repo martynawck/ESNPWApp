@@ -19,9 +19,9 @@ import java.util.TreeMap;
 
 public class OffersListAdapter extends BaseExpandableListAdapter {
 
-    private Context context;
-    private List<String> expandableListTitle;
-    private TreeMap<Integer, List<ESNPartner>> expandableListDetail;
+    private final Context context;
+    private final List<String> expandableListTitle;
+    private final TreeMap<Integer, List<ESNPartner>> expandableListDetail;
 
     public OffersListAdapter(Context context, List<String> expandableListTitle,
                              TreeMap<Integer, List<ESNPartner>> expandableListDetail) {

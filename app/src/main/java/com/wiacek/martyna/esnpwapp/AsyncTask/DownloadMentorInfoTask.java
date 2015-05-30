@@ -1,21 +1,12 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.Buddy;
-import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
-import com.wiacek.martyna.esnpwapp.R;
 import com.wiacek.martyna.esnpwapp.SQLHelpers.ESNPWSQLHelper;
 
 import java.util.ArrayList;
@@ -26,11 +17,9 @@ import java.util.ArrayList;
 
 public class DownloadMentorInfoTask extends AsyncTask<String, Void, String> {
 
-    private OnTaskCompleted listener;
-    private Context mContext;
-    ArrayList <String> buddyData;
-    ESNPWSQLHelper buddySQLHelper;
-    SessionManager sessionManager;
+    private final OnTaskCompleted listener;
+    private final Context mContext;
+    private ArrayList <String> buddyData;
 
     public DownloadMentorInfoTask (Context context, OnTaskCompleted listener){
         this.listener = listener;
@@ -40,8 +29,8 @@ public class DownloadMentorInfoTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... urls) {
         try{
 
-            sessionManager = new SessionManager(mContext);
-            buddySQLHelper = new ESNPWSQLHelper(mContext);
+            SessionManager sessionManager = new SessionManager(mContext);
+            ESNPWSQLHelper buddySQLHelper = new ESNPWSQLHelper(mContext);
             buddyData = new ArrayList<>();
 
             Buddy buddy = buddySQLHelper.getBuddyInfo(sessionManager.getValueOfUserId());

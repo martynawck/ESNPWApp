@@ -29,48 +29,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UserPage"
-            android:label="@string/title_activity_user_page" >
-        </activity>
-        <activity
-            android:name=".EmergencyInfo"
-            android:label="@string/title_activity_emergency_info" >
-        </activity>
-        <activity
-            android:name=".BuddyPage"
-            android:label="@string/title_activity_buddy_page" >
-        </activity>
-        <activity
-            android:name=".QandAPage"
-            android:label="@string/title_activity_qand_apage" >
-        </activity>
-        <activity
-            android:name=".ESNFacultyPages"
-            android:label="@string/title_activity_esnfaculty_pages" >
-        </activity>
-        <!--
-        activity
-            android:name=".UserMain"
-            android:label="@string/title_activity_user_main" >
-        </activity
-        -->
-        <activity
-            android:name=".ESNDocuments"
-            android:label="@string/title_activity_esndocuments" >
-        </activity>
-        <activity
-            android:name=".PrivateUserPage"
-            android:label="@string/title_activity_private_user_page" >
-        </activity>
-        <activity
-            android:name=".ToDoListPage"
-            android:label="@string/title_activity_to_do_list" >
-        </activity>
-        <activity
-            android:name=".DrawerActivity"
-            android:label="@string/title_activity_drawer" >
-        </activity>
-        <activity
             android:name=".NavigationDrawer"
             android:label="@string/title_activity_entirely_new_drawer" >
         </activity>
@@ -81,27 +39,6 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="@string/google_maps_key" />
-
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" >
-        </activity>
-        <activity
-            android:name=".SettingsFragment"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".NavigationDrawer" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.wiacek.martyna.esnpwapp.NavigationDrawer" />
-        </activity>
-        <activity
-            android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"
-            android:parentActivityName=".NavigationDrawer" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.wiacek.martyna.esnpwapp.NavigationDrawer" />
-        </activity>
     </application>
 
 </manifest>

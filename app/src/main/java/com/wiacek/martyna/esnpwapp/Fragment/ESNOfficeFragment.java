@@ -8,9 +8,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bluejamesbond.text.DocumentView;
@@ -25,7 +23,6 @@ public class ESNOfficeFragment extends Fragment {
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
-    RawFileReader rfr;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,7 +31,7 @@ public class ESNOfficeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_documents, container,
                 false);
 
-        rfr = new RawFileReader(getActivity().getApplicationContext());
+        RawFileReader rfr = new RawFileReader(getActivity().getApplicationContext());
 
         DocumentView documentView = new DocumentView(getActivity().getApplicationContext(), DocumentView.FORMATTED_TEXT );
         documentView.getDocumentLayoutParams().setTextAlignment(TextAlignment.JUSTIFIED);

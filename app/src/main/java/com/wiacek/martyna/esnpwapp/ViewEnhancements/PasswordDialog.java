@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.wiacek.martyna.esnpwapp.AsyncTask.ChangePasswordTask;
 import com.wiacek.martyna.esnpwapp.R;
@@ -49,8 +47,6 @@ public class PasswordDialog extends DialogPreference {
                 ChangePasswordTask task = new ChangePasswordTask(originalPwd.getText().toString(), newPwdSecond.getText().toString(), getContext());
                 task.runVolley();
                 setTitle("Password: changed");
-            } else {
-
             }
         }
     }

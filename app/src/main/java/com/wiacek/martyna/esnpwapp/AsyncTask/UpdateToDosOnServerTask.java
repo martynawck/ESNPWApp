@@ -1,18 +1,10 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Domain.TodoTask;
@@ -34,19 +26,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Martyna on 2015-05-22.
  */
 public class UpdateToDosOnServerTask extends AsyncTask<String, Void, String> {
 
-    private Context mContext;
-    HttpPost httppost;
-    HttpClient httpclient;
-    ESNPWSQLHelper esnpwsqlHelper;
-    SessionManager sessionManager;
+    private final Context mContext;
+    private final SessionManager sessionManager;
 
 
     public UpdateToDosOnServerTask(Context context, SessionManager sessionManager) {
@@ -56,7 +43,7 @@ public class UpdateToDosOnServerTask extends AsyncTask<String, Void, String> {
 
     protected String doInBackground(String... urls) {
 
-        esnpwsqlHelper = new ESNPWSQLHelper(mContext);
+        ESNPWSQLHelper esnpwsqlHelper = new ESNPWSQLHelper(mContext);
         ArrayList<TodoTask> todoTasksAfter = esnpwsqlHelper.getTodosAfter(sessionManager.getValueOfUserId());
         ArrayList<TodoTask> todoTasksBefore = esnpwsqlHelper.getTodosBefore(sessionManager.getValueOfUserId());
 
@@ -102,10 +89,10 @@ public class UpdateToDosOnServerTask extends AsyncTask<String, Void, String> {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();
 
-                String line = null;
+                String line;
                 try {
                     while ((line = reader.readLine()) != null) {
-                        sb.append(line + "\n");
+                        sb.append(line).append("\n");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -116,17 +103,14 @@ public class UpdateToDosOnServerTask extends AsyncTask<String, Void, String> {
                         e.printStackTrace();
                     }
                 }
-                //TODO if sb true ok else blad
             }
             return "0";
 
 
         }catch (ClientProtocolException e) {
             return "-1";
-            // TODO Auto-generated catch block
         } catch (IOException e) {
             return "-1";
-            // TODO Auto-generated catch block
         } catch (Exception e) {
             return "-1";
 

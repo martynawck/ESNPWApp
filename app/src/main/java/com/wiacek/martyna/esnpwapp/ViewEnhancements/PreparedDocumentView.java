@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.ScrollView;
 
 import com.bluejamesbond.text.DocumentView;
@@ -15,8 +14,7 @@ import com.bluejamesbond.text.style.TextAlignment;
  */
 public class PreparedDocumentView extends ScrollView {
 
-    Context mContext;
-    DocumentView documentView;
+    private final DocumentView documentView;
 
     public PreparedDocumentView (Context context, AttributeSet attrs) {
         super(context, attrs);

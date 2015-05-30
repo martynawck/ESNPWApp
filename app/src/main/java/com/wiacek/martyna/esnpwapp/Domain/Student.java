@@ -5,9 +5,9 @@ package com.wiacek.martyna.esnpwapp.Domain;
  */
 public class Student extends Buddy {
 
-    String faculty;
-    String imgUrl;
-    String id;
+    private String faculty;
+    private String imgUrl;
+    private String id;
 
     public String getId() {
         return id;

@@ -5,16 +5,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
 import com.wiacek.martyna.esnpwapp.Adapter.UsefulAppAdapter;
 import com.wiacek.martyna.esnpwapp.R;
 
@@ -23,8 +19,8 @@ import butterknife.InjectView;
 
 public class UsefulAppsFragment extends Fragment {
 
-    @InjectView(R.id.gridView)GridView gridView;
-    Context mContext;
+    @InjectView(R.id.gridView)
+    GridView gridView;
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
@@ -41,7 +37,7 @@ public class UsefulAppsFragment extends Fragment {
                 false);
 
         ButterKnife.inject(this, view);
-        mContext = getActivity().getApplicationContext();
+        Context mContext = getActivity().getApplicationContext();
 
         UsefulAppsFragment.this.gridView.setAdapter(new UsefulAppAdapter(mContext));
 

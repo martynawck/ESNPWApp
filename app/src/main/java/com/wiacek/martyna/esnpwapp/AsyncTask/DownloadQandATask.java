@@ -1,10 +1,6 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -12,14 +8,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.wiacek.martyna.esnpwapp.Adapter.QandAListAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Interface.OnQADownload;
-import com.wiacek.martyna.esnpwapp.JSONFunctions;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,10 +27,10 @@ import java.util.List;
 
 public class DownloadQandATask  {
 
-    OnQADownload listener;
-    List<String> expandableListTitle;
-    HashMap<String, List<String>> expandableListDetail;
-    Context mContext;
+    private final OnQADownload listener;
+    private List<String> expandableListTitle;
+    private HashMap<String, List<String>> expandableListDetail;
+    private final Context mContext;
 
     public DownloadQandATask(Context context, OnQADownload listener){
         this.listener = listener;

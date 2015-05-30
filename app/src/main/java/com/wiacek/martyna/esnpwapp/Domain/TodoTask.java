@@ -5,10 +5,10 @@ package com.wiacek.martyna.esnpwapp.Domain;
  */
 public class TodoTask {
 
-    int todo_id;
-    String description;
-    int value;
-    int type;
+    private int todo_id;
+    private String description;
+    private int value;
+    private int type;
 
     public TodoTask () { }
 

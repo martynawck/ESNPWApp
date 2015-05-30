@@ -24,13 +24,13 @@ import java.util.Map;
 /**
  * Created by Martyna on 2015-05-30.
  */
-public class GetBuddyFromServerTask {
+class GetBuddyFromServerTask {
 
     private final ProgressDialog progressDialog;
-    private Context mContext;
-    Buddy buddy;
-    ESNPWSQLHelper buddySQLHelper;
-    SessionManager sessionManager;
+    private final Context mContext;
+    private Buddy buddy;
+    private ESNPWSQLHelper buddySQLHelper;
+    private final SessionManager sessionManager;
 
     public GetBuddyFromServerTask (Context context, ProgressDialog progressDialog, SessionManager sessionManager) {
         this.progressDialog = progressDialog;

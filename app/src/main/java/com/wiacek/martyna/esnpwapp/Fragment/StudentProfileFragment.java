@@ -1,9 +1,7 @@
 package com.wiacek.martyna.esnpwapp.Fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,15 +18,7 @@ import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
 import com.wiacek.martyna.esnpwapp.AsyncTask.GetDirectFbIdTask;
 import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
-import com.wiacek.martyna.esnpwapp.Domain.Student;
 import com.wiacek.martyna.esnpwapp.R;
-
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -37,12 +27,15 @@ public class StudentProfileFragment extends Fragment {
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
-    final String NOT_AVAILABLE = "NOT AVAILABLE";
-    final String NULL = "null";
-    @InjectView(R.id.firstlastname) TextView name;
-    @InjectView(R.id.faculty) TextView faculty;
-    @InjectView(R.id.profilePic) ImageView image;
-    @InjectView(R.id.listView1) ListView listView1;
+    private final String NOT_AVAILABLE = "NOT AVAILABLE";
+    @InjectView(R.id.firstlastname)
+    TextView name;
+    @InjectView(R.id.faculty)
+    TextView faculty;
+    @InjectView(R.id.profilePic)
+    ImageView image;
+    @InjectView(R.id.listView1)
+    ListView listView1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,6 +53,7 @@ public class StudentProfileFragment extends Fragment {
         Picasso.with(getActivity().getApplicationContext()).load(ServerUrl.BASE_URL+bundle.getString("profile_img_url")).into(image);
 
         MentorContact data[] = new MentorContact[5];
+        String NULL = "null";
         if (bundle.getString("profile_phone_no").isEmpty() ||
                 bundle.getString("profile_phone_no").equals(NULL) )
             bundle.putString("profile_phone_no", NOT_AVAILABLE);

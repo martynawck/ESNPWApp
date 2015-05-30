@@ -1,6 +1,5 @@
 package com.wiacek.martyna.esnpwapp.Interface;
 
-import com.wiacek.martyna.esnpwapp.Domain.Event;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapCategory;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapPlace;
 

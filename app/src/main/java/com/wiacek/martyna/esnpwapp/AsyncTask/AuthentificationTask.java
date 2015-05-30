@@ -28,7 +28,7 @@ public class AuthentificationTask {
     private final String password;
     private final Activity activity;
 
-    public AuthentificationTask(Context context, Activity activity, ProgressDialog progressDialog, SessionManager sessionManager, String login, String password) {
+    public AuthentificationTask(Context context, Activity activity, ProgressDialog progressDialog, String login, String password) {
         mContext = context;
         this.login = login;
         this.progressDialog = progressDialog;

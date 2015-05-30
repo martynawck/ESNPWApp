@@ -8,11 +8,11 @@ import com.google.android.gms.maps.model.LatLng;
 public class FunMapPlace {
 
 
-    String name;
-    String description;
-    String id;
-    String userId;
-    LatLng coordinate;
+    private String name;
+    private String description;
+    private String id;
+    private String userId;
+    private LatLng coordinate;
 
     public FunMapPlace() {}
 

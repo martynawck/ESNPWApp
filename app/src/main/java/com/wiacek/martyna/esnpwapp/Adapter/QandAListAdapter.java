@@ -13,9 +13,9 @@ import com.wiacek.martyna.esnpwapp.R;
 
 public class QandAListAdapter extends BaseExpandableListAdapter {
 
-    private Context context;
-    private List<String> expandableListTitle;
-    private HashMap<String, List<String>> expandableListDetail;
+    private final Context context;
+    private final List<String> expandableListTitle;
+    private final HashMap<String, List<String>> expandableListDetail;
 
     public QandAListAdapter(Context context, List<String> expandableListTitle,
                             HashMap<String, List<String>> expandableListDetail) {

@@ -10,7 +10,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.wiacek.martyna.esnpwapp.Domain.Buddy;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Domain.TodoTask;
@@ -24,23 +23,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Martyna on 2015-04-29.
  */
-public class GetToDosFromServerTask {
+class GetToDosFromServerTask {
 
     private final ProgressDialog progressDialog;
-    private Context mContext;
-    ESNPWSQLHelper todoSQLHelper;
-    HttpPost httppost;
-    HttpClient httpclient;
-    List<NameValuePair> nameValuePairs;
-    ArrayList<TodoTask> tasksToAdd;
-    SessionManager sessionManager;
+    private final Context mContext;
+    private ESNPWSQLHelper todoSQLHelper;
+    private ArrayList<TodoTask> tasksToAdd;
+    private final SessionManager sessionManager;
 
     public GetToDosFromServerTask (Context context, ProgressDialog progressDialog, SessionManager sessionManager) {
         mContext = context;

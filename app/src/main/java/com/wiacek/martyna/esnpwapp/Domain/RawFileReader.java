@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
  */
 public class RawFileReader {
 
-    Context mContext;
+    private final Context mContext;
 
     public RawFileReader(Context context) {
         mContext = context;
@@ -61,15 +61,13 @@ public class RawFileReader {
         return s;
     }
 
-    public StringBuffer RawResources(int resources ) throws IOException {
-        String str = "";
+    StringBuffer RawResources(int resources) throws IOException {
+        String str;
         StringBuffer buf = new StringBuffer();
         InputStream is = mContext.getResources().openRawResource(resources);
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        if (is != null) {
-            while ((str = reader.readLine()) != null) {
-                buf.append(str + "<br/><br/>");
-            }
+        while ((str = reader.readLine()) != null) {
+            buf.append(str).append("<br/><br/>");
         }
         is.close();
 

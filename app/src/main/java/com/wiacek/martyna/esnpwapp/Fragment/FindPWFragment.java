@@ -18,12 +18,18 @@ import butterknife.InjectView;
 
 public class FindPWFragment extends Fragment {
 
-    @InjectView(R.id.facebookButton) ImageButton facebook;
-    @InjectView(R.id.twitterButton) ImageButton twitter;
-    @InjectView(R.id.linkedinButton) ImageButton linkedin;
-    @InjectView(R.id.instagramButton) ImageButton instagram;
-    @InjectView(R.id.pinterestButton) ImageButton pinterest;
-    @InjectView(R.id.wordpressButton) ImageButton wordpress;
+    @InjectView(R.id.facebookButton)
+    ImageButton facebook;
+    @InjectView(R.id.twitterButton)
+    ImageButton twitter;
+    @InjectView(R.id.linkedinButton)
+    ImageButton linkedin;
+    @InjectView(R.id.instagramButton)
+    ImageButton instagram;
+    @InjectView(R.id.pinterestButton)
+    ImageButton pinterest;
+    @InjectView(R.id.wordpressButton)
+    ImageButton wordpress;
 
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";

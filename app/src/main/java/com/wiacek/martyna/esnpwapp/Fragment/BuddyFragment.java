@@ -1,13 +1,9 @@
 package com.wiacek.martyna.esnpwapp.Fragment;
 
 import android.support.v4.app.Fragment;
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,26 +15,11 @@ import android.widget.Toast;
 import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
 import com.wiacek.martyna.esnpwapp.AsyncTask.DownloadMentorInfoTask;
 import com.wiacek.martyna.esnpwapp.AsyncTask.GetDirectFbIdTask;
-import com.wiacek.martyna.esnpwapp.Domain.Buddy;
 import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
-import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
-import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
 import com.wiacek.martyna.esnpwapp.R;
-import com.wiacek.martyna.esnpwapp.SQLHelpers.ESNPWSQLHelper;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,19 +30,21 @@ public class BuddyFragment extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    @InjectView(R.id.firstName) TextView fName;
-    @InjectView(R.id.lastName) TextView lName;
-    @InjectView(R.id.listView1) ListView listView1;
-    View view;
-    ArrayList<String> buddyData;
-    final String NOT_AVAILABLE = "NOT AVAILABLE";
-    final String NULL = "null";
+    @InjectView(R.id.firstName)
+    TextView fName;
+    @InjectView(R.id.lastName)
+    TextView lName;
+    @InjectView(R.id.listView1)
+    ListView listView1;
+    private ArrayList<String> buddyData;
+    private final String NOT_AVAILABLE = "NOT AVAILABLE";
+    private final String NULL = "null";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_buddy, container, false);
+        View view = inflater.inflate(R.layout.fragment_buddy, container, false);
         ButterKnife.inject(this, view);
 
         buddyData = new ArrayList<>();
@@ -185,7 +168,7 @@ public class BuddyFragment extends Fragment {
 
             }
         });
-        task.execute(new String[]{});
+        task.execute();
         return view;
     }
 

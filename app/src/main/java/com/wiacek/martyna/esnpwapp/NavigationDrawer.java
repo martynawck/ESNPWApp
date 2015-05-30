@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +27,6 @@ import com.wiacek.martyna.esnpwapp.Domain.DrawerItem;
 import com.wiacek.martyna.esnpwapp.Domain.NavigationDrawerModel;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
-import com.wiacek.martyna.esnpwapp.Fragment.BuddyFragment;
 import com.wiacek.martyna.esnpwapp.Fragment.*;
 
 import butterknife.ButterKnife;
@@ -36,21 +34,23 @@ import butterknife.InjectView;
 
 public class NavigationDrawer extends ActionBarActivity {
 
-    @InjectView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
-    @InjectView(R.id.left_drawer) ListView mDrawerList;
+    @InjectView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
+    @InjectView(R.id.left_drawer)
+    ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     private boolean webBrowserBack;
-    NavigationDrawerAdapter adapter;
-    boolean uploadedPicture;
-    NavigationDrawerModel navigationDrawerModel;
+    private NavigationDrawerAdapter adapter;
+    private boolean uploadedPicture;
+    private NavigationDrawerModel navigationDrawerModel;
 
-    android.app.Fragment nativeFragment = null;
+    private android.app.Fragment nativeFragment = null;
 
-    SessionManager session;
-    List<DrawerItem> dataList;
+    private SessionManager session;
+    private List<DrawerItem> dataList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,7 +121,7 @@ public class NavigationDrawer extends ActionBarActivity {
 
             public void onDrawerOpened(View drawerView) {
                 getSupportActionBar().setTitle(mDrawerTitle);
-                if (uploadedPicture == true) {
+                if (uploadedPicture) {
                     Picasso.with(getApplicationContext()).load(ServerUrl.BASE_URL + session.getValueOfProfileImage()).memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).into(profilePic);
                     uploadedPicture = false;
                 }
@@ -142,7 +142,7 @@ public class NavigationDrawer extends ActionBarActivity {
         return true;
     }
 
-    public void SelectItem(int position) {
+    void SelectItem(int position) {
 
         Fragment fragment = null;
         boolean useNativeFragment = false;
@@ -303,10 +303,7 @@ public class NavigationDrawer extends ActionBarActivity {
                 break;
         }
 
-        if (position == 10)
-            webBrowserBack = true;
-        else
-            webBrowserBack = false;
+        webBrowserBack = position == 10;
 
         if (useNativeFragment) {
             android.app.FragmentManager fragmentManager = getFragmentManager();
@@ -385,9 +382,9 @@ public class NavigationDrawer extends ActionBarActivity {
         }
     }
 
-    public void moveToBackAndFinish() {
+    void moveToBackAndFinish() {
         UpdateToDosOnServerTask task = new UpdateToDosOnServerTask(getApplicationContext(), session);
-        task.execute(new String[] {});
+        task.execute();
         moveTaskToBack(true);
         NavigationDrawer.this.finish();
     }

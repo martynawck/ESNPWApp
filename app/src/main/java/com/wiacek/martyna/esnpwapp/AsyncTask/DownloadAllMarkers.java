@@ -1,21 +1,10 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapCategory;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapPlace;
@@ -23,11 +12,9 @@ import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Fragment.FragmentFunMap;
 import com.wiacek.martyna.esnpwapp.JSONFunctions;
 
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
@@ -37,7 +24,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.TreeMap;
 
 /**
@@ -46,10 +32,10 @@ import java.util.TreeMap;
 
 public class DownloadAllMarkers extends AsyncTask<String, Void, String> {
 
-    Context mContext;
-    FragmentFunMap fragment;
-    ArrayList<MarkerOptions> markerOptions;
-    TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
+    private final Context mContext;
+    private final FragmentFunMap fragment;
+    private ArrayList<MarkerOptions> markerOptions;
+    private final TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
 
     public DownloadAllMarkers (Context context, FragmentFunMap fragment, TreeMap <FunMapCategory, ArrayList<FunMapPlace>> places){
         this.fragment = fragment;

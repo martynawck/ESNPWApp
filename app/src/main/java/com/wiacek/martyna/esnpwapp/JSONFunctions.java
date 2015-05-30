@@ -49,11 +49,11 @@ public class JSONFunctions {
 
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    is, "iso-8859-1"), 8);
+                    is != null ? is : null, "iso-8859-1"), 8);
             StringBuilder sb = new StringBuilder();
-            String line = null;
+            String line;
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
+                sb.append(line).append("\n");
             }
             is.close();
             result = sb.toString();
@@ -200,7 +200,7 @@ public class JSONFunctions {
             if (o.has("start_time")) {
                 String stringStartTime = o.getString("start_time");
                 SimpleDateFormat incomingFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
-                Date date = new Date();
+                Date date;
                 try {
                     date = incomingFormat.parse(stringStartTime);
 

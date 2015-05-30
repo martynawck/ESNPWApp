@@ -24,7 +24,6 @@ import com.wiacek.martyna.esnpwapp.Fragment.SettingsFragment;
 import com.wiacek.martyna.esnpwapp.Fragment.ToDoFragment;
 import com.wiacek.martyna.esnpwapp.Fragment.TransportationFragment;
 import com.wiacek.martyna.esnpwapp.Fragment.UsefulAppsFragment;
-import com.wiacek.martyna.esnpwapp.NavigationDrawer;
 import com.wiacek.martyna.esnpwapp.R;
 
 import java.util.ArrayList;
@@ -35,11 +34,11 @@ import java.util.List;
  */
 public class NavigationDrawerModel {
 
-    List<DrawerItem> dataList;
-    android.app.Fragment nativeFragment;
-    Fragment fragment;
-    boolean useNativeFragment;
-    Bundle args;
+    private List<DrawerItem> dataList;
+    private android.app.Fragment nativeFragment;
+    private Fragment fragment;
+    private boolean useNativeFragment;
+    private Bundle args;
 
     public NavigationDrawerModel() {
         useNativeFragment = false;

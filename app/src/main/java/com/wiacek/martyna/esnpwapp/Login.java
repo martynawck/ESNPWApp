@@ -1,7 +1,6 @@
 package com.wiacek.martyna.esnpwapp;
 
 import com.wiacek.martyna.esnpwapp.AsyncTask.AuthentificationTask;
-import com.wiacek.martyna.esnpwapp.AsyncTask.UpdateToDosOnServerTask;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -19,11 +18,12 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class Login extends Activity {
-    @InjectView(R.id.username) EditText et;
-    @InjectView(R.id.password) EditText pass;
+    @InjectView(R.id.username)
+    EditText et;
+    @InjectView(R.id.password)
+    EditText pass;
 
-    ProgressDialog dialog = null;
-    SessionManager session;
+    private SessionManager session;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,8 @@ public class Login extends Activity {
 
     @OnClick(R.id.Button01)
     public void OnClick() {
-        dialog = ProgressDialog.show(Login.this, "","Validating user...", true);
-        AuthentificationTask task = new AuthentificationTask(getApplicationContext(), Login.this, dialog, session, et.getText().toString().trim(), pass.getText().toString().trim());
+        ProgressDialog dialog = ProgressDialog.show(Login.this, "", "Validating user...", true);
+        AuthentificationTask task = new AuthentificationTask(getApplicationContext(), Login.this, dialog, et.getText().toString().trim(), pass.getText().toString().trim());
         task.runVolley();
     }
 

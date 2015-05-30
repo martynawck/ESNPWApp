@@ -16,9 +16,12 @@ import butterknife.InjectView;
 
 public class HomeFragment extends Fragment {
 
-    @InjectView(R.id.facebookButton)ImageButton facebook;
-    @InjectView(R.id.twitterButton)ImageButton twitter;
-    @InjectView(R.id.youtubeButton)ImageButton youtube;
+    @InjectView(R.id.facebookButton)
+    ImageButton facebook;
+    @InjectView(R.id.twitterButton)
+    ImageButton twitter;
+    @InjectView(R.id.youtubeButton)
+    ImageButton youtube;
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";

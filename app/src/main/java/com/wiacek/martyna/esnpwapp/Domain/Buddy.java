@@ -5,7 +5,7 @@ package com.wiacek.martyna.esnpwapp.Domain;
  */
 public class Buddy {
 
-    String firstname;
+    private String firstname;
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
@@ -35,12 +35,12 @@ public class Buddy {
         this.firstname = firstname;
     }
 
-    String lastname;
-    String email;
-    String skype;
-    String facebook;
-    String phone;
-    String whatsapp;
+    private String lastname;
+    private String email;
+    private String skype;
+    private String facebook;
+    private String phone;
+    private String whatsapp;
 
     public Buddy() {}
 

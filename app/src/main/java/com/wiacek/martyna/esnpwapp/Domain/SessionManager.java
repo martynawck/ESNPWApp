@@ -7,29 +7,28 @@ import android.content.SharedPreferences;
  * Created by Martyna on 2015-03-20.
  */
 public class SessionManager {
-    SharedPreferences _sharedPreferences;
-    SharedPreferences.Editor _editor;
-    Context _context;
+    private final SharedPreferences _sharedPreferences;
+    private final SharedPreferences.Editor _editor;
     private static final String SESSION_NAME = "ESN_PW_APP";
 
     private static final String IS_LOGIN = "USER_IS_LOGGED_IN";
-    public static final String KEY_USERNAME = "LOGIN";
-    public static final String KEY_PASSWORD = "PASSWORD";
-    public static final String KEY_USER_ID = "USER_ID";
-    public static final String KEY_FACULTY = "FACULTY";
-    public static final String KEY_FIRST_NAME = "FIRST_NAME";
-    public static final String KEY_LAST_NAME = "LAST_NAME";
-    public static final String KEY_PROFILE_IMAGE = "PROFILE_IMAGE";
-    public static final String KEY_PROFILE_EMAIL = "PROFILE_EMAIL";
-    public static final String KEY_PROFILE_PHONE = "PROFILE_PHONE";
-    public static final String KEY_PROFILE_FACEBOOK = "PROFILE_FACEBOOK";
-    public static final String KEY_PROFILE_WHATSAPP = "PROFILE_WHATSAPP";
-    public static final String KEY_PROFILE_SKYPE = "PROFILE_SKYPE";
-    public static final String KEY_VISIBILITY = "PROFILE_VISIBILITY";
+    private static final String KEY_USERNAME = "LOGIN";
+    private static final String KEY_PASSWORD = "PASSWORD";
+    private static final String KEY_USER_ID = "USER_ID";
+    private static final String KEY_FACULTY = "FACULTY";
+    private static final String KEY_FIRST_NAME = "FIRST_NAME";
+    private static final String KEY_LAST_NAME = "LAST_NAME";
+    private static final String KEY_PROFILE_IMAGE = "PROFILE_IMAGE";
+    private static final String KEY_PROFILE_EMAIL = "PROFILE_EMAIL";
+    private static final String KEY_PROFILE_PHONE = "PROFILE_PHONE";
+    private static final String KEY_PROFILE_FACEBOOK = "PROFILE_FACEBOOK";
+    private static final String KEY_PROFILE_WHATSAPP = "PROFILE_WHATSAPP";
+    private static final String KEY_PROFILE_SKYPE = "PROFILE_SKYPE";
+    private static final String KEY_VISIBILITY = "PROFILE_VISIBILITY";
 
 
     public SessionManager(Context context){
-        this._context = context;
+        Context _context = context;
         _sharedPreferences = _context.getSharedPreferences(SESSION_NAME, Context.MODE_PRIVATE);
         _editor =_sharedPreferences.edit();
     }
@@ -146,11 +145,7 @@ public class SessionManager {
     }
 
     public boolean resumeSession(){
-        if (_sharedPreferences.contains(KEY_USERNAME) && _sharedPreferences.contains(KEY_PASSWORD))
-        {
-            return true;
-        }
-        return false;
+        return _sharedPreferences.contains(KEY_USERNAME) && _sharedPreferences.contains(KEY_PASSWORD);
     }
 
     public void destroySession() {

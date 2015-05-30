@@ -1,16 +1,12 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapCategory;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapPlace;
 import com.wiacek.martyna.esnpwapp.Fragment.FragmentFunMap;
-
-import org.apache.http.NameValuePair;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -22,9 +18,9 @@ import java.util.TreeMap;
 
 public class DownloadPointsMarkers extends AsyncTask<String, Void, String> {
 
-    FragmentFunMap fragment;
-    TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
-    ArrayList<MarkerOptions> markerOptions;
+    private final FragmentFunMap fragment;
+    private final TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
+    private ArrayList<MarkerOptions> markerOptions;
 
     public DownloadPointsMarkers (FragmentFunMap fragment, TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places){
         this.fragment = fragment;
@@ -48,6 +44,7 @@ public class DownloadPointsMarkers extends AsyncTask<String, Void, String> {
             }
         }
 
+        assert category != null;
         switch (category.getId()) {
             case "1":
                 color = BitmapDescriptorFactory.HUE_AZURE;

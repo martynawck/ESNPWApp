@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
-import com.wiacek.martyna.esnpwapp.AsyncTask.ChangePasswordTask;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.R;
@@ -32,16 +31,14 @@ import java.io.ByteArrayOutputStream;
 /**
  * Created by Martyna on 2015-05-14.
  */
-public class ProfilePictureDialog extends DialogPreference {
-    private static int RESULT_LOAD_IMAGE = 1;
+class ProfilePictureDialog extends DialogPreference {
+    private static final int RESULT_LOAD_IMAGE = 1;
 
 
-    ImageView picture;
-    ProgressDialog prgDialog;
-    String encodedString;
-    String imgPath, fileName;
-    Bitmap bitmap;
-    Button choosePic;
+    private ProgressDialog prgDialog;
+    private String encodedString;
+    private String imgPath;
+    private Bitmap bitmap;
 
     public ProfilePictureDialog(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -71,9 +68,9 @@ public class ProfilePictureDialog extends DialogPreference {
     @Override
     public void onBindDialogView(View view){
 
-        picture = (ImageView) view.findViewById(R.id.profilePic);
+        ImageView picture = (ImageView) view.findViewById(R.id.profilePic);
         Picasso.with(getContext()).load(ServerUrl.BASE_URL + new SessionManager(getContext()).getValueOfProfileImage()).into(picture);
-        choosePic = (Button) view.findViewById(R.id.choosePicButton);
+        Button choosePic = (Button) view.findViewById(R.id.choosePicButton);
 
         choosePic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +81,7 @@ public class ProfilePictureDialog extends DialogPreference {
         super.onBindDialogView(view);
     }
 
-    public void loadImagefromGallery() {
+    void loadImagefromGallery() {
         // Create intent to Open Image applications like Gallery, Google Photos
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
@@ -119,7 +116,7 @@ public class ProfilePictureDialog extends DialogPreference {
                         .decodeFile(imgPath));
                 // Get the Image's file name
                 String fileNameSegments[] = imgPath.split("/");
-                fileName = fileNameSegments[fileNameSegments.length - 1];
+                String fileName = fileNameSegments[fileNameSegments.length - 1];
                 // Put file name in Async Http Post Param which will used in Php web app
                // params.put("filename", fileName);
 
@@ -152,16 +149,12 @@ public class ProfilePictureDialog extends DialogPreference {
     }
 
     // AsyncTask - To convert Image to String
-    public void encodeImagetoString() {
+    void encodeImagetoString() {
         new AsyncTask<Void, Void, String>() {
-
-            protected void onPreExecute() {
-
-            };
 
             @Override
             protected String doInBackground(Void... params) {
-                BitmapFactory.Options options = null;
+                BitmapFactory.Options options;
                 options = new BitmapFactory.Options();
                 options.inSampleSize = 3;
                 bitmap = BitmapFactory.decodeFile(imgPath,
@@ -178,67 +171,7 @@ public class ProfilePictureDialog extends DialogPreference {
             @Override
             protected void onPostExecute(String msg) {
                 prgDialog.setMessage("Calling Upload");
-                // Put converted Image string into Async Http Post param
-                //params.put("image", encodedString);
-                // Trigger Image upload
-                triggerImageUpload();
             }
         }.execute(null, null, null);
     }
-
-    public void triggerImageUpload() {
-//        makeHTTPCall();
-    }
-/*
-    // Make Http call to upload Image to Php server
-    public void makeHTTPCall() {
-        prgDialog.setMessage("Invoking Php");
-        AsyncHttpClient client = new AsyncHttpClient();
-        // Don't forget to change the IP address to your LAN address. Port no as well.
-        client.post("http://192.168.2.5:9000/imgupload/upload_image.php",
-                params, new AsyncHttpResponseHandler() {
-                    // When the response returned by REST has Http
-                    // response code '200'
-                    @Override
-                    public void onSuccess(String response) {
-                        // Hide Progress Dialog
-                        prgDialog.hide();
-                        Toast.makeText(getApplicationContext(), response,
-                                Toast.LENGTH_LONG).show();
-                    }
-
-                    // When the response returned by REST has Http
-                    // response code other than '200' such as '404',
-                    // '500' or '403' etc
-                    @Override
-                    public void onFailure(int statusCode, Throwable error,
-                                          String content) {
-                        // Hide Progress Dialog
-                        prgDialog.hide();
-                        // When Http response code is '404'
-                        if (statusCode == 404) {
-                            Toast.makeText(getContext(),
-                                    "Requested resource not found",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        // When Http response code is '500'
-                        else if (statusCode == 500) {
-                            Toast.makeText(getContext(),
-                                    "Something went wrong at server end",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                        // When Http response code other than 404, 500
-                        else {
-                            Toast.makeText(
-                                    getContext(),
-                                    "Error Occured \n Most Common Error: \n1. Device not connected to Internet\n2. Web App is not deployed in App server\n3. App server is not running\n HTTP Status code : "
-                                            + statusCode, Toast.LENGTH_LONG)
-                                    .show();
-                        }
-                    }
-                });
-    }
-
-*/
-
 }

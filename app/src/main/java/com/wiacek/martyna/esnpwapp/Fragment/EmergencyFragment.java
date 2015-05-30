@@ -27,7 +27,8 @@ public class EmergencyFragment extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    @InjectView(R.id.listView1) ListView listView1;
+    @InjectView(R.id.listView1)
+    ListView listView1;
 
     public EmergencyFragment() {}
 

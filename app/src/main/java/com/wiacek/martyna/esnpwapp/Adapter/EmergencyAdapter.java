@@ -7,34 +7,26 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.wiacek.martyna.esnpwapp.Domain.EmergencyContact;
 import com.wiacek.martyna.esnpwapp.R;
-
 import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-/**
- * Created by Martyna on 2015-03-03.
- */
 public class EmergencyAdapter extends ArrayAdapter<EmergencyContact> {
-    Context context;
-    int layoutResourceId;
-    ArrayList<EmergencyContact> data;
+    private final int layoutResourceId;
+    private final ArrayList<EmergencyContact> data;
 
     public EmergencyAdapter(Context context, int layoutResourceId, ArrayList<EmergencyContact> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
-        this.context = context;
         this.data = data;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        EmergencyHolder holder = null;
+        EmergencyHolder holder;
 
         if(row == null)
         {

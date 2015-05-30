@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,23 +14,13 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
-import com.wiacek.martyna.esnpwapp.Login;
 import com.wiacek.martyna.esnpwapp.NavigationDrawer;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,21 +28,15 @@ import java.util.Map;
 /**
  * Created by Martyna on 2015-04-29.
  */
-public class GetUserPersonalDataFromServerTask {
+class GetUserPersonalDataFromServerTask {
 
-    private Context mContext;
-    HttpPost httppost;
-    StringBuffer buffer;
-    HttpClient httpclient;
-    SessionManager session;
-    List<NameValuePair> nameValuePairs;
-    private Activity activity;
-    ProgressDialog progressDialog;
+    private final Context mContext;
+    private SessionManager session;
+    private final Activity activity;
 
     public GetUserPersonalDataFromServerTask (Context context, Activity activity, ProgressDialog progressDialog) {
         mContext = context;
         this.activity = activity;
-        this.progressDialog = progressDialog;
     }
 
     public void runVolley() {

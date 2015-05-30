@@ -21,22 +21,20 @@ import butterknife.InjectView;
 /**
  * Created by Martyna on 2015-03-03.
  */
-public class PartnersAdapter extends ArrayAdapter<ESNPartner> {
-    Context context;
-    int layoutResourceId;
-    ArrayList<ESNPartner> data = new ArrayList<>();
+class PartnersAdapter extends ArrayAdapter<ESNPartner> {
+    private final int layoutResourceId;
+    private ArrayList<ESNPartner> data = new ArrayList<>();
 
     public PartnersAdapter(Context context, int layoutResourceId, ArrayList<ESNPartner> data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
-        this.context = context;
         this.data = data;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        ESNPartnerHolder holder = null;
+        ESNPartnerHolder holder;
 
         if(row == null)
         {

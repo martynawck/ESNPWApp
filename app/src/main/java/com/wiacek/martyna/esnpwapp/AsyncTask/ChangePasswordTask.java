@@ -1,11 +1,6 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,18 +15,8 @@ import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,13 +25,10 @@ import java.util.Map;
  * Created by Martyna on 2015-04-29.
  */public class ChangePasswordTask{
 
-    private Context mContext;
-    HttpPost httppost;
-    HttpClient httpclient;
-    List<NameValuePair> nameValuePairs;
-    SessionManager sessionManager;
-    String oldPassword;
-    String newPassword;
+    private final Context mContext;
+    private SessionManager sessionManager;
+    private final String oldPassword;
+    private final String newPassword;
 
 
     public ChangePasswordTask(String oldPassword, String newPassword, Context context) {

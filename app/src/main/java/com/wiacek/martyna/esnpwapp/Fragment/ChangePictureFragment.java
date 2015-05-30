@@ -13,13 +13,11 @@ import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -32,17 +30,11 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
-import com.wiacek.martyna.esnpwapp.NavigationDrawer;
 import com.wiacek.martyna.esnpwapp.R;
 
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.ButterKnife;
@@ -50,16 +42,21 @@ import butterknife.InjectView;
 
 public class ChangePictureFragment extends Fragment {
 
-    @InjectView(R.id.profilePic) ImageView profilePic;
-    @InjectView(R.id.takePicButton)Button takePic;
-    @InjectView(R.id.choosePicButton)Button choosePic;
-    @InjectView(R.id.uploadPicButton) Button uploadPic;
-    ProgressDialog prgDialog;
-    String encodedString;
-    String imgPath, fileName;
-    Bitmap bitmap;
-    private static int RESULT_LOAD_IMG = 1;
-    private static int RESULT_CAPTURE_IMG = 2;
+    @InjectView(R.id.profilePic)
+    ImageView profilePic;
+    @InjectView(R.id.takePicButton)
+    Button takePic;
+    @InjectView(R.id.choosePicButton)
+    Button choosePic;
+    @InjectView(R.id.uploadPicButton)
+    Button uploadPic;
+    private ProgressDialog prgDialog;
+    private String encodedString;
+    private String imgPath;
+    private String fileName;
+    private Bitmap bitmap;
+    private static final int RESULT_LOAD_IMG = 1;
+    private static final int RESULT_CAPTURE_IMG = 2;
     private Uri fileUri;
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
@@ -100,20 +97,20 @@ public class ChangePictureFragment extends Fragment {
         return view;
     }
 
-    public void loadImagefromGallery() {
+    void loadImagefromGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK);
         galleryIntent.setType("image/*");
         startActivityForResult(galleryIntent, RESULT_LOAD_IMG);
     }
 
-    public void takePicture() {
+    void takePicture() {
         if (getActivity().getApplicationContext().getPackageManager().
                 hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
             startActivityForResult(intent, RESULT_CAPTURE_IMG);
         } else {
-            Toast.makeText(getActivity().getApplicationContext(), "Camera not supported!", Toast.LENGTH_LONG);
+            Toast.makeText(getActivity().getApplicationContext(), "Camera not supported!", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -150,11 +147,10 @@ public class ChangePictureFragment extends Fragment {
                         .decodeFile(imgPath));
                 fileName = "user_profile_id_" + new SessionManager(getActivity().getApplicationContext()).getValueOfUserId() + ".jpg";
             }
-        } else {
         }
     }
 
-    public void uploadImage() {
+    void uploadImage() {
         if (imgPath != null && !imgPath.isEmpty()) {
             encodeImagetoString();
         } else {
@@ -165,15 +161,13 @@ public class ChangePictureFragment extends Fragment {
         }
     }
 
-    public void encodeImagetoString() {
+    void encodeImagetoString() {
 
         new AsyncTask<Void, Void, String>() {
-            protected void onPreExecute() {
-            };
 
             @Override
             protected String doInBackground(Void... params) {
-                BitmapFactory.Options options = null;
+                BitmapFactory.Options options;
                 options = new BitmapFactory.Options();
                 options.inSampleSize = 3;
                 options.outHeight = 200;
@@ -196,11 +190,11 @@ public class ChangePictureFragment extends Fragment {
         }.execute(null, null, null);
     }
 
-    public void triggerImageUpload() {
+    void triggerImageUpload() {
         makeHTTPCall();
     }
 
-    public void makeHTTPCall() {
+    void makeHTTPCall() {
         prgDialog.setMessage("Uploading image on server");
         prgDialog.show();
         RequestQueue rq = Volley.newRequestQueue(getActivity().getApplicationContext());
@@ -236,7 +230,7 @@ public class ChangePictureFragment extends Fragment {
         }) {
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("id", new SessionManager(getActivity().getApplicationContext()).getValueOfUserId());
                 params.put("image", encodedString);
                 params.put("filename", fileName);

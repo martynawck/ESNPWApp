@@ -12,8 +12,6 @@ import android.widget.TextView;
 import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
 import com.wiacek.martyna.esnpwapp.R;
 
-import org.w3c.dom.Text;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -21,21 +19,19 @@ import butterknife.InjectView;
  * Created by Martyna on 2015-03-03.
  */
 public class MentorAdapter extends ArrayAdapter<MentorContact> {
-    Context context;
-    int layoutResourceId;
-    MentorContact data[] = null;
+    private final int layoutResourceId;
+    private MentorContact[] data = null;
 
     public MentorAdapter(Context context, int layoutResourceId, MentorContact[] data) {
         super(context, layoutResourceId, data);
         this.layoutResourceId = layoutResourceId;
-        this.context = context;
         this.data = data;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        MentorHolder holder = null;
+        MentorHolder holder;
 
         if(row == null)
         {

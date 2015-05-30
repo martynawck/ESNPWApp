@@ -2,13 +2,9 @@ package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
-import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
-import com.wiacek.martyna.esnpwapp.Domain.TodoTask;
-import com.wiacek.martyna.esnpwapp.SQLHelpers.ESNPWSQLHelper;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -18,23 +14,19 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 /**
  * Created by Martyna on 2015-05-23.
  */
 public class AddOrEditMarkerTask extends AsyncTask<String, Void, String> {
 
-    private Context mContext;
-    HttpPost httppost;
-    HttpClient httpclient;
+    private final Context mContext;
 
     public AddOrEditMarkerTask(Context context) {
         mContext = context;
@@ -63,17 +55,17 @@ public class AddOrEditMarkerTask extends AsyncTask<String, Void, String> {
 
             HttpResponse response = httpclient.execute(httppost);
 
-            if(response != null)
+       if(response != null)
             {
                 InputStream is = response.getEntity().getContent();
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
                 StringBuilder sb = new StringBuilder();
 
-                String line = null;
+                String line;
                 try {
                     while ((line = reader.readLine()) != null) {
-                        sb.append(line + "\n");
+                        sb.append(line).append("\n");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -84,18 +76,15 @@ public class AddOrEditMarkerTask extends AsyncTask<String, Void, String> {
                         e.printStackTrace();
                     }
                 }
-                //TODO if sb true ok else blad
                 return "true";
             }
 
         }catch (ClientProtocolException e) {
             e.getStackTrace();
             return "false";
-            // TODO Auto-generated catch block
         } catch (IOException e) {
             e.getStackTrace();
             return "false";
-            // TODO Auto-generated catch block
         } catch (Exception e) {
             e.getStackTrace();
             return "false";
@@ -108,7 +97,7 @@ public class AddOrEditMarkerTask extends AsyncTask<String, Void, String> {
         if (result.equals("true"))
             Toast.makeText(mContext, "Place added / edited!", Toast.LENGTH_LONG).show();
         else
-            Toast.makeText(mContext, "Place couldn't be added / edited! Try again later!", Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, "Error. Place couldn't be added / edited! Try again later!", Toast.LENGTH_LONG).show();
 
     }
 }

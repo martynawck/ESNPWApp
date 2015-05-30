@@ -1,7 +1,5 @@
 package com.wiacek.martyna.esnpwapp.Fragment;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -38,11 +35,11 @@ public class CampusMap extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    @InjectView(R.id.mapView) MapView mMapView;
+    @InjectView(R.id.mapView)
+    MapView mMapView;
     private GoogleMap googleMap;
-    private ArrayList<FacultyMarker> markers = new ArrayList<>();
     private HashMap<Marker, FacultyMarker> markersHashMap;
-    SessionManager sessionManager;
+    private SessionManager sessionManager;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -89,7 +86,7 @@ public class CampusMap extends Fragment {
         });
 
         PWFacultyMarkerList markerList = new PWFacultyMarkerList();
-        markers = markerList.getFacultyMarkers();
+        ArrayList<FacultyMarker> markers = markerList.getFacultyMarkers();
         plotMarkers(markers);
         LatLng coordinate = markerList.getLatLngOfFaculty(sessionManager.getValueOfFaculty());
         CameraUpdate yourLocation = CameraUpdateFactory.newLatLngZoom(coordinate, 14);
@@ -109,10 +106,10 @@ public class CampusMap extends Fragment {
                 MarkerOptions markerOption = new MarkerOptions().position(new LatLng(myMarker.getLatitude(), myMarker.getLongitude()));
                 markerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
 
-                if (myMarker.getmLabel() == "ESN Office" || myMarker.getmLabel() == "International Student Office")
+                if (myMarker.getmLabel().equals("ESN Office") || myMarker.getmLabel().equals("International Student Office"))
                     markerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
 
-                if (myMarker.getmLabel() == longFacName) {
+                if (myMarker.getmLabel().equals(longFacName)) {
                     markerOption.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
                 }
 

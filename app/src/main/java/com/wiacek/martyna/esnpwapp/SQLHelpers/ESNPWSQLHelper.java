@@ -6,13 +6,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.provider.BaseColumns;
 
 import com.wiacek.martyna.esnpwapp.Domain.Buddy;
 import com.wiacek.martyna.esnpwapp.Domain.TodoTask;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Martyna on 2015-04-13.
@@ -208,11 +206,11 @@ public class ESNPWSQLHelper extends SQLiteOpenHelper {
     }
 
     private ArrayList<TodoTask> getTodos(String value, String id) {
-        ArrayList<TodoTask> taskList = new ArrayList<TodoTask>();
+        ArrayList<TodoTask> taskList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_TODOS + " where " + KEY_TODO_TYPE + " = '" + value+"' AND " + KEY_USER_ID+ " = '" + id + "'";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        TodoTask task = new TodoTask();
+        TodoTask task;
         if (cursor.moveToFirst()) {
             do {
                 task = new TodoTask(cursor.getInt(2), cursor.getString(3),

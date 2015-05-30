@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.wiacek.martyna.esnpwapp.Adapter.ToDoAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
@@ -26,10 +25,8 @@ public class ToDoBeforeFragment extends Fragment {
 
 
     public static final String ARG_SECTION_NUMBER = "section_number";
-    ESNPWSQLHelper db;
-    ArrayList<TodoTask> tasksAfterComing;
-    @InjectView(R.id.listView1) ListView listTask;
-    ToDoAdapter adapter;
+    @InjectView(R.id.listView1)
+    ListView listTask;
 
     public ToDoBeforeFragment() {
     }
@@ -38,9 +35,9 @@ public class ToDoBeforeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_todo_list, container, false);
         ButterKnife.inject(this, rootView);
-        db = new ESNPWSQLHelper(getActivity().getApplicationContext());
-        tasksAfterComing = db.getTodosBefore(new SessionManager(getActivity().getApplicationContext()).getValueOfUserId());
-        adapter = new ToDoAdapter(getActivity().getApplicationContext(), R.layout.listview_todo_view, tasksAfterComing);
+        ESNPWSQLHelper db = new ESNPWSQLHelper(getActivity().getApplicationContext());
+        ArrayList<TodoTask> tasksAfterComing = db.getTodosBefore(new SessionManager(getActivity().getApplicationContext()).getValueOfUserId());
+        ToDoAdapter adapter = new ToDoAdapter(getActivity().getApplicationContext(), R.layout.listview_todo_view, tasksAfterComing);
         listTask.setAdapter(adapter);
         return rootView;
     }

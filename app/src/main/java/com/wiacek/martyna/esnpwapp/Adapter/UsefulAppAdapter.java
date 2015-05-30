@@ -14,9 +14,9 @@ import android.widget.ImageView;
 import com.wiacek.martyna.esnpwapp.R;
 
 public class UsefulAppAdapter extends BaseAdapter {
-    private Context mContext;
+    private final Context mContext;
 
-    public Integer[] mThumbIds = {
+    private final Integer[] mThumbIds = {
             R.drawable.jakdojade, R.drawable.uber, R.drawable.itaxi,
             R.drawable.gdzieturilo, R.drawable.moovit, R.drawable.mobilet,
             R.drawable.sciezka_rowerowa, R.drawable.pitu_pitu, R.drawable.polish_with_babel,

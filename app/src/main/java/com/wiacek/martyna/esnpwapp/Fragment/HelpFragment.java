@@ -7,9 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wiacek.martyna.esnpwapp.R;
@@ -19,9 +17,12 @@ import butterknife.InjectView;
 
 public class HelpFragment extends Fragment {
 
-    @InjectView(R.id.button) ImageButton button;
-    @InjectView(R.id.description) TextView description;
-    @InjectView(R.id.email)TextView email;
+    @InjectView(R.id.button)
+    ImageButton button;
+    @InjectView(R.id.description)
+    TextView description;
+    @InjectView(R.id.email)
+    TextView email;
 
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";

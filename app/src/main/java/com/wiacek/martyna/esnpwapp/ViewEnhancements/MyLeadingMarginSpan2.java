@@ -9,8 +9,8 @@ import android.text.Layout;
 public class MyLeadingMarginSpan2 implements
         android.text.style.LeadingMarginSpan.LeadingMarginSpan2 {
 
-    private int margin;
-    private int lines;
+    private final int margin;
+    private final int lines;
 
     public MyLeadingMarginSpan2(int lines, int margin) {
         this.lines = lines;

@@ -1,13 +1,10 @@
 package com.wiacek.martyna.esnpwapp.Fragment;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,31 +13,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
-import com.bluejamesbond.text.StringDocumentLayout;
 import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
 import com.wiacek.martyna.esnpwapp.AsyncTask.CreateFacultyLinksTask;
 import com.wiacek.martyna.esnpwapp.AsyncTask.DownloadFacultyInfo;
 import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
-import com.wiacek.martyna.esnpwapp.Domain.PWFacultyMarkerList;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Interface.OnSingleStringTaskCompleted;
 import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
 import com.wiacek.martyna.esnpwapp.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -48,16 +31,16 @@ import butterknife.InjectView;
 
 public class FacultyFragment extends Fragment {
 
-    SessionManager sessionManager;
-
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    ProgressDialog dialog = null;
-    @InjectView(R.id.polishFacName) TextView polishFacName;
-    @InjectView(R.id.englishFacName) TextView englishFacName;
-    @InjectView(R.id.listView1)ListView listView1;
-    View view;
+    private final ProgressDialog dialog = null;
+    @InjectView(R.id.polishFacName)
+    TextView polishFacName;
+    @InjectView(R.id.englishFacName)
+    TextView englishFacName;
+    @InjectView(R.id.listView1)
+    ListView listView1;
 
     public FacultyFragment() { }
 
@@ -65,10 +48,10 @@ public class FacultyFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_faculty, container, false);
+        View view = inflater.inflate(R.layout.fragment_faculty, container, false);
         ButterKnife.inject(this, view);
 
-        sessionManager = new SessionManager(getActivity().getApplicationContext());
+        SessionManager sessionManager = new SessionManager(getActivity().getApplicationContext());
 
         DownloadFacultyInfo task = new DownloadFacultyInfo(getActivity().getApplicationContext(),  dialog, sessionManager, new OnSingleStringTaskCompleted() {
             @Override
@@ -116,7 +99,7 @@ public class FacultyFragment extends Fragment {
                 task.execute(string);
             }
         });
-        task.execute(new String[] { ServerUrl.BASE_URL + "faculty.php" });
+        task.execute(ServerUrl.BASE_URL + "faculty.php");
         return view;
     }
 }

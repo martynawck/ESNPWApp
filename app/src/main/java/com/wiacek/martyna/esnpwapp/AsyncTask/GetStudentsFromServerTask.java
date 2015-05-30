@@ -2,32 +2,15 @@ package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.wiacek.martyna.esnpwapp.Adapter.GetInTouchAdapter;
-import com.wiacek.martyna.esnpwapp.Domain.FacultyNames;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Domain.Student;
-import com.wiacek.martyna.esnpwapp.Fragment.StudentProfileFragment;
 import com.wiacek.martyna.esnpwapp.Interface.OnStudentsListTaskCompleted;
-import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
 import com.wiacek.martyna.esnpwapp.JSONFunctions;
-import com.wiacek.martyna.esnpwapp.R;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -51,14 +34,10 @@ import java.util.List;
  */
 public class GetStudentsFromServerTask extends AsyncTask<String, Void, String> {
 
-    OnStudentsListTaskCompleted listener;
+    private final OnStudentsListTaskCompleted listener;
     private final ProgressDialog progressDialog;
-    private Context mContext;
-    HttpPost httppost;
-    HttpClient httpclient;
-    List<NameValuePair> nameValuePairs;
-    ArrayList<Student> students;
-    SessionManager sessionManager;
+    private final Context mContext;
+    private ArrayList<Student> students;
 
     public GetStudentsFromServerTask (Context context, ProgressDialog progressDialog, OnStudentsListTaskCompleted listener) {
         mContext = context;
@@ -73,11 +52,11 @@ public class GetStudentsFromServerTask extends AsyncTask<String, Void, String> {
             HttpConnectionParams.setConnectionTimeout(httpParameters, 5000);
             HttpConnectionParams.setSoTimeout(httpParameters, 10000);
             HttpClient httpclient = new DefaultHttpClient(httpParameters);
-            httppost = new HttpPost(ServerUrl.BASE_URL + "students.php");
+            HttpPost httppost = new HttpPost(ServerUrl.BASE_URL + "students.php");
 
-            sessionManager = new SessionManager(mContext);
+            SessionManager sessionManager = new SessionManager(mContext);
             final String login_session = sessionManager.getValueOfUserId();
-            nameValuePairs = new ArrayList<>(1);
+            List<NameValuePair> nameValuePairs = new ArrayList<>(1);
             nameValuePairs.add(new BasicNameValuePair("id", login_session));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 

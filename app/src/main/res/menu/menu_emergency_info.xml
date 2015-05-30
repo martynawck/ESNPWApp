@@ -1,7 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="#336699"
-    
-    tools:context="com.wiacek.martyna.esnpwapp.EmergencyInfo">
-</menu>

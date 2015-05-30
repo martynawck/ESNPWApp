@@ -5,8 +5,8 @@ package com.wiacek.martyna.esnpwapp.Domain;
  */
 public class FunMapCategory implements Comparable {
 
-    String id;
-    String name;
+    private String id;
+    private String name;
 
     public FunMapCategory() {}
 

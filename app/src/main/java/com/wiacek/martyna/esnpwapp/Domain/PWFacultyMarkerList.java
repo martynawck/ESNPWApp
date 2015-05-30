@@ -1,7 +1,6 @@
 package com.wiacek.martyna.esnpwapp.Domain;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.wiacek.martyna.esnpwapp.R;
 
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
  */
 public class PWFacultyMarkerList {
 
-    ArrayList<FacultyMarker> markers = new ArrayList<>();
+    private final ArrayList<FacultyMarker> markers = new ArrayList<>();
     public ArrayList<FacultyMarker> getFacultyMarkers() {
         markers.add(new FacultyMarker("Faculty of Administration and Social Sciences", R.drawable.wains, "207","207"  ,52.221626, 21.010014));
         markers.add(new FacultyMarker("Faculty of Architecture",R.drawable.wa, "7, 21", "21", 52.222118, 21.013060 ));

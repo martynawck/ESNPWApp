@@ -20,9 +20,10 @@ public class ESNPWWebsiteFragment extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    @InjectView(R.id.mywebView) WebView myWebView;
-    final static String PWWebsiteAddress = "http://www.pw.esn.pl/en";
-    String myUrl;
+    @InjectView(R.id.mywebView)
+    WebView myWebView;
+    private final static String PWWebsiteAddress = "http://www.pw.esn.pl/en";
+    private String myUrl;
 
 
     public ESNPWWebsiteFragment() {

@@ -1,31 +1,18 @@
 package com.wiacek.martyna.esnpwapp.Fragment;
 
 import android.content.Intent;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.style.RelativeSizeSpan;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bluejamesbond.text.DocumentView;
-import com.bluejamesbond.text.style.JustifiedSpan;
-import com.bluejamesbond.text.style.TextAlignment;
 import com.wiacek.martyna.esnpwapp.Adapter.ClickableLinkAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.ClickableLink;
-import com.wiacek.martyna.esnpwapp.Domain.RawFileReader;
 import com.wiacek.martyna.esnpwapp.R;
-import com.wiacek.martyna.esnpwapp.ViewEnhancements.ArticleBuilder;
-import com.wiacek.martyna.esnpwapp.ViewEnhancements.MyLeadingMarginSpan2;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -35,7 +22,8 @@ public class TransportationLinksFragment extends Fragment {
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    @InjectView(R.id.listView1) ListView listView1;
+    @InjectView(R.id.listView1)
+    ListView listView1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

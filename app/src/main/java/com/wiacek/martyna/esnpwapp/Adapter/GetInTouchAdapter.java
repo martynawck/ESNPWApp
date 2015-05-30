@@ -9,36 +9,28 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
 import com.wiacek.martyna.esnpwapp.Domain.Student;
 import com.wiacek.martyna.esnpwapp.R;
-
 import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-/**
- * Created by Martyna on 2015-03-03.
- */
 public class GetInTouchAdapter extends ArrayAdapter<Student> {
-    Context context;
-    Activity activity;
-    int layoutResourceId;
-    ArrayList<Student> originalList;
-    ArrayList<Student> studentList;
+    private final Context context;
+    private final int layoutResourceId;
+    private final ArrayList<Student> originalList;
+    private ArrayList<Student> studentList;
     private GetInTouchFilter filter;
 
     public GetInTouchAdapter(Context context, Activity activity, int layoutResourceId, ArrayList<Student> studentList) {
         super(context, layoutResourceId, studentList);
-        this.activity = activity;
         this.layoutResourceId = layoutResourceId;
         this.context = context;
-        this.studentList = new ArrayList<Student>();
+        this.studentList = new ArrayList<>();
         this.studentList.addAll(studentList);
-        this.originalList = new ArrayList<Student>();
+        this.originalList = new ArrayList<>();
         this.originalList.addAll(studentList);
     }
 
@@ -52,7 +44,7 @@ public class GetInTouchAdapter extends ArrayAdapter<Student> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        GetInTouchHolder holder = null;
+        GetInTouchHolder holder;
 
         if(row == null)
         {
@@ -95,7 +87,7 @@ public class GetInTouchAdapter extends ArrayAdapter<Student> {
 
             constraint = constraint.toString().toLowerCase();
             FilterResults result = new FilterResults();
-            if(constraint != null && constraint.toString().length() > 0)
+            if(constraint.toString().length() > 0)
             {
                 ArrayList<Student> filteredItems = new ArrayList<>();
 

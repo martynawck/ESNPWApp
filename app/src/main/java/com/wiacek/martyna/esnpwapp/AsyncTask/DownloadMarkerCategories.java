@@ -1,11 +1,6 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -17,25 +12,13 @@ import com.android.volley.toolbox.Volley;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapCategory;
 import com.wiacek.martyna.esnpwapp.Domain.FunMapPlace;
 import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
-import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Interface.OnFunMapCategory;
 import com.wiacek.martyna.esnpwapp.JSONFunctions;
-import com.wiacek.martyna.esnpwapp.R;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 /**
@@ -43,16 +26,13 @@ import java.util.TreeMap;
  */
 public class DownloadMarkerCategories {
 
-    private OnFunMapCategory listener;
-    TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
-    Context mContext;
+    private final OnFunMapCategory listener;
+    private TreeMap<FunMapCategory, ArrayList<FunMapPlace>> places;
+    private final Context mContext;
 
     public DownloadMarkerCategories ( Context context, OnFunMapCategory listener){
         this.listener = listener;
         this.mContext = context;
-    }
-
-    protected void onPreExecute ( ) {
     }
 
     public void runVolley() {

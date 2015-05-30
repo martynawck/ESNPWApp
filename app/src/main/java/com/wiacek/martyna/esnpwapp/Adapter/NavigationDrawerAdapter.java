@@ -21,9 +21,9 @@ import butterknife.InjectView;
 
 public class NavigationDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
-    Context context;
-    List<DrawerItem> drawerItemList;
-    int layoutResID;
+    private final Context context;
+    private final List<DrawerItem> drawerItemList;
+    private final int layoutResID;
 
     public NavigationDrawerAdapter(Context context, int layoutResourceID,
                                    List<DrawerItem> listItems) {
@@ -35,11 +35,8 @@ public class NavigationDrawerAdapter extends ArrayAdapter<DrawerItem> {
 
     public boolean isEnabled(int position)
     {
-        DrawerItem dItem = (DrawerItem) this.drawerItemList.get(position);
-        if (dItem.isTitle())
-            return false;
-        else
-            return true;
+        DrawerItem dItem = this.drawerItemList.get(position);
+        return !dItem.isTitle();
     }
 
     @Override
@@ -57,7 +54,7 @@ public class NavigationDrawerAdapter extends ArrayAdapter<DrawerItem> {
             drawerHolder = (DrawerItemHolder) view.getTag();
         }
 
-        DrawerItem dItem = (DrawerItem) this.drawerItemList.get(position);
+        DrawerItem dItem = this.drawerItemList.get(position);
 
         if (dItem.getTitle() != null) {
             drawerHolder.headerLayout.setVisibility(LinearLayout.VISIBLE);

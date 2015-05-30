@@ -7,20 +7,17 @@ import android.widget.Toast;
 
 import com.wiacek.martyna.esnpwapp.Domain.SessionManager;
 import com.wiacek.martyna.esnpwapp.Interface.OnSingleStringTaskCompleted;
-import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
-
-import java.util.ArrayList;
 
 /**
  * Created by Martyna on 2015-05-21.
  */
 public class DownloadFacultyInfo extends AsyncTask<String, Void, String> {
 
-    private SessionManager sessionManager;
-    private ProgressDialog dialog;
-    private OnSingleStringTaskCompleted listener;
-    String faculty;
-    private Context mContext;
+    private final SessionManager sessionManager;
+    private final ProgressDialog dialog;
+    private final OnSingleStringTaskCompleted listener;
+    private String faculty;
+    private final Context mContext;
 
     public DownloadFacultyInfo (Context context, ProgressDialog dialog, SessionManager sessionManager, OnSingleStringTaskCompleted listener){
         this.sessionManager = sessionManager;

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -13,22 +12,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.wiacek.martyna.esnpwapp.Domain.ServerUrl;
-import com.wiacek.martyna.esnpwapp.JSONFunctions;
-import com.wiacek.martyna.esnpwapp.SQLHelpers.ESNPWSQLHelper;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Martyna on 2015-05-20.
@@ -36,10 +21,10 @@ import java.util.Map;
 
 public class GetDirectFbIdTask {
 
-    private Context mContext;
+    private final Context mContext;
     private String ID;
-    private Activity activity;
-    String url;
+    private final Activity activity;
+    private final String url;
 
     public GetDirectFbIdTask (Context context, Activity activity, String url) {
         mContext = context;

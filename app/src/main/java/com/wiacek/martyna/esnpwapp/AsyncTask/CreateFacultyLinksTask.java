@@ -1,20 +1,11 @@
 package com.wiacek.martyna.esnpwapp.AsyncTask;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
-import com.wiacek.martyna.esnpwapp.Adapter.MentorAdapter;
 import com.wiacek.martyna.esnpwapp.Domain.FacultyNames;
-import com.wiacek.martyna.esnpwapp.Domain.MentorContact;
-import com.wiacek.martyna.esnpwapp.Domain.PWFacultyMarkerList;
 import com.wiacek.martyna.esnpwapp.Interface.OnTaskCompleted;
-import com.wiacek.martyna.esnpwapp.R;
 
 import java.util.ArrayList;
 
@@ -25,9 +16,9 @@ import java.util.ArrayList;
 
 public class CreateFacultyLinksTask extends AsyncTask<String, Void, String> {
 
-    private OnTaskCompleted listener;
-    Context mContext;
-    ArrayList<String> data;
+    private final OnTaskCompleted listener;
+    private final Context mContext;
+    private ArrayList<String> data;
 
     public CreateFacultyLinksTask (Context context, OnTaskCompleted listener) {
         this.listener = listener;

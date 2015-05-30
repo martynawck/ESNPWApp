@@ -18,11 +18,11 @@ import butterknife.InjectView;
  */
 public class ToDoFragment extends Fragment {
 
-    ToDosListsAdapter mSectionsPagerAdapter;
     public static final String IMAGE_RESOURCE_ID = "iconResourceID";
     public static final String ITEM_NAME = "itemName";
 
-    @InjectView(R.id.pager )ViewPager mViewPager;
+    @InjectView(R.id.pager )
+    ViewPager mViewPager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -31,7 +31,7 @@ public class ToDoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_to_do, container,
                 false);
         ButterKnife.inject(this, view);
-        mSectionsPagerAdapter = new ToDosListsAdapter(getChildFragmentManager());
+        ToDosListsAdapter mSectionsPagerAdapter = new ToDosListsAdapter(getChildFragmentManager());
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         return view;
